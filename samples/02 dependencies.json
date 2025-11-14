@@ -1,0 +1,296 @@
+{
+    "tables": [
+        {
+            "name": "organizations",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "type",
+                    "type": {
+                        "string_type": {
+                            "max_length": 255
+                        }
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "name",
+                    "type": {
+                        "string_type": {
+                            "max_length": 255
+                        }
+                    },
+                    "is_nullable": false
+                }
+            ]
+        },
+        {
+            "name": "roles",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "name",
+                    "type": {
+                        "string_type": {
+                            "max_length": 255
+                        }
+                    },
+                    "is_nullable": false
+                }
+            ]
+        },
+        {
+            "name": "document_types",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "type",
+                    "type": {
+                        "string_type": {
+                            "max_length": 255
+                        }
+                    },
+                    "is_nullable": false
+                }
+            ]
+        },
+        {
+            "name": "document_type_description",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "document_type_id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false,
+                    "foreign_key": "document_types.id"
+                },
+                {
+                    "name": "description",
+                    "type": {
+                        "string_type": {
+                            "max_length": 255
+                        }
+                    },
+                    "is_nullable": false
+                }
+            ]
+        },
+        {
+            "name": "users",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "role_id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false,
+                    "foreign_key": "roles.id"
+                },
+                {
+                    "name": "organization_id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false,
+                    "foreign_key": "organizations.id"
+                },
+                {
+                    "name": "name",
+                    "type": {
+                        "string_type": {
+                            "max_length": 255
+                        }
+                    },
+                    "is_nullable": false
+                }
+            ]
+        },
+        {
+            "name": "documents",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "owner_id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false,
+                    "foreign_key": "users.id"
+                },
+                {
+                    "name": "document_type_id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false,
+                    "foreign_key": "document_types.id"
+                },
+                {
+                    "name": "title",
+                    "type": {
+                        "string_type": {
+                            "max_length": 255
+                        }
+                    },
+                    "is_nullable": false
+                }
+            ]
+        }
+    ],
+    "profiles": [
+        {
+            "name": "default",
+            "tables": {
+                "organizations": {
+                    "count": 2,
+                    "columns": {
+                        "type": {
+                            "producer": "choice",
+                            "config": {
+                                "options": [
+                                    {
+                                        "name": "technology",
+                                        "probability": 0.5
+                                    },
+                                    {
+                                        "name": "automotive",
+                                        "probability": 0.3
+                                    },
+                                    {
+                                        "name": "food and beverage",
+                                        "probability": 0.2
+                                    }
+                                ]
+                            }
+                        },
+                        "name": {
+                            "producer": "smollm",
+                            "config": {
+                                "prompt": "Generate a random name for an organization of type {type}"
+                            }
+                        }
+                    }
+                },
+                "roles": {
+                    "options": [
+                        {
+                            "count": 1,
+                            "values": {
+                                "id": 1,
+                                "name": "admin"
+                            }
+                        },
+                        {
+                            "probability": 0.8,
+                            "values": {
+                                "id": 2,
+                                "name": "user"
+                            }
+                        },
+                        {
+                            "probability": 0.2,
+                            "values": {
+                                "id": 3,
+                                "name": "guest"
+                            }
+                        }
+                    ]
+                },
+                "document_types": {
+                    "options": [
+                        {
+                            "values": {
+                                "id": 1,
+                                "type": "spreadsheet"
+                            }
+                        },
+                        {
+                            "values": {
+                                "id": 2,
+                                "type": "presentation"
+                            }
+                        },
+                        {
+                            "values": {
+                                "id": 3,
+                                "type": "report"
+                            }
+                        }
+                    ]
+                },
+                "users": {
+                    "count": 5,
+                    "columns": {
+                        "name": {
+                            "producer": "smollm",
+                            "config": {
+                                "prompt": "Generate a random name for a user"
+                            }
+                        }
+                    }
+                },
+                "document_type_description": {
+                    "count": 3,
+                    "columns": {
+                        "description": {
+                            "producer": "smollm",
+                            "config": {
+                                "prompt": "Generate a random description for a document type {document_type.type}"
+                            }
+                        }
+                    }
+                },
+                "documents": {
+                    "count": 10,
+                    "columns": {
+                        "title": {
+                            "producer": "smollm",
+                            "config": {
+                                "prompt": "Generate a random title for a document for the organization {organization.name} of type {organization.type}"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

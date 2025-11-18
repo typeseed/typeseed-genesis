@@ -189,15 +189,15 @@
                                 "options": [
                                     {
                                         "name": "technology",
-                                        "probability": 0.5
+                                        "probability": 0.33
                                     },
                                     {
                                         "name": "automotive",
-                                        "probability": 0.3
+                                        "probability": 0.33
                                     },
                                     {
                                         "name": "food and beverage",
-                                        "probability": 0.2
+                                        "probability": 0.33
                                     }
                                 ]
                             }
@@ -205,6 +205,7 @@
                         "name": {
                             "producer": "smollm",
                             "config": {
+                                "list": true,
                                 "prompt": "Generate a random name for an organization of type {{type}}"
                             }
                         }
@@ -216,20 +217,27 @@
                             "count": 1,
                             "values": {
                                 "id": 1,
+                                "name": "super_admin"
+                            }
+                        },
+                        {
+                            "count": 2,
+                            "values": {
+                                "id": 2,
                                 "name": "admin"
                             }
                         },
                         {
                             "probability": 0.8,
                             "values": {
-                                "id": 2,
+                                "id": 3,
                                 "name": "user"
                             }
                         },
                         {
                             "probability": 0.2,
                             "values": {
-                                "id": 3,
+                                "id": 4,
                                 "name": "guest"
                             }
                         }
@@ -258,12 +266,13 @@
                     ]
                 },
                 "users": {
-                    "count": 5,
+                    "count": 10,
                     "columns": {
                         "name": {
                             "producer": "smollm",
                             "config": {
-                                "prompt": "Generate a random name for a user part of the organization {{organizations.type}}"
+                                "list": true,
+                                "prompt": "Generate a random surname and name for a user in the format 'Surname Name'"
                             }
                         }
                     }
@@ -273,6 +282,7 @@
                         "description": {
                             "producer": "smollm",
                             "config": {
+                                "list": true,
                                 "prompt": "Generate a random description for a document type {{document_types.type}}"
                             }
                         }
@@ -283,6 +293,7 @@
                         "title": {
                             "producer": "smollm",
                             "config": {
+                                "list": true,
                                 "prompt": "Generate a random title for a document of type {{document_types.type}} for the organization {{organizations.name}} of type {{organizations.type}}"
                             }
                         }

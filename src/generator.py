@@ -197,6 +197,10 @@ class Generator:
             if table_profile_configuration.count
             else 1
         ):
+            if len(local_traceback) == 1:
+                logger.debug(f" Generating a root entity {table_name}. Resetting state.")
+                context["__state__"] = {}
+
             for dependency in hierarchy[table_name]["depends_on"]:
                 if dependency in local_traceback:
                     continue

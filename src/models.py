@@ -161,6 +161,8 @@ Producer configs
 class SMOLLMProducerConfig(BaseModel):
     """Model for SMOLLM producer config."""
 
+    list: Optional[bool] = Field(default=False, description="Whether to use a list of options")
+
     prompt: str = Field(..., description="The prompt of the SMOLLM producer")
 
 

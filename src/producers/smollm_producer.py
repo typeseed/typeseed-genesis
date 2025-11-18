@@ -1,5 +1,5 @@
 import uuid
-from src.models import ColumnDefinition, ColumnProfileDefinition, TableDefinition
+from src.models import ColumnDefinition, ColumnProfileDefinition, TableDefinition, TableProfileDefinition
 from src.producers.base_producer import BaseProducer
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -13,16 +13,19 @@ class SMOLLMProducer(BaseProducer):
     def generate(
         self,
         table_definition: TableDefinition,
+        table_profile_configuration: TableProfileDefinition,
         column_definition: ColumnDefinition,
         column_profile_definition: ColumnProfileDefinition,
         context: dict,
     ) -> str:
-        
-        model = AutoModelForCausalLM.from_pretrained(checkpoint).to(device)
-        tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+        # model = AutoModelForCausalLM.from_pretrained(checkpoint).to(device)
+        # tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 
-        prompt = self.replace_placeholders(column_profile_definition.config.prompt, context)
+        prompt = self.replace_placeholders(
+            column_profile_definition.config.prompt, context
+        )
+        return "```" + prompt + "```"
 
-        inputs = tokenizer(prompt, return_tensors="pt").to(device)
-        outputs = model.generate(**inputs, max_new_tokens=100)
-        return tokenizer.decode(outputs[0], skip_special_tokens=True)
+        # inputs = tokenizer(prompt, return_tensors="pt").to(device)
+        # outputs = model.generate(**inputs, max_new_tokens=100)
+        # return tokenizer.decode(outputs[0], skip_special_tokens=True)

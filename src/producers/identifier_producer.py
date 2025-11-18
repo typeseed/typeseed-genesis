@@ -1,5 +1,5 @@
 import uuid
-from src.models import ColumnDefinition, ColumnProfileDefinition, TableDefinition
+from src.models import ColumnDefinition, ColumnProfileDefinition, TableDefinition, TableProfileDefinition
 from src.producers.base_producer import BaseProducer
 
 
@@ -12,6 +12,7 @@ class IdentifierProducer(BaseProducer):
     def generate(
         self,
         table_definition: TableDefinition,
+        table_profile_configuration: TableProfileDefinition,
         column_definition: ColumnDefinition,
         column_profile_definition: ColumnProfileDefinition,
         context: dict,

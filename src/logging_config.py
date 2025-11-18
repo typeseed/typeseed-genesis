@@ -236,3 +236,4 @@ def critical(msg: str, *args, **kwargs):
     """Log critical message."""
     get_logger().critical(msg, *args, **kwargs)
 
+

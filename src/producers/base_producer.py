@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import re
 from typing import Any, Callable
 
-from src.models import ColumnDefinition, ColumnProfileDefinition, TableDefinition
+from src.models import ColumnDefinition, ColumnProfileDefinition, TableDefinition, TableProfileDefinition
 
 
 
@@ -19,6 +19,7 @@ class BaseProducer(ABC):
 
         for placeholder in placeholders:
             placeholder_split = placeholder[2:-2].split(".")
+
 
             if len(placeholder_split) == 1:
                 result = result.replace(
@@ -38,6 +39,7 @@ class BaseProducer(ABC):
     def generate(
         self,
         table_definition: TableDefinition,
+        table_profile_configuration: TableProfileDefinition,
         column_definition: ColumnDefinition,
         column_profile_definition: ColumnProfileDefinition,
         context: dict,

@@ -179,9 +179,9 @@
     "profiles": [
         {
             "name": "default",
+            "root": "organizations",
             "tables": {
                 "organizations": {
-                    "count": 2,
                     "columns": {
                         "type": {
                             "producer": "choice",
@@ -205,7 +205,7 @@
                         "name": {
                             "producer": "smollm",
                             "config": {
-                                "prompt": "Generate a random name for an organization of type {type}"
+                                "prompt": "Generate a random name for an organization of type {{type}}"
                             }
                         }
                     }
@@ -263,29 +263,27 @@
                         "name": {
                             "producer": "smollm",
                             "config": {
-                                "prompt": "Generate a random name for a user"
+                                "prompt": "Generate a random name for a user part of the organization {{organizations.type}}"
                             }
                         }
                     }
                 },
                 "document_type_description": {
-                    "count": 3,
                     "columns": {
                         "description": {
                             "producer": "smollm",
                             "config": {
-                                "prompt": "Generate a random description for a document type {document_type.type}"
+                                "prompt": "Generate a random description for a document type {{document_types.type}}"
                             }
                         }
                     }
                 },
                 "documents": {
-                    "count": 10,
                     "columns": {
                         "title": {
                             "producer": "smollm",
                             "config": {
-                                "prompt": "Generate a random title for a document for the organization {organization.name} of type {organization.type}"
+                                "prompt": "Generate a random title for a document of type {{document_types.type}} for the organization {{organizations.name}} of type {{organizations.type}}"
                             }
                         }
                     }

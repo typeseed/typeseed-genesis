@@ -222,6 +222,7 @@ class TableProfileDefinition(BaseModel):
     """Model for table profile definition."""
 
     count: Optional[int] = Field(default=None, description="The count of the table")
+    forEach: Optional[str] = Field(default=None, description="The forEach of the table")
     min_count: Optional[int] = Field(
         default=None, description="The min count of the table"
     )

@@ -127,11 +127,7 @@ class Generator:
         if profile_configuration.options:
             producer = OptionsProducer()
             return producer.generate(
-                table_definition,
-                profile_configuration,
-                None,
-                None,
-                context=context
+                table_definition, profile_configuration, None, None, context=context
             )
 
         row = {}
@@ -163,7 +159,7 @@ class Generator:
             row[column.name] = value
             context[table_definition.name] = row
 
-        return row
+        return row, True
 
     def get_table_configuration(self, table_name: str):
         table_definition = None
@@ -177,12 +173,7 @@ class Generator:
         return table_definition, table_profile_configuration
 
     def generate_entity(
-        self,
-        hierarchy: dict,
-        table_name: str,
-        context: dict,
-        traceback: list = [],
-        tables: list = {},
+        self, hierarchy: dict, table_name: str, context: dict, traceback: list = []
     ):
         table_definition, table_profile_configuration = self.get_table_configuration(
             table_name
@@ -190,6 +181,11 @@ class Generator:
 
         if table_name in traceback:
             return
+
+        if "__tables__" not in context:
+            context["__tables__"] = {}
+
+        tables = context["__tables__"]
 
         local_traceback = traceback.copy()
         local_traceback.append(table_name)
@@ -207,34 +203,25 @@ class Generator:
                 logger.info(
                     f"Generating dependency: {dependency} for table: {table_name}"
                 )
-                self.generate_entity(
-                    hierarchy, dependency, context, local_traceback, tables
-                )
+                self.generate_entity(hierarchy, dependency, context, local_traceback)
 
             context["__table_name__"] = table_name
             if table_name not in tables:
                 tables[table_name] = []
             logger.info(f"Generating data for table: {table_name}")
-            row_data = self.generate_data(
+            row_data, append_to_list = self.generate_data(
                 table_definition, table_profile_configuration, context
             )
 
-            logger.debug(f"Row data for table: {table_name}")
-            logger.debug(json.dumps(row_data, indent=2))
-            logger.debug("-"*80)
-
             context[table_name] = row_data
-            tables[table_name].append(row_data)
+            if append_to_list:
+                tables[table_name].append(row_data)
 
             for key, value in hierarchy.items():
                 if table_name in value["depends_on"]:
                     if key in local_traceback:
                         continue
-                    self.generate_entity(
-                        hierarchy, key, context, local_traceback, tables
-                    )
-
-            
+                    self.generate_entity(hierarchy, key, context, local_traceback)
 
     def generate(self, configuration: Configuration, profile_name: str = "default"):
         self.configuration = configuration
@@ -258,8 +245,8 @@ class Generator:
 
         print(json.dumps(hierarchy, indent=2))
 
-        tables = {}
+        context = {}
 
-        self.generate_entity(hierarchy, "organizations", {}, [], tables)
+        self.generate_entity(hierarchy, "organizations", context, [])
 
-        print(json.dumps(tables, indent=2))
+        print(json.dumps(context["__tables__"], indent=2))

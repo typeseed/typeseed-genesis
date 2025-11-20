@@ -13,9 +13,11 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 checkpoint = "Qwen/Qwen2.5-3B-Instruct"
 device = "cpu"  # for GPU usage or "cpu" for CPU usage
 
-model = AutoModelForCausalLM.from_pretrained(checkpoint).to(device)
-tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+# model = AutoModelForCausalLM.from_pretrained(checkpoint).to(device)
+# tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 
+model = None
+tokenizer = None
 
 class SMOLLMProducer(BaseProducer):
     """Identifier producer class."""

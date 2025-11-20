@@ -8,8 +8,10 @@ import json
 import sys
 from pathlib import Path
 from src.generator import Generator
+from src.hierarchy import Hierarchy
 from src.models import Configuration
 from src.logging_config import init_default_logger, get_logger, log_performance
+from src.profiler import Profiler
 
 
 @log_performance
@@ -135,8 +137,13 @@ Examples:
         # Process data
         logger.info("Starting data generation...")
 
-        generator = Generator()
-        generator.generate(config, "default")
+        # generator = Generator()
+        # generator.generate(config, "default")
+
+        hierarchy = Hierarchy(config)
+        profiler = Profiler(config, hierarchy)
+
+        profiler.build_profile()
 
         results = {}
 

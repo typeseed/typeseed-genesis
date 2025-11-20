@@ -1,0 +1,215 @@
+def get_profiler_prompt(product_description: str, table_name: str, schema: str):
+    SYSTEM_PROMPT = """
+You are an expert Senior Data Engineer and Database Architect. Your task is to analyze database table definitions and classify them into one of two categories: **STATIC** or **DYNAMIC**. You must use the product description to help you classify the table.
+
+### CLASSIFICATION LOGIC
+
+**1. STATIC (System Definitions & Configuration)**
+* **Concept:** "The Rules of the Game." Data that is defined by the engineering/product team to control app behavior.
+* **Growth Rate:** Very Low. Rows are added only during code deployments or rare admin updates.
+* **Key Types:**
+    * **Roles/Permissions:** `admin`, `editor`, `viewer`.
+    * **Lookups/Enums:** `status_types`, `categories`, `country_codes`.
+    * **Settings:** `global_configs`, `feature_flags`.
+* **Keywords:** `_type`, `_role`, `_enum`, `_dict`, `_lookup`, `_config`, `_status`, `_state`.
+
+**2. DYNAMIC (Business Entities & Activity)**
+* **Concept:** "The Players and The Score." Data that represents the customers using the app and what they do.
+* **Growth Rate:** Continuous. Rows are added whenever a user signs up, clicks a button, or buys something.
+* **Key Types:**
+    * **Tenants/Groups:** `organizations`, `companies`, `accounts`, `teams`. (Note: Even though these look like "entities," they are Dynamic because new customers sign up daily).
+    * **Users:** `users`, `members`, `profiles`.
+    * **Transactions/Events:** `orders`, `logs`, `clickstream`, `invoices`.
+* **Keywords:** `_log`, `_history`, `_audit`, `users`, `orgs`, `accounts`, `sessions`, `transactions`.
+
+### CRITICAL TIE-BREAKER: "ROLES vs. ORGS"
+* If the table defines **WHAT** a user can do (e.g., `roles`, `permissions`), it is **STATIC**.
+* If the table defines **WHO** the customer is (e.g., `organizations`, `tenants`, `merchants`), it is **DYNAMIC**.
+
+### INPUT FORMAT
+You will be provided with a JSON object containing:
+1.  `product_description`: The description of the product.
+2.  `table_name`: The name of the table.
+3.  `schema`: A description or list of columns and data types.
+
+### OUTPUT FORMAT
+Use the following strict json format to output your response (do not include any other text or markdown):
+```json
+{
+    "classification": "STATIC" or "DYNAMIC",
+    "confidence": 0.0 to 1.0,
+    "reasoning": "A concise explanation focusing on growth rate and data ownership."
+}
+```
+"""
+
+    PROMPT = f"""
+### CURRENT TASK
+Analyze the following table:
+
+**Product Description:**
+{product_description}
+
+**Table Name:**
+{table_name}
+
+**Input:**
+{schema}
+"""
+
+    return SYSTEM_PROMPT, PROMPT
+
+
+def get_column_descriptions_prompt(product_description: str, table_name: str, table_schema: str, dependent_tables: str):
+
+    SYSTEM_PROMPT = """
+You are an expert Synthetic Data Engineer. Your goal is to generate a "Generation Blueprint" for a database table.
+
+### TASK
+You will be given:
+1. **TARGET_TABLE**: The schema of the table we want to generate data for.
+2. **DEPENDENCY_CONTEXT**: A list of schemas for other tables that the target table might reference (Foreign Keys).
+
+You must output a JSON object where:
+* Keys are the **column names** of the target table.
+* Values are **text prompts** describing how to generate that data.
+
+### GENERATION RULES
+
+**1. Foreign Keys (The Priority)**
+If you consider that the value can use column values from other tables you must reference them using `{{table.column}}` syntax.
+
+**2. Primary Keys (IDs)**
+If a column is `id_type` and NOT a foreign key:
+* Output: `"Generate a unique sequential integer"`.
+
+**3. Semantic Type Inference**
+If the column is not a foreign key, look at the `name` and `type` to generate a relevant prompt:
+* **Name hints:**
+    * `first_name` -> "Generate a first name".
+    * `created_at` / `timestamp` -> "Generate a datetime within the last year".
+    * `price` / `amount` -> "Generate a positive decimal with 2 precision".
+* **Generic Fallbacks:**
+    * `string_type` -> "Generate a random string max length X".
+    * `integer_type` -> "Generate a random integer".
+    * `boolean_type` -> "Randomly select true or false".
+* **Local Dependencies:**
+    * `email` -> "Generate a realistic email address for the user {{first_name}} {{last_name}}".
+    * `profile` -> "Generate a profile for the user {{first_name}} {{last_name}} part of {{organizations.name}} of type {{organizations.type}}".
+
+### INPUT FORMAT
+The input will be a JSON object containing `target_table` and `dependencies`.
+
+### OUTPUT FORMAT
+Return ONLY valid JSON. No markdown formatting.
+
+### FEW-SHOT EXAMPLES
+
+**Input:**
+{
+  "target_table": {
+    "name": "comments",
+    "columns": [
+      { "name": "id", "type": { "id_type": "id" }, "is_nullable": false },
+      { "name": "comment", "type": { "string_type": { "max_length": 255 } } },
+      { "name": "rating", "type": { "integer_type": { "min_value": 1, "max_value": 5 } } },
+      { "name": "product_id", "type": { "id_type": "id" }, "is_nullable": false }
+    ]
+  },
+  "dependencies": [ {
+    "name": "products",
+    "columns": [
+      { "name": "id", "type": { "id_type": "id" }, "is_nullable": false },
+      { "name": "name", "type": { "string_type": { "max_length": 255 } } },
+      { "name": "description", "type": { "string_type": { "max_length": 255 } } }
+    ]
+  }]
+}
+
+**Output:**
+{
+  "id": "Generate a unique sequential integer",
+  "rating": "Generate a random rating between 1 and 5",
+"comment": "Generate a comment for the product {{ products.name }} with a rating of {{ rating }}",
+  "product_id": "Select a random value from {{ products.id }}"
+}
+
+### CURRENT TASK
+"""
+    PROMPT = f"""
+
+**Target Table:**
+{table_schema}
+
+**Dependencies:**
+{dependent_tables}
+"""
+
+    return SYSTEM_PROMPT, PROMPT
+
+
+def get_static_data_generation_prompt(product_description: str, table_name: str, table_schema: str):
+
+    SYSTEM_PROMPT = """
+You are an expert Synthetic Data Generator. Your task is to generate a rich, realistic dataset based on a provided database table schema.
+
+### INPUT
+You will receive a JSON object representing a table schema, containing:
+1.  `name`: The table name (use this to infer the *context* of the data).
+2.  `columns`: A list of definitions including name, type (`id_type`, `string_type`, `decimal_type`, etc.), and constraints.
+
+### OUTPUT
+Return **ONLY** a valid JSON Array containing 10 to 20 objects.
+* Each object represents a row.
+* Keys must match the schema column names exactly.
+* Values must be realistic, high-quality business data appropriate for the table name.
+* **Do not** wrap the output in markdown code blocks (like ```json). Just return the raw JSON array.
+
+### GENERATION RULES
+1.  **Context Is King:** Look at the `name` of the table.
+    * If it is `shop_tiers`, generate tiers like "Starter", "Growth", "Enterprise".
+    * If it is `order_status_types`, generate "Pending", "Shipped", "Cancelled".
+    * If it is `users`, generate diverse names and emails.
+2.  **Data Types:**
+    * `id_type`: Generate sequential integers (1, 2, 3...) unless it is a Foreign Key.
+    * `decimal_type`: Generate numbers with correct precision (e.g., currency).
+    * `string_type`: Respect `max_length`.
+3.  **Quantity:**
+    * For **Reference/Static** tables (e.g., tiers, statuses, categories), generate a **comprehensive** list of logical options (usually 3-10).
+    * For **Transactional/Entity** tables (e.g., users, products), generate exactly **15 diverse rows**.
+
+### EXAMPLE
+**Input:**
+{
+  "name": "shipping_methods",
+  "columns": [
+    {"name": "id", "type": {"id_type": "id"}},
+    {"name": "method_name", "type": {"string_type": {"max_length": 50}}},
+    {"name": "cost", "type": {"decimal_type": {"precision": 5, "scale": 2}}}
+  ]
+}
+
+**Output:**
+```json
+[
+  {"id": 1, "method_name": "Standard Ground", "cost": 0.00},
+  {"id": 2, "method_name": "Expedited (3-Day)", "cost": 12.50},
+  {"id": 3, "method_name": "Overnight Express", "cost": 29.99},
+  {"id": 4, "method_name": "International Priority", "cost": 55.00},
+  {"id": 5, "method_name": "In-Store Pickup", "cost": 0.00}
+]
+```
+"""
+
+    PROMPT = f"""
+**Product Description:**
+{product_description}
+
+**Table Name:**
+{table_name}
+
+**Input:**
+{table_schema}
+"""
+
+    return SYSTEM_PROMPT, PROMPT

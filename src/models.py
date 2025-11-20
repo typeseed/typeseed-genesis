@@ -161,7 +161,9 @@ Producer configs
 class SMOLLMProducerConfig(BaseModel):
     """Model for SMOLLM producer config."""
 
-    list: Optional[bool] = Field(default=False, description="Whether to use a list of options")
+    list: Optional[bool] = Field(
+        default=False, description="Whether to use a list of options"
+    )
 
     prompt: str = Field(..., description="The prompt of the SMOLLM producer")
 
@@ -255,6 +257,10 @@ class ProfileDefinition(BaseModel):
 class Configuration(BaseModel):
     """Model for configuration."""
 
+    product_description: Optional[str] = Field(
+        default="No product description provided",
+        description="The product description of the configuration",
+    )
     tables: List[TableDefinition] = Field(
         ..., description="The tables of the configuration"
     )

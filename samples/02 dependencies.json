@@ -1,4 +1,5 @@
 {
+    "product descrioption": "This is an application that helps you manage your documents and feedback.",
     "tables": [
         {
             "name": "organizations",
@@ -174,6 +175,35 @@
                     "is_nullable": false
                 }
             ]
+        },
+        {
+            "name": "user_feedback",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "user_id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false,
+                    "foreign_key": "users.id"
+                },
+                {
+                    "name": "feedback",
+                    "type": {
+                        "string_type": {
+                            "max_length": 255
+                        }
+                    },
+                    "is_nullable": false
+                }
+            ]
         }
     ],
     "profiles": [
@@ -295,6 +325,18 @@
                             "config": {
                                 "list": true,
                                 "prompt": "Generate a random title for a document of type {{document_types.type}} for the organization {{organizations.name}} of type {{organizations.type}}"
+                            }
+                        }
+                    }
+                },
+                "user_feedback": {
+                    "count": 10,
+                    "columns": {
+                        "feedback": {
+                            "producer": "smollm",
+                            "config": {
+                                "list": false,
+                                "prompt": "Generate a random feedback for a user {{users.name}}"
                             }
                         }
                     }

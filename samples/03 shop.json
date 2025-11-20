@@ -1,0 +1,372 @@
+{
+    "product descrioption": "An e-commerce platform for selling products online. Each shop is owned by a user and sells various products to customers.",
+    "tables": [
+        {
+            "name": "shop_tiers",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "tier_name",
+                    "type": {
+                        "string_type": {
+                            "max_length": 50
+                        }
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "commission_rate",
+                    "type": {
+                        "decimal_type": {
+                            "precision": 5,
+                            "scale": 2
+                        }
+                    },
+                    "is_nullable": false
+                }
+            ]
+        },
+        {
+            "name": "shops",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "tier_id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false,
+                    "foreign_key": "shop_tiers.id"
+                },
+                {
+                    "name": "name",
+                    "type": {
+                        "string_type": {
+                            "max_length": 255
+                        }
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "is_active",
+                    "type": {
+                        "boolean_type": {}
+                    },
+                    "is_nullable": false
+                }
+            ]
+        },
+        {
+            "name": "users",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "email",
+                    "type": {
+                        "string_type": {
+                            "max_length": 255
+                        }
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "full_name",
+                    "type": {
+                        "string_type": {
+                            "max_length": 255
+                        }
+                    },
+                    "is_nullable": true
+                }
+            ]
+        },
+        {
+            "name": "product_categories",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "name",
+                    "type": {
+                        "string_type": {
+                            "max_length": 100
+                        }
+                    },
+                    "is_nullable": false
+                }
+            ]
+        },
+        {
+            "name": "products",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "shop_id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false,
+                    "foreign_key": "shops.id"
+                },
+                {
+                    "name": "category_id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false,
+                    "foreign_key": "product_categories.id"
+                },
+                {
+                    "name": "sku",
+                    "type": {
+                        "string_type": {
+                            "max_length": 50
+                        }
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "name",
+                    "type": {
+                        "string_type": {
+                            "max_length": 255
+                        }
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "price",
+                    "type": {
+                        "decimal_type": {
+                            "precision": 10,
+                            "scale": 2
+                        }
+                    },
+                    "is_nullable": false
+                }
+            ]
+        },
+        {
+            "name": "stock_inventory",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "product_id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false,
+                    "foreign_key": "products.id"
+                },
+                {
+                    "name": "quantity_available",
+                    "type": {
+                        "integer_type": {}
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "warehouse_location",
+                    "type": {
+                        "string_type": {
+                            "max_length": 50
+                        }
+                    },
+                    "is_nullable": true
+                }
+            ]
+        },
+        {
+            "name": "order_status_types",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "status_label",
+                    "type": {
+                        "string_type": {
+                            "max_length": 50
+                        }
+                    },
+                    "is_nullable": false
+                }
+            ]
+        },
+        {
+            "name": "orders",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "user_id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false,
+                    "foreign_key": "users.id"
+                },
+                {
+                    "name": "shop_id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false,
+                    "foreign_key": "shops.id"
+                },
+                {
+                    "name": "current_status_id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false,
+                    "foreign_key": "order_status_types.id"
+                },
+                {
+                    "name": "total_amount",
+                    "type": {
+                        "decimal_type": {
+                            "precision": 12,
+                            "scale": 2
+                        }
+                    },
+                    "is_nullable": false
+                }
+            ]
+        },
+        {
+            "name": "order_line_items",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "order_id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false,
+                    "foreign_key": "orders.id"
+                },
+                {
+                    "name": "product_id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false,
+                    "foreign_key": "products.id"
+                },
+                {
+                    "name": "quantity",
+                    "type": {
+                        "integer_type": {}
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "unit_price_at_purchase",
+                    "type": {
+                        "decimal_type": {
+                            "precision": 10,
+                            "scale": 2
+                        }
+                    },
+                    "is_nullable": false
+                }
+            ]
+        },
+        {
+            "name": "product_evaluations",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "product_id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false,
+                    "foreign_key": "products.id"
+                },
+                {
+                    "name": "user_id",
+                    "type": {
+                        "id_type": "id"
+                    },
+                    "is_nullable": false,
+                    "foreign_key": "users.id"
+                },
+                {
+                    "name": "star_rating",
+                    "type": {
+                        "integer_type": {}
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "comment_text",
+                    "type": {
+                        "string_type": {
+                            "max_length": 1000
+                        }
+                    },
+                    "is_nullable": true
+                }
+            ]
+        }
+    ],
+    "profiles": []
+}

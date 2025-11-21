@@ -1,3 +1,31 @@
+def heal_dynamic_response_table(response: str):
+    SYSTEM_PROMPT = """
+  You are an expert text processing utility. Your sole task is to extract a single, valid JSON object from the provided input string.
+
+  **INSTRUCTIONS:**
+  1.  Search the entire input string for the first complete, valid JSON object (starting with `{` and ending with the corresponding `}`).
+  2.  Ignore all surrounding text, comments, or other characters.
+  3.  Do not modify the contents of the JSON object in any way.
+  4.  The final output **MUST** be the extracted JSON object nested directly inside a Markdown code block with the language identifier `json`.
+
+  """
+
+    PROMPT = f"""
+  **INPUT STRING:**
+  {response}
+
+  **OUTPUT FORMAT EXAMPLE:**
+  ```json
+  {{
+      "key": "value",
+      "list": [1, 2, 3]
+  }}
+  ```
+  """
+
+    return SYSTEM_PROMPT, PROMPT
+
+
 def get_profiler_prompt(product_description: str, table_name: str, schema: str):
     SYSTEM_PROMPT = """
 You are an expert Senior Data Engineer and Database Architect. Your task is to analyze database table definitions and classify them into one of two categories: **STATIC** or **DYNAMIC**. You must use the product description to help you classify the table.
@@ -60,19 +88,22 @@ Analyze the following table:
     return SYSTEM_PROMPT, PROMPT
 
 
-def get_column_descriptions_prompt(product_description: str, table_name: str, table_schema: str, dependent_tables: str):
-
+def get_column_descriptions_prompt(
+    product_description: str, table_name: str, table_schema: str, dependent_tables: str
+):
     SYSTEM_PROMPT = """
-You are an expert Synthetic Data Engineer. Your goal is to generate a "Generation Blueprint" for a database table.
+You are an expert Synthetic Data Engineer. Your goal is to generate a "Generation Blueprint" for a database table. You must use the product description to help you generate the blueprint.
 
 ### TASK
 You will be given:
-1. **TARGET_TABLE**: The schema of the table we want to generate data for.
-2. **DEPENDENCY_CONTEXT**: A list of schemas for other tables that the target table might reference (Foreign Keys).
+1. **PRODUCT_DESCRIPTION**: The description of the product.
+2. **ENTITY**: The name of the entity we want to generate data for.
+3. **TARGET_TABLE**: The schema of the table we want to generate data for.
+4. **DEPENDENCY_CONTEXT**: A list of schemas for other tables that the target table might reference (Foreign Keys).
 
 You must output a JSON object where:
 * Keys are the **column names** of the target table.
-* Values are **text prompts** describing how to generate that data.
+* Values are language model **text prompts** describing how to generate that data.
 
 ### GENERATION RULES
 
@@ -96,6 +127,16 @@ If the column is not a foreign key, look at the `name` and `type` to generate a 
 * **Local Dependencies:**
     * `email` -> "Generate a realistic email address for the user {{first_name}} {{last_name}}".
     * `profile` -> "Generate a profile for the user {{first_name}} {{last_name}} part of {{organizations.name}} of type {{organizations.type}}".
+
+**4. Contextual Inference**
+If the column is dependent on other fields reference them using `{{column}}` or `{{table.column}}` syntax. Always prefer to use the `{{table.column}}` syntax if the column is dependent on a column from another table instead of referencing the local {{table_id}} syntax.
+Avoid referencing columns that are ids of other tables. Never reference the properties from the schema. Ignore the min, max, precision, scale, etc. properties.
+
+**5. Avoid Self-Reference**
+DO NOT reference a column to itself.
+
+**6. Realistic Data Generation**
+Try to come up with prompts that will generate mock data that is realistic and relevant to the product.
 
 ### INPUT FORMAT
 The input will be a JSON object containing `target_table` and `dependencies`.
@@ -130,13 +171,19 @@ Return ONLY valid JSON. No markdown formatting.
 {
   "id": "Generate a unique sequential integer",
   "rating": "Generate a random rating between 1 and 5",
-"comment": "Generate a comment for the product {{ products.name }} with a rating of {{ rating }}",
-  "product_id": "Select a random value from {{ products.id }}"
+  "comment": "Generate a comment for the product {{ products.name }} with a rating of {{ rating }}",
+  "product_id": "Select a random value from {{ products }} table"
 }
 
 ### CURRENT TASK
 """
     PROMPT = f"""
+
+**Product Description:**
+{product_description}
+
+**Entity:**
+{table_name}
 
 **Target Table:**
 {table_schema}
@@ -148,10 +195,11 @@ Return ONLY valid JSON. No markdown formatting.
     return SYSTEM_PROMPT, PROMPT
 
 
-def get_static_data_generation_prompt(product_description: str, table_name: str, table_schema: str):
-
+def get_static_data_generation_prompt(
+    product_description: str, table_name: str, table_schema: str
+):
     SYSTEM_PROMPT = """
-You are an expert Synthetic Data Generator. Your task is to generate a rich, realistic dataset based on a provided database table schema.
+You are an expert Synthetic Data Generator. Your task is to generate a rich, realistic dataset based on a provided database table schema and the prodivded product description.
 
 ### INPUT
 You will receive a JSON object representing a table schema, containing:

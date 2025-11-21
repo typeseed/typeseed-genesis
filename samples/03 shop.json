@@ -1,5 +1,5 @@
 {
-    "product descrioption": "An e-commerce platform for selling products online. Each shop is owned by a user and sells various products to customers.",
+    "product_description": "An e-commerce platform for selling products online. Each shop is owned by a user and sells various products to customers.",
     "tables": [
         {
             "name": "shop_tiers",
@@ -23,9 +23,8 @@
                 {
                     "name": "commission_rate",
                     "type": {
-                        "decimal_type": {
-                            "precision": 5,
-                            "scale": 2
+                        "numeric_type": {
+                            "precision": 5
                         }
                     },
                     "is_nullable": false
@@ -166,9 +165,8 @@
                 {
                     "name": "price",
                     "type": {
-                        "decimal_type": {
-                            "precision": 10,
-                            "scale": 2
+                        "numeric_type": {
+                            "precision": 10
                         }
                     },
                     "is_nullable": false
@@ -196,7 +194,9 @@
                 {
                     "name": "quantity_available",
                     "type": {
-                        "integer_type": {}
+                        "numeric_type": {
+                            "precision": 10
+                        }
                     },
                     "is_nullable": false
                 },
@@ -269,9 +269,8 @@
                 {
                     "name": "total_amount",
                     "type": {
-                        "decimal_type": {
-                            "precision": 12,
-                            "scale": 2
+                        "numeric_type": {
+                            "precision": 12
                         }
                     },
                     "is_nullable": false
@@ -307,16 +306,18 @@
                 {
                     "name": "quantity",
                     "type": {
-                        "integer_type": {}
+                        "numeric_type": {
+                            "precision": 10,
+                            "rounding": 2
+                        }
                     },
                     "is_nullable": false
                 },
                 {
                     "name": "unit_price_at_purchase",
                     "type": {
-                        "decimal_type": {
-                            "precision": 10,
-                            "scale": 2
+                        "numeric_type": {
+                            "precision": 10
                         }
                     },
                     "is_nullable": false
@@ -352,7 +353,7 @@
                 {
                     "name": "star_rating",
                     "type": {
-                        "integer_type": {}
+                        "precision": 0
                     },
                     "is_nullable": false
                 },

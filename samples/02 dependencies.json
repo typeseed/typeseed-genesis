@@ -1,5 +1,5 @@
 {
-    "product descrioption": "This is an application that helps you manage your documents and feedback.",
+    "product_descrioption": "This is an application that helps you manage a car dealership documents and feedback.",
     "tables": [
         {
             "name": "organizations",

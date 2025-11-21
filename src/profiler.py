@@ -1,13 +1,24 @@
 import json
+import re
 from src.hierarchy import Hierarchy
 from src.llm import LLMCaller
 from src.llm.prompts import (
     get_column_descriptions_prompt,
     get_profiler_prompt,
     get_static_data_generation_prompt,
+    heal_dynamic_response_table,
 )
 from src.logging_config import get_logger
-from src.models import Configuration, StringType
+from src.models import (
+    ColumnProfileDefinition,
+    Configuration,
+    ProfileDefinition,
+    SMOLLMProducerConfig,
+    StringType,
+    TableOptions,
+    TableProfileDefinition,
+)
+from src.utils import extract_nested_json, table_logger
 
 logger = get_logger()
 
@@ -39,40 +50,20 @@ class Profiler:
             prompt, system_prompt, temperature=0, max_tokens=3000
         ).strip()
 
-    def get_column_descriptions(self, table_name: str):
-        model_schema = self.get_schema(table_name)
-
-        SYSTEM_PROMPT = """
-You are a Contextual Column Describer. Your task is to analyze the provided database table schema and write a concise, professional, and entity-aware description for every column. You MUST use the table_name (which represents the entity) to ground the description of each column.
-You MUST return the output as a clean, continuous Markdown dash list. Do NOT include any explanatory text, greetings, code blocks, or reasoning. The response must be ONLY the dash list.
-Format: - column_name: A descriptive sentence for the column, specifically referencing the table_name entity.
-"""
-        PROMPT = f"""
-TASK:
-Analyze the provided table schema (including column names and data types/descriptions) and output a descriptive entry for every column, ensuring the table entity is incorporated into the description.
-
-Input Table Schema:
-{model_schema}
-"""
-        return self.llm.call(PROMPT, SYSTEM_PROMPT, temperature=0, max_tokens=3000)
-
     def build_profile(self):
         logger.info("Building profile...")
 
-        tables, root, statics, dependency_tree = self.hierarchy.calculate_roots()
+        tables, roots, statics, dependency_tree = self.hierarchy.calculate_roots()
 
         hierarchy = self.hierarchy.process_hierarchy(tables, dependency_tree)
 
         table_types = {}
 
+        table_options = {}
+
         for table_name in tables:
-            table = self.get_table(table_name)
-
-            logger.info(f"--------[ {table_name} ]--------")
-
             table_type = self.get_table_type(table_name)
 
-            # extract everything between ```json and ``` and convert to json
             try:
                 table_type = json.loads(table_type.split("```json")[1].split("```")[0])
             except Exception as e:
@@ -82,6 +73,9 @@ Input Table Schema:
                     "reasoning": "Error parsing table type",
                 }
 
+            logger.info(
+                f" {table_name} is {table_type['classification']} - [{table_type['confidence']}] - {table_type['reasoning']}"
+            )
             table_types[table_name] = table_type
 
         for table_name in tables:
@@ -103,7 +97,7 @@ Input Table Schema:
                 system_prompt, prompt = get_static_data_generation_prompt(
                     self.configuration.product_description,
                     table_name,
-                    table_schema,                
+                    table_schema,
                 )
 
                 column_description = self.llm.call(
@@ -121,15 +115,102 @@ Input Table Schema:
                     prompt, system_prompt, temperature=0, max_tokens=3000
                 ).strip()
 
+            column_description_json = None
+
             try:
                 column_description_json = json.loads(
                     column_description.split("```json")[1].split("```")[0]
                 )
+
             except Exception as e:
-                print(column_description)
-                column_description_json = {"error": "Error parsing column descriptions"}
+                json_object = extract_nested_json(column_description)
+                if json_object:
+                    column_description_json = json.loads(json_object)
+                else:
+                    system_prompt, prompt = heal_dynamic_response_table(
+                        column_description
+                    )
+                    column_description_json = self.llm.call(
+                        prompt, system_prompt, temperature=0, max_tokens=3000
+                    ).strip()
 
-            print(f"---- {table_name} ----")
-            print(json.dumps(column_description_json, indent=2))
-            print("--------------------------------")
+                    try:
+                        column_description_json = json.loads(
+                            column_description_json.split("```json")[1].split("```")[0]
+                        )
+                    except Exception as e:
+                        print(f"Error parsing column {table_name}: {e}")
+                        column_description_json = {
+                            "error": "Error parsing column {table_name}"
+                        }
 
+            if column_description_json:
+                table_options[table_name] = column_description_json
+
+        profile_tables = ProfileDefinition(name="default", tables={}, root=None)
+        for table_name in tables:
+            table = self.get_table(table_name)
+
+            table_type = table_types[table_name]
+
+            is_static = table_type["classification"] == "STATIC"
+
+            if is_static:
+                logger.info(f"Static table: {table_name}")
+                options = table_options[table_name]
+
+                table_profile = TableProfileDefinition(
+                    count=None,
+                    min_count=None,
+                    max_count=None,
+                    columns=None,
+                    options=[
+                        TableOptions(
+                            count=None,
+                            probability=1,
+                            values={"values": option},
+                        )
+                        for option in options
+                    ],
+                )
+
+                profile_tables.tables[table_name] = table_profile
+
+            else:
+                column_profile_definitions = {}
+                table_profile = TableProfileDefinition(
+                    count=1,
+                    min_count=None,
+                    max_count=None,
+                    columns=None,
+                    options=None,
+                )
+
+                for column in table.columns:
+                    print("++++++")
+                    print(column.name)
+                    print(type(column.type))
+                    if isinstance(column.type, StringType):
+                        print(json.dumps(table_options, indent=2))
+                        column_profile_definition = ColumnProfileDefinition(
+                            producer="smollm",
+                            config=SMOLLMProducerConfig(
+                                list=True,
+                                prompt=table_options[table_name][column.name],
+                            ),
+                        )
+
+                        column_profile_definitions[column.name] = (
+                            column_profile_definition
+                        )
+
+                table_profile.columns = column_profile_definitions
+
+                profile_tables.tables[table_name] = table_profile
+
+        logger.info(">>>>>>>>>>>>>>>")
+        logger.info(json.dumps(profile_tables.model_dump(), indent=2))
+
+        # table = self.get_table(table_name)
+        # for column in table.columns:
+        #     if isinstance(column.type, IDType):

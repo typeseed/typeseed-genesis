@@ -86,9 +86,6 @@ class NumericType(BaseModel):
     """Model for numeric type."""
 
     precision: int = Field(..., description="The precision of the numeric type")
-    rounding: Optional[int] = Field(
-        None, description="The rounding of the numeric type"
-    )
     max_value: Optional[float] = Field(
         None, description="The max value of the numeric type"
     )
@@ -226,7 +223,6 @@ class TableProfileDefinition(BaseModel):
     """Model for table profile definition."""
 
     count: Optional[int] = Field(default=None, description="The count of the table")
-    forEach: Optional[str] = Field(default=None, description="The forEach of the table")
     min_count: Optional[int] = Field(
         default=None, description="The min count of the table"
     )

@@ -86,12 +86,8 @@ class NumericType(BaseModel):
     """Model for numeric type."""
 
     precision: int = Field(..., description="The precision of the numeric type")
-    max_value: Optional[float] = Field(
-        None, description="The max value of the numeric type"
-    )
-    min_value: Optional[float] = Field(
-        None, description="The min value of the numeric type"
-    )
+    max_value: float = Field(None, description="The max value of the numeric type")
+    min_value: float = Field(None, description="The min value of the numeric type")
 
 
 class DateType(BaseModel):
@@ -130,17 +126,38 @@ class IDType(BaseModel):
     id_type: str = Field(options=["id", "uuid"])
 
 
+class IntegerType(BaseModel):
+    """Model for integer type."""
+
+    min_value: Optional[int] = Field(
+        None, description="The min value of the integer type"
+    )
+    max_value: Optional[int] = Field(
+        None, description="The max value of the integer type"
+    )
+
+
 class ColumnDefinition(BaseModel):
     """Model for column definition."""
 
     name: str = Field(..., description="The name of the column")
     is_nullable: bool = Field(..., description="Whether the column is nullable")
-    type: Union[NumericType, DateType, StringType, BooleanType, EnumType, IDType] = (
-        Field(..., description="The type of the column")
-    )
+    type: str = Field(..., description="The type of the column")
+    config: Optional[
+        Union[
+            NumericType,
+            DateType,
+            StringType,
+            IntegerType,
+            BooleanType,
+            EnumType,
+            IDType,
+        ]
+    ] = Field(default=None, description="Column configuration")
     foreign_key: Optional[str] = Field(
         None, description="The foreign key of the column"
     )
+    is_nullable: bool = Field(..., description="Whether the column is nullable")
 
 
 class TableDefinition(BaseModel):
@@ -177,9 +194,9 @@ class DateTimeProducerConfig(BaseModel):
 
 class RandomNumberProducerConfig(BaseModel):
     """Model for Random producer config."""
-
-    min: Optional[int] = Field(..., description="The min value of the random")
-    max: Optional[int] = Field(..., description="The max value of the random")
+    precision: Optional[int] = Field(..., description="The precion of value in floating point") 
+    min_value: Optional[float] = Field(..., description="The min value of the random")
+    max_value: Optional[float] = Field(..., description="The max value of the random")
 
 
 class ChoiceOption(BaseModel):
@@ -201,6 +218,9 @@ class ColumnProfileDefinition(BaseModel):
     """Model for column profile definition."""
 
     producer: str = Field(..., description="The producer of the column")
+    root_prompt: Optional[str] = Field(
+        default=None, description="The root prompt of the column"
+    )
     config: Union[
         SMOLLMProducerConfig,
         DateTimeProducerConfig,

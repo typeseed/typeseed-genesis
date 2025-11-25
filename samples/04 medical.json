@@ -1,8 +1,8 @@
 {
-    "product_description": "An e-commerce platform for selling products online. Each shop is owned by a user and sells various products to customers.",
+    "product_description": "A medical system for managing patients, providers, and medical facilities.",
     "tables": [
         {
-            "name": "shop_tiers",
+            "name": "medical_facilities",
             "columns": [
                 {
                     "name": "id",
@@ -10,25 +10,25 @@
                     "is_nullable": false
                 },
                 {
-                    "name": "tier_name",
+                    "name": "facility_name",
+                    "type": "string",
+                    "config": {
+                        "max_length": 100
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "license_number",
                     "type": "string",
                     "config": {
                         "max_length": 50
                     },
                     "is_nullable": false
-                },
-                {
-                    "name": "commission_rate",
-                    "type": "numeric",
-                    "config": {
-                        "precision": 5
-                    },
-                    "is_nullable": false
                 }
             ]
         },
         {
-            "name": "shops",
+            "name": "departments",
             "columns": [
                 {
                     "name": "id",
@@ -36,59 +36,10 @@
                     "is_nullable": false
                 },
                 {
-                    "name": "tier_id",
+                    "name": "facility_id",
                     "type": "identifier",
                     "is_nullable": false,
-                    "foreign_key": "shop_tiers.id"
-                },
-                {
-                    "name": "name",
-                    "type": "string",
-                    "config": {
-                        "max_length": 255
-                    },
-                    "is_nullable": false
-                },
-                {
-                    "name": "is_active",
-                    "type": "boolean",
-                    "is_nullable": false
-                }
-            ]
-        },
-        {
-            "name": "users",
-            "columns": [
-                {
-                    "name": "id",
-                    "type": "identifier",
-                    "is_nullable": false
-                },
-                {
-                    "name": "email",
-                    "type": "string",
-                    "config": {
-                        "max_length": 255
-                    },
-                    "is_nullable": false
-                },
-                {
-                    "name": "full_name",
-                    "type": "string",
-                    "config": {
-                        "max_length": 255
-                    },
-                    "is_nullable": true
-                }
-            ]
-        },
-        {
-            "name": "product_categories",
-            "columns": [
-                {
-                    "name": "id",
-                    "type": "identifier",
-                    "is_nullable": false
+                    "foreign_key": "medical_facilities.id"
                 },
                 {
                     "name": "name",
@@ -101,7 +52,7 @@
             ]
         },
         {
-            "name": "products",
+            "name": "patients",
             "columns": [
                 {
                     "name": "id",
@@ -109,19 +60,7 @@
                     "is_nullable": false
                 },
                 {
-                    "name": "shop_id",
-                    "type": "identifier",
-                    "is_nullable": false,
-                    "foreign_key": "shops.id"
-                },
-                {
-                    "name": "category_id",
-                    "type": "identifier",
-                    "is_nullable": false,
-                    "foreign_key": "product_categories.id"
-                },
-                {
-                    "name": "sku",
+                    "name": "mrn_number",
                     "type": "string",
                     "config": {
                         "max_length": 50
@@ -129,7 +68,7 @@
                     "is_nullable": false
                 },
                 {
-                    "name": "name",
+                    "name": "full_name",
                     "type": "string",
                     "config": {
                         "max_length": 255
@@ -137,17 +76,17 @@
                     "is_nullable": false
                 },
                 {
-                    "name": "price",
-                    "type": "numeric",
+                    "name": "date_of_birth",
+                    "type": "string",
                     "config": {
-                        "precision": 10
+                        "max_length": 10
                     },
                     "is_nullable": false
                 }
             ]
         },
         {
-            "name": "stock_inventory",
+            "name": "providers",
             "columns": [
                 {
                     "name": "id",
@@ -155,31 +94,92 @@
                     "is_nullable": false
                 },
                 {
-                    "name": "product_id",
+                    "name": "department_id",
                     "type": "identifier",
                     "is_nullable": false,
-                    "foreign_key": "products.id"
+                    "foreign_key": "departments.id"
                 },
                 {
-                    "name": "quantity_available",
-                    "type": "numeric",
+                    "name": "full_name",
+                    "type": "string",
                     "config": {
-                        "precision": 10
+                        "max_length": 255
                     },
                     "is_nullable": false
                 },
                 {
-                    "name": "warehouse_location",
+                    "name": "specialty",
                     "type": "string",
                     "config": {
-                        "max_length": 50
+                        "max_length": 100
                     },
                     "is_nullable": true
                 }
             ]
         },
         {
-            "name": "order_status_types",
+            "name": "document_categories",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "identifier",
+                    "is_nullable": false
+                },
+                {
+                    "name": "category_name",
+                    "type": "string",
+                    "config": {
+                        "max_length": 50
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "retention_period_years",
+                    "type": "numeric",
+                    "config": {
+                        "precision": 2
+                    },
+                    "is_nullable": false
+                }
+            ]
+        },
+        {
+            "name": "clinical_encounters",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "identifier",
+                    "is_nullable": false
+                },
+                {
+                    "name": "patient_id",
+                    "type": "identifier",
+                    "is_nullable": false,
+                    "foreign_key": "patients.id"
+                },
+                {
+                    "name": "provider_id",
+                    "type": "identifier",
+                    "is_nullable": false,
+                    "foreign_key": "providers.id"
+                },
+                {
+                    "name": "encounter_date",
+                    "type": "string",
+                    "config": {
+                        "max_length": 25
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "is_inpatient",
+                    "type": "boolean",
+                    "is_nullable": false
+                }
+            ]
+        },
+        {
+            "name": "document_status_types",
             "columns": [
                 {
                     "name": "id",
@@ -197,7 +197,7 @@
             ]
         },
         {
-            "name": "orders",
+            "name": "medical_documents",
             "columns": [
                 {
                     "name": "id",
@@ -205,35 +205,40 @@
                     "is_nullable": false
                 },
                 {
-                    "name": "user_id",
+                    "name": "encounter_id",
                     "type": "identifier",
                     "is_nullable": false,
-                    "foreign_key": "users.id"
+                    "foreign_key": "clinical_encounters.id"
                 },
                 {
-                    "name": "shop_id",
+                    "name": "category_id",
                     "type": "identifier",
                     "is_nullable": false,
-                    "foreign_key": "shops.id"
+                    "foreign_key": "document_categories.id"
                 },
                 {
                     "name": "current_status_id",
                     "type": "identifier",
                     "is_nullable": false,
-                    "foreign_key": "order_status_types.id"
+                    "foreign_key": "document_status_types.id"
                 },
                 {
-                    "name": "total_amount",
-                    "type": "numeric",
+                    "name": "title",
+                    "type": "string",
                     "config": {
-                        "precision": 12
+                        "max_length": 255
                     },
+                    "is_nullable": false
+                },
+                {
+                    "name": "is_confidential",
+                    "type": "boolean",
                     "is_nullable": false
                 }
             ]
         },
         {
-            "name": "order_line_items",
+            "name": "document_files",
             "columns": [
                 {
                     "name": "id",
@@ -241,38 +246,39 @@
                     "is_nullable": false
                 },
                 {
-                    "name": "order_id",
+                    "name": "document_id",
                     "type": "identifier",
                     "is_nullable": false,
-                    "foreign_key": "orders.id"
+                    "foreign_key": "medical_documents.id"
                 },
                 {
-                    "name": "product_id",
-                    "type": "identifier",
-                    "is_nullable": false,
-                    "foreign_key": "products.id"
-                },
-                {
-                    "name": "quantity",
-                    "type": "numeric",
+                    "name": "storage_path",
+                    "type": "string",
                     "config": {
-                        "precision": 10,
-                        "rounding": 2
+                        "max_length": 512
                     },
                     "is_nullable": false
                 },
                 {
-                    "name": "unit_price_at_purchase",
+                    "name": "file_size_kb",
                     "type": "numeric",
                     "config": {
                         "precision": 10
                     },
                     "is_nullable": false
+                },
+                {
+                    "name": "version_number",
+                    "type": "numeric",
+                    "config": {
+                        "precision": 3
+                    },
+                    "is_nullable": false
                 }
             ]
         },
         {
-            "name": "product_evaluations",
+            "name": "access_audit_logs",
             "columns": [
                 {
                     "name": "id",
@@ -280,32 +286,32 @@
                     "is_nullable": false
                 },
                 {
-                    "name": "product_id",
+                    "name": "document_id",
                     "type": "identifier",
                     "is_nullable": false,
-                    "foreign_key": "products.id"
+                    "foreign_key": "medical_documents.id"
                 },
                 {
-                    "name": "user_id",
+                    "name": "accessed_by_provider_id",
                     "type": "identifier",
-                    "is_nullable": false,
-                    "foreign_key": "users.id"
+                    "is_nullable": true,
+                    "foreign_key": "providers.id"
                 },
                 {
-                    "name": "star_rating",
-                    "type": "numeric",
+                    "name": "action_type",
+                    "type": "string",
                     "config": {
-                        "precision": 0
+                        "max_length": 50
                     },
                     "is_nullable": false
                 },
                 {
-                    "name": "comment_text",
+                    "name": "timestamp_utc",
                     "type": "string",
                     "config": {
-                        "max_length": 1000
+                        "max_length": 30
                     },
-                    "is_nullable": true
+                    "is_nullable": false
                 }
             ]
         }

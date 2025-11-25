@@ -119,18 +119,20 @@ If the column is not a foreign key, look at the `name` and `type` to generate a 
 * **Name hints:**
     * `first_name` -> "Generate a first name".
     * `created_at` / `timestamp` -> "Generate a datetime within the last year".
-    * `price` / `amount` -> "Generate a positive decimal with 2 precision".
+    * `price` / `amount` -> "Generate a positive decimal with 2 precision with values between 1.00 and 100.00".
 * **Generic Fallbacks:**
     * `string_type` -> "Generate a random string max length X".
-    * `integer_type` -> "Generate a random integer".
+    * `integer_type` -> "Generate a random integer between 0 an 10".
     * `boolean_type` -> "Randomly select true or false".
 * **Local Dependencies:**
     * `email` -> "Generate a realistic email address for the user {{first_name}} {{last_name}}".
     * `profile` -> "Generate a profile for the user {{first_name}} {{last_name}} part of {{organizations.name}} of type {{organizations.type}}".
 
 **4. Contextual Inference**
-If the column is dependent on other fields reference them using `{{column}}` or `{{table.column}}` syntax. Always prefer to use the `{{table.column}}` syntax if the column is dependent on a column from another table instead of referencing the local {{table_id}} syntax.
-Avoid referencing columns that are ids of other tables. Never reference the properties from the schema. Ignore the min, max, precision, scale, etc. properties.
+* **Referencing Columns:** If the column is dependent on other fields reference them using `{{column}}` or `{{table.column}}` syntax. Always prefer to use the `{{table.column}}` syntax if the column is dependent on a column from another table instead of referencing the local {{table_id}} syntax.
+* **Relationships:** When using references to columns or other tables consider using ones that have direct relationshipts (e.g. rating score, distance, etc.) or categories (e.g. product categories, etc.) istead of individual user to allow the prompt to be more generic and not specific to a single user.
+* **Avoid IDs:** Avoid referencing columns that are ids of other tables. Never reference the properties from the schema. Ignore the min, max, precision, scale, etc. properties.
+* **Avoid Self-Reference:** DO NOT reference a column to itself.
 
 **5. Avoid Self-Reference**
 DO NOT reference a column to itself.
@@ -151,18 +153,18 @@ Return ONLY valid JSON. No markdown formatting.
   "target_table": {
     "name": "comments",
     "columns": [
-      { "name": "id", "type": { "id_type": "id" }, "is_nullable": false },
-      { "name": "comment", "type": { "string_type": { "max_length": 255 } } },
-      { "name": "rating", "type": { "integer_type": { "min_value": 1, "max_value": 5 } } },
-      { "name": "product_id", "type": { "id_type": "id" }, "is_nullable": false }
+      { "name": "id", "type": "identifier", "is_nullable": false },
+      { "name": "comment", "type": "string", "config": { "max_length": 255 } },
+      { "name": "rating", "type": "numeric", "config": { "min_value": 1, "max_value": 5 } },
+      { "name": "product_id", "type": "identifier", "is_nullable": false, "foreign_key": "products.id" }
     ]
   },
   "dependencies": [ {
     "name": "products",
     "columns": [
-      { "name": "id", "type": { "id_type": "id" }, "is_nullable": false },
-      { "name": "name", "type": { "string_type": { "max_length": 255 } } },
-      { "name": "description", "type": { "string_type": { "max_length": 255 } } }
+      { "name": "id", "type": "identifier", "is_nullable": false },
+      { "name": "name", "type": "string", "config": { "max_length": 255 } } },
+      { "name": "description", "type": "string", "config": { "max_length": 255 } } }
     ]
   }]
 }
@@ -195,6 +197,70 @@ Return ONLY valid JSON. No markdown formatting.
     return SYSTEM_PROMPT, PROMPT
 
 
+def get_configuration_for_column(generating_prompt: str, model_schema_json: str):
+  SYSTEM_PROMPT = """You are an expert data engineer. Your task is to generate a configuration object based on the generating prompt and json schema
+
+### INPUT
+You will receive the following information as input;
+1. `Generating Prompt`: the guide to configure the configuration
+2. `Model JSON Schema`: the schema for the configuration object
+
+### Ouput
+1. When generating the prompt stick **ONLY** to the properties that are described in the schema and **DO NOT** generate others
+2. **DO NOT** return back the schema with values and return only the configuration object containing the properties and values
+3. Output **ONLY** the configuration object JSON in the nested in the ```json ```
+
+### Example
+
+**Input:**
+{
+    "description": "Model for numeric type.",
+    "properties": {
+        "precision": {
+            "description": "The precision of the numeric type",
+            "title": "Precision",
+            "type": "integer"
+        },
+        "max_value": {
+            "default": 10,
+            "description": "The max value of the numeric type",
+            "title": "Max Value",
+            "type": "number"
+        },
+        "min_value": {
+            "default": 1,
+            "description": "The min value of the numeric type",
+            "title": "Min Value",
+            "type": "number"
+        }
+    },
+    "required": [
+        "precision"
+    ],
+    "title": "NumericType",
+    "type": "object"
+}
+
+**Output:**
+```json
+{
+    "precision": 2,
+    "min_value": 10,
+    "max_value": 1000
+}
+```
+"""
+
+  PROMPT = f"""
+**Model JSON Schema:**
+{model_schema_json}
+
+**Generating prompt:**
+{generating_prompt}
+
+"""
+  return SYSTEM_PROMPT, PROMPT
+
 def get_static_data_generation_prompt(
     product_description: str, table_name: str, table_schema: str
 ):
@@ -207,7 +273,7 @@ You will receive a JSON object representing a table schema, containing:
 2.  `columns`: A list of definitions including name, type (`id_type`, `string_type`, `decimal_type`, etc.), and constraints.
 
 ### OUTPUT
-Return **ONLY** a valid JSON Array containing 10 to 20 objects.
+Return **ONLY** a valid JSON Array containing items for the """+table_name+""" table values.
 * Each object represents a row.
 * Keys must match the schema column names exactly.
 * Values must be realistic, high-quality business data appropriate for the table name.
@@ -231,9 +297,9 @@ Return **ONLY** a valid JSON Array containing 10 to 20 objects.
 {
   "name": "shipping_methods",
   "columns": [
-    {"name": "id", "type": {"id_type": "id"}},
-    {"name": "method_name", "type": {"string_type": {"max_length": 50}}},
-    {"name": "cost", "type": {"decimal_type": {"precision": 5, "scale": 2}}}
+    {"name": "id", "type": "identifier"},
+    {"name": "method_name", "type": "string", "config": {"max_length": 50}},
+    {"name": "cost", "type": "numeric", "config": {"precision": 2, "min": 0, "max": 100}}}
   ]
 }
 

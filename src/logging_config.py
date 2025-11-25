@@ -10,13 +10,12 @@ import logging.handlers
 import sys
 from pathlib import Path
 from typing import Optional
-from datetime import datetime
 
 
 # Default log format
-DEFAULT_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-DETAILED_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-SIMPLE_FORMAT = "%(levelname)s - %(message)s"
+DEFAULT_FORMAT = "%(levelname)s - %(message)s"
+DETAILED_FORMAT = "%(levelname)s - %(message)s"
+SIMPLE_FORMAT = "%(message)s"
 
 
 class ColoredFormatter(logging.Formatter):

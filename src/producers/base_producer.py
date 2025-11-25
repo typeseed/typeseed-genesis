@@ -5,7 +5,9 @@ from typing import Any, Callable
 from src.models import ColumnDefinition, ColumnProfileDefinition, TableDefinition, TableProfileDefinition
 
 
+from src.logging_config import get_logger
 
+logger = get_logger()
 
 class BaseProducer(ABC):
     """Base producer class."""
@@ -20,18 +22,20 @@ class BaseProducer(ABC):
         for placeholder in placeholders:
             placeholder_split = placeholder[2:-2].split(".")
 
+            try:
+                if len(placeholder_split) == 1:
+                    result = result.replace(
+                        placeholder,
+                        str(context[context["__table_name__"]][placeholder_split[0].strip()]),
+                    )
 
-            if len(placeholder_split) == 1:
-                result = result.replace(
-                    placeholder,
-                    str(context[context["__table_name__"]][placeholder_split[0]]),
-                )
-
-            elif len(placeholder_split) == 2:
-                result = result.replace(
-                    placeholder,
-                    str(context[placeholder_split[0]][placeholder_split[1]]),
-                )
+                elif len(placeholder_split) == 2:
+                    result = result.replace(
+                        placeholder,
+                        str(context[placeholder_split[0].strip()][placeholder_split[1].strip()]),
+                    )
+            except:
+                logger.error(f"Placeholder error for {placeholder}")
 
         return result
 

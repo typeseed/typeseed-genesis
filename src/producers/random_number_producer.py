@@ -1,18 +1,16 @@
-import uuid
+import random
 from src.models import (
     ColumnDefinition,
     ColumnProfileDefinition,
+    RandomNumberProducerConfig,
     TableDefinition,
     TableProfileDefinition,
 )
 from src.producers.base_producer import BaseProducer
 
 
-class IdentifierProducer(BaseProducer):
+class RandomNumberProducer(BaseProducer):
     """Identifier producer class."""
-
-    def __init__(self):
-        self.id_counter = 0
 
     def generate(
         self,
@@ -22,10 +20,11 @@ class IdentifierProducer(BaseProducer):
         column_profile_definition: ColumnProfileDefinition,
         context: dict,
     ) -> str:
-        if not column_definition.config or column_definition.config.id_type == "id":
-            self.id_counter += 1
-            return self.id_counter
-        elif column_definition.config.id_type == "uuid":
-            return str(uuid.uuid4())
-        else:
-            raise ValueError(f"Invalid ID type: {column_definition.type.id_type}")
+        config: RandomNumberProducerConfig = column_profile_definition.config
+
+        min = config.min_value if config.min_value else 0
+        max = config.min_value if config.min_value else 1
+        precision = config.precision if config.precision else 2
+
+
+        return min + (random.random() * (max-min))

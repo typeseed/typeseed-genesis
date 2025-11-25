@@ -6,19 +6,24 @@ from src.llm.prompts import (
     get_column_descriptions_prompt,
     get_profiler_prompt,
     get_static_data_generation_prompt,
+    get_configuration_for_column,
     heal_dynamic_response_table,
 )
 from src.logging_config import get_logger
 from src.models import (
     ColumnProfileDefinition,
     Configuration,
+    IDType,
+    IntegerType,
+    NumericType,
     ProfileDefinition,
+    RandomNumberProducerConfig,
     SMOLLMProducerConfig,
     StringType,
     TableOptions,
     TableProfileDefinition,
 )
-from src.utils import extract_nested_json, table_logger
+from src.utils import extract_nested_json, table_logger, bcolors
 
 logger = get_logger()
 
@@ -51,16 +56,25 @@ class Profiler:
         ).strip()
 
     def build_profile(self):
-        logger.info("Building profile...")
+        logger.info("-" * 60)
+        logger.info("\033[94mBuilding profile...\033[0m")
 
         tables, roots, statics, dependency_tree = self.hierarchy.calculate_roots()
 
         hierarchy = self.hierarchy.process_hierarchy(tables, dependency_tree)
 
+        for hierarchy_table in hierarchy:
+            dependencies_str = ", ".join(hierarchy[hierarchy_table]["depends_on"])
+            logger.info(
+                f"{bcolors.HEADER} * {hierarchy_table} ({len(hierarchy[hierarchy_table]['depends_on'])}){bcolors.ENDC} {bcolors.OKCYAN}{': [' + dependencies_str + ' ]' if len(dependencies_str) > 0 else ''}{bcolors.ENDC}"
+            )
+
         table_types = {}
 
         table_options = {}
 
+        logger.info("-" * 60)
+        logger.info("\033[94mEvaluating if tables are static or dynamic...\033[0m")
         for table_name in tables:
             table_type = self.get_table_type(table_name)
 
@@ -72,12 +86,14 @@ class Profiler:
                     "confidence": 0.0,
                     "reasoning": "Error parsing table type",
                 }
-
             logger.info(
-                f" {table_name} is {table_type['classification']} - [{table_type['confidence']}] - {table_type['reasoning']}"
+                f"{bcolors.HEADER} + {table_name.center(30)}[ {table_type['classification'].center(10)} ] {bcolors.ENDC}"
             )
+
             table_types[table_name] = table_type
 
+        logger.info("-" * 60)
+        logger.info(f"{bcolors.OKBLUE}Generating column descriptions ...{bcolors.ENDC}")
         for table_name in tables:
             table_schema = self.get_schema(table_name)
             dependent_tables = hierarchy[table_name]["depends_on"]
@@ -144,8 +160,29 @@ class Profiler:
                             "error": "Error parsing column {table_name}"
                         }
 
+            if isinstance(column_description_json, list):
+                table_logger(column_description_json, table_name)
+            else:
+                logger.info("-" * 80)
+                logger.info(
+                    f"{bcolors.HEADER} {table_name} generation prompts... {bcolors.ENDC}"
+                )
+                for key, value in column_description_json.items():
+                    replace_regex = r"(\{\{[a-zA-Z0-9_. ]+\}\})"
+                    print_value = re.sub(
+                        replace_regex,
+                        rf"{bcolors.OKGREEN}$1{bcolors.ENDC}{bcolors.WARNING}",
+                        value,
+                    )
+                    logger.info(
+                        f"{bcolors.HEADER} | {key[:20].center(20)}{bcolors.ENDC} | {bcolors.WARNING}{value}{bcolors.ENDC} "
+                    )
+                logger.info("-" * 80)
             if column_description_json:
                 table_options[table_name] = column_description_json
+
+        logger.info("#" * 60)
+        logger.info(f"{bcolors.OKBLUE}Completing profile ...{bcolors.ENDC}")
 
         profile_tables = ProfileDefinition(name="default", tables={}, root=None)
         for table_name in tables:
@@ -187,30 +224,60 @@ class Profiler:
                 )
 
                 for column in table.columns:
-                    print("++++++")
-                    print(column.name)
-                    print(type(column.type))
-                    if isinstance(column.type, StringType):
-                        print(json.dumps(table_options, indent=2))
-                        column_profile_definition = ColumnProfileDefinition(
-                            producer="smollm",
-                            config=SMOLLMProducerConfig(
-                                list=True,
-                                prompt=table_options[table_name][column.name],
-                            ),
-                        )
+                    column_profile_definition = None
 
-                        column_profile_definitions[column.name] = (
-                            column_profile_definition
+                    if not column.foreign_key:
+                        if column.type == "numeric":
+                            schema_json = NumericType.model_json_schema()
+                            system_prompt, prompt = get_configuration_for_column(
+                                table_options[table_name][column.name],
+                                schema_json,
+                            )
+                            column_configuration_output = self.llm.call(
+                                prompt, system_prompt, temperature=0, max_tokens=3000
+                            ).strip()
+                            try:
+                                column_configuration_json = json.loads(
+                                    column_configuration_output.split("```json")[
+                                        1
+                                    ].split("```")[0]
+                                )
+
+                                column_profile_definition = ColumnProfileDefinition(
+                                    producer="numeric",
+                                    config=RandomNumberProducerConfig(
+                                        **column_configuration_json
+                                    ),
+                                )
+
+                            except Exception as e:
+                                logger.error(
+                                    f"Unable to generate the configuration for {table_name}.{column.name}"
+                                )
+
+                        elif column.type == "string":
+                            column_profile_definition = ColumnProfileDefinition(
+                                producer="smollm",
+                                config=SMOLLMProducerConfig(
+                                    list=True,
+                                    prompt=table_options[table_name][column.name],
+                                ),
+                            )
+
+                    if not column_profile_definition:
+                        logger.error(
+                            f"No column profile definition found for {column.name}"
                         )
+                        continue
+
+                    column_profile_definition.root_prompt = table_options[table_name][
+                        column.name
+                    ]
+
+                    column_profile_definitions[column.name] = column_profile_definition
 
                 table_profile.columns = column_profile_definitions
 
                 profile_tables.tables[table_name] = table_profile
 
-        logger.info(">>>>>>>>>>>>>>>")
-        logger.info(json.dumps(profile_tables.model_dump(), indent=2))
-
-        # table = self.get_table(table_name)
-        # for column in table.columns:
-        #     if isinstance(column.type, IDType):
+        return profile_tables

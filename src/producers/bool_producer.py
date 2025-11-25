@@ -1,4 +1,4 @@
-import uuid
+import random
 from src.models import (
     ColumnDefinition,
     ColumnProfileDefinition,
@@ -8,11 +8,8 @@ from src.models import (
 from src.producers.base_producer import BaseProducer
 
 
-class IdentifierProducer(BaseProducer):
+class BoolProducer(BaseProducer):
     """Identifier producer class."""
-
-    def __init__(self):
-        self.id_counter = 0
 
     def generate(
         self,
@@ -22,10 +19,4 @@ class IdentifierProducer(BaseProducer):
         column_profile_definition: ColumnProfileDefinition,
         context: dict,
     ) -> str:
-        if not column_definition.config or column_definition.config.id_type == "id":
-            self.id_counter += 1
-            return self.id_counter
-        elif column_definition.config.id_type == "uuid":
-            return str(uuid.uuid4())
-        else:
-            raise ValueError(f"Invalid ID type: {column_definition.type.id_type}")
+        return random.random() < 0.5

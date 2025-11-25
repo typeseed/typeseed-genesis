@@ -137,13 +137,14 @@ Examples:
         # Process data
         logger.info("Starting data generation...")
 
-        # generator = Generator()
-        # generator.generate(config, "default")
-
+       
         hierarchy = Hierarchy(config)
         profiler = Profiler(config, hierarchy)
 
-        profiler.build_profile()
+        profile = profiler.build_profile()
+
+        generator = Generator()
+        generator.generate(config, profile)
 
         results = {}
 

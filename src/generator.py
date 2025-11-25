@@ -7,13 +7,14 @@ from src.models import (
     ColumnDefinition,
     ColumnProfileDefinition,
     Configuration,
+    ProfileDefinition,
     TableDefinition,
     TableProfileDefinition,
 )
 from src.logging_config import get_logger
 from src.producers.options_producer import OptionsProducer
 from src.producers.producer_factory import ProducerFactory
-
+from src.utils import extract_nested_json, table_logger, bcolors
 logger = get_logger()
 
 
@@ -75,6 +76,8 @@ class Generator:
                 )
             except Exception as e:
                 logger.debug(json.dumps(context, indent=2))
+                logger.debug(column)
+                logger.debug(column_profile_configuration.model_dump_json())
                 raise e
             row[column.name] = value
             context[table_definition.name] = row
@@ -95,6 +98,9 @@ class Generator:
     def generate_entity(
         self, hierarchy: dict, table_name: str, context: dict, traceback: list = []
     ):
+
+        logger.info(f"{bcolors.OKBLUE}---{table_name.center(40)}---{bcolors.ENDC}")
+
         table_definition, table_profile_configuration = self.get_table_configuration(
             table_name
         )
@@ -149,29 +155,21 @@ class Generator:
                         continue
                     self.generate_entity(hierarchy, key, context, local_traceback)
 
-    def generate(self, configuration: Configuration, profile_name: str = "default"):
+    def generate(
+        self, configuration: Configuration, selected_profile: ProfileDefinition
+    ):
+
+        logger.info(f"{bcolors.BOLD}{bcolors.HEADER} Started Generation ... {bcolors.ENDC}")
         self.configuration = configuration
-
-        selected_profile = next(
-            (
-                profile
-                for profile in self.configuration.profiles
-                if profile.name == profile_name
-            ),
-            None,
-        )
-        if not selected_profile:
-            raise ValueError(f"Profile {profile_name} not found")
-
         self.profile = selected_profile
+
 
         hierarchy = Hierarchy(self.configuration)
         tables, roots, statics, dependency_tree = hierarchy.calculate_roots()
         hierarchy = hierarchy.process_hierarchy(tables, dependency_tree)
 
-
         context = {}
 
-        self.generate_entity(hierarchy, "organizations", context, [])
+        self.generate_entity(hierarchy, "medical_facilities", context, [])
 
         print(json.dumps(context["__tables__"], indent=2))

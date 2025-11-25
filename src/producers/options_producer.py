@@ -47,5 +47,6 @@ class OptionsProducer(BaseProducer):
             filtered_list = [option for option in table_profile_configuration.options if option.count is None]  
             print(f"Filtered list: {filtered_list}")  
             selected_option = random.choices(filtered_list, weights=[option.probability if option.probability else 1 for option in filtered_list], k=1)[0].values
-
+            if "values" in selected_option:
+                selected_option = selected_option["values"]
         return selected_option, False

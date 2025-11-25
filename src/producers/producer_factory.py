@@ -9,8 +9,10 @@ from src.models import (
     TableProfileDefinition,
 )
 from src.producers.base_producer import BaseProducer
+from src.producers.bool_producer import BoolProducer
 from src.producers.identifier_producer import IdentifierProducer
 from src.producers.choice_producer import ChoiceProducer
+from src.producers.random_number_producer import RandomNumberProducer
 from src.producers.smollm_producer import SMOLLMProducer
 from src.producers.fk_producer import FKProducer
 from src.producers.options_producer import OptionsProducer
@@ -30,6 +32,8 @@ class ProducerFactory:
             "smollm": SMOLLMProducer,
             "fk": FKProducer,
             "options": OptionsProducer,
+            "bool": BoolProducer,
+            "numeric": RandomNumberProducer
         }
 
     def register_producer_type(self, name: str, producer_class: Type[BaseProducer]):
@@ -69,14 +73,21 @@ class ProducerFactory:
         """Create a new producer based on column definition and profile."""
         # Check for ID type
 
-
         if column_definition.foreign_key:
             logger.debug(f"Creating FKProducer for {key}")
             return self._producer_types["fk"]()
 
-        if isinstance(column_definition.type, IDType):
+        if column_definition.type == "identifier":
             logger.debug(f"Creating IdentifierProducer for {key}")
             return self._producer_types["identifier"]()
+
+        if column_definition.type == "numeric":
+            logger.debug(f"Creating Numeric producer for {key}")
+            return self._producer_types["numeric"]()
+
+        if column_definition.type == "boolean":
+            logger.debug(f"Creating Bool producer for {key}")
+            return self._producer_types["bool"]()
 
         if profile_configuration and isinstance(
             profile_configuration.config, ChoiceProducerConfig
@@ -90,6 +101,8 @@ class ProducerFactory:
             logger.debug(f"Creating SMOLLMProducer for {key}")
             return self._producer_types["smollm"]()
 
+        logger.debug(f"No suitable producer found for {key}")
+        logger.debug(column_definition.model_dump_json())
         raise ValueError(f"No suitable producer found for {key}")
 
     def clear_cache(self):

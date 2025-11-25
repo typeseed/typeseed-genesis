@@ -1,5 +1,6 @@
 import uuid
 import re
+from src.llm import LLMCaller
 from src.models import (
     ColumnDefinition,
     ColumnProfileDefinition,
@@ -9,15 +10,10 @@ from src.models import (
 from src.producers.base_producer import BaseProducer
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-# checkpoint = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
-checkpoint = "Qwen/Qwen2.5-3B-Instruct"
-device = "cpu"  # for GPU usage or "cpu" for CPU usage
+from src.logging_config import get_logger
 
-# model = AutoModelForCausalLM.from_pretrained(checkpoint).to(device)
-# tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+logger = get_logger()
 
-model = None
-tokenizer = None
 
 class SMOLLMProducer(BaseProducer):
     """Identifier producer class."""
@@ -30,6 +26,7 @@ class SMOLLMProducer(BaseProducer):
         column_profile_definition: ColumnProfileDefinition,
         context: dict,
     ) -> str:
+        self.llm = LLMCaller(local=True)
         prompt = self.replace_placeholders(
             column_profile_definition.config.prompt, context
         )
@@ -51,12 +48,7 @@ class SMOLLMProducer(BaseProducer):
             if options_key not in context["__options__"]:
                 context["__options__"][options_key] = []
 
-            if len(context["__options__"][options_key]) == 0:
-                messages = [
-                    {
-                        "role": "system",
-                        "content": """
-You are a dedicated list generation engine. Your sole function is to accept a user description of an entity, concept, or group and output a strictly formatted numbered list of items associated with that description.
+                SYSTEM_PROMPT = """You are a mock data generator that generates mock data for testing purposes. Your sole task is to generate multiple options for a specific entity based on a user prompt.
 
 ## Guidelines:
 1. Analyze the user's input to identify the core entity and the relevant items to list.
@@ -75,62 +67,34 @@ Output:
 5. Milk
 6. Butter
 7. Eggs
-""",
-                    }
-                ]
-                messages.append(
-                    {
-                        "role": "user",
-                        "content": f"""
-**User Input:** {prompt}
-""",
-                    }
-                )
+"""
+                PROMPT = f"""**User Input:** {prompt}"""
 
-                input_text = tokenizer.apply_chat_template(messages, tokenize=False)
-                inputs = tokenizer(input_text, return_tensors="pt").to(device)
-                outputs = model.generate(
-                    **inputs,
-                    temperature=0.8,
-                    top_p=0.9,
-                    do_sample=True,
-                    max_new_tokens=256,
-                )
-
-                output_only_answer = outputs[0][len(inputs.input_ids[0]) :]
-
-                output = tokenizer.decode(output_only_answer, skip_special_tokens=True)
+                output = self.llm.call(
+                    PROMPT, SYSTEM_PROMPT, temperature=0, max_tokens=3000
+                ).strip()
 
                 list_of_options = output.split("\n")[1:]
 
                 digit_regex = r"^\d+\."
-                list_of_options = [re.sub(digit_regex, "", option).strip() for option in list_of_options]
-
+                list_of_options = [
+                    re.sub(digit_regex, "", option).strip()
+                    for option in list_of_options
+                ]
 
                 # remove empty strings
                 list_of_options = [
                     option for option in list_of_options if option.strip()
                 ]
 
-                print("--------------------------------")
-                print(list_of_options)
-                print("--------------------------------")
-
                 context["__options__"][options_key] = list_of_options
 
             option = context["__options__"][options_key].pop()
 
-            print("................................")
-            print(option)
-            print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-
             return option
         else:
-            messages = [
-                {
-                    "role": "system",
-                    "content": """
-You are a specialized Deterministic, Constrained Value Generator. Your sole, immutable function is to create a single, novel, maximally short, and unique value for the data type specified by the user.
+            SYSTEM_PROMPT = """
+You are a specialized Deterministic, Constrained Value Generator for mock data. Your sole, immutable function is to create a single, novel, maximally short, and unique value for the data type specified by the user.
 
 **CRITICAL RULES & CONSTRAINTS:**
 1.  **Output Format:** Must be a single, unformatted string value.
@@ -140,35 +104,15 @@ You are a specialized Deterministic, Constrained Value Generator. Your sole, imm
 5.  **Termination:** Stop immediately after the value is generated.
 6.  **Output Type:** Do not generate code, documentation, guides or data formats.
 
-""",
-                }
-            ]
-            messages.append(
-                {
-                    "role": "user",
-                    "content": f"""
-Generate a unique value for the following prompt:
+"""
+            PROMPT = (
+                f"""Generate a unique value for the following prompt:
 {prompt}
 """,
-                }
             )
-
-        input_text = tokenizer.apply_chat_template(messages, tokenize=False)
-        inputs = tokenizer(input_text, return_tensors="pt").to(device)
-        outputs = model.generate(
-            **inputs,
-            temperature=0.8,
-            top_p=0.9,
-            do_sample=True,
-            max_new_tokens=256,
-        )
-
-        output_only_answer = outputs[0][len(inputs.input_ids[0]) :]
-
-        output = tokenizer.decode(output_only_answer, skip_special_tokens=True)
-
-        # output anything after first line
-        output = "\n".join(output.split("\n")[1:])
+        output = self.llm.call(
+            PROMPT, SYSTEM_PROMPT, temperature=0, max_tokens=3000
+        ).strip()
 
         print("--------------------------------")
         print(output)

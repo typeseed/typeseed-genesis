@@ -33,7 +33,7 @@ class Profiler:
         self.hierarchy = hierarchy
         self.configuration = configuration
 
-        self.llm = LLMCaller(local=True)
+        self.llm = LLMCaller(local=False)
 
     def get_table(self, table_name: str):
         return next(
@@ -119,6 +119,9 @@ class Profiler:
                 column_description = self.llm.call(
                     prompt, system_prompt, temperature=0, max_tokens=6000
                 ).strip()
+                print("########################################################")
+                print(column_description)
+                print("########################################################")
             else:
                 system_prompt, prompt = get_column_descriptions_prompt(
                     self.configuration.product_description,
@@ -134,32 +137,15 @@ class Profiler:
             column_description_json = None
 
             try:
-                column_description_json = json.loads(
-                    column_description.split("```json")[1].split("```")[0]
-                )
-
+                column_description_json = extract_nested_json(column_description, True)
             except Exception as e:
-                json_object = extract_nested_json(column_description)
-                if json_object:
-                    column_description_json = json.loads(json_object)
-                else:
-                    system_prompt, prompt = heal_dynamic_response_table(
-                        column_description
-                    )
-                    column_description_json = self.llm.call(
-                        prompt, system_prompt, temperature=0, max_tokens=3000
-                    ).strip()
-
-                    try:
-                        column_description_json = json.loads(
-                            column_description_json.split("```json")[1].split("```")[0]
-                        )
-                    except Exception as e:
-                        print(f"Error parsing column {table_name}: {e}")
-                        column_description_json = {
-                            "error": "Error parsing column {table_name}"
-                        }
-
+                print(f"Error parsing column {table_name}: {e}")
+                column_description_json = {
+                    "error": "Error parsing column {table_name}"
+                }
+            print("2#######################################################")
+            print(column_description_json)
+            print("########################################################")
             if isinstance(column_description_json, list):
                 table_logger(column_description_json, table_name)
             else:
@@ -169,13 +155,9 @@ class Profiler:
                 )
                 for key, value in column_description_json.items():
                     replace_regex = r"(\{\{[a-zA-Z0-9_. ]+\}\})"
-                    print_value = re.sub(
-                        replace_regex,
-                        rf"{bcolors.OKGREEN}$1{bcolors.ENDC}{bcolors.WARNING}",
-                        value,
-                    )
+                    print_value = str(value).replace(replace_regex, rf"{bcolors.OKGREEN}$1{bcolors.ENDC}{bcolors.WARNING}")
                     logger.info(
-                        f"{bcolors.HEADER} | {key[:20].center(20)}{bcolors.ENDC} | {bcolors.WARNING}{value}{bcolors.ENDC} "
+                        f"{bcolors.HEADER} | {key[:20].center(20)}{bcolors.ENDC} | {bcolors.WARNING}{print_value}{bcolors.ENDC} "
                     )
                 logger.info("-" * 80)
             if column_description_json:
@@ -196,6 +178,10 @@ class Profiler:
                 logger.info(f"Static table: {table_name}")
                 options = table_options[table_name]
 
+                print("########################################################")
+                print(options)
+                print("########################################################")
+
                 table_profile = TableProfileDefinition(
                     count=None,
                     min_count=None,
@@ -215,8 +201,11 @@ class Profiler:
 
             else:
                 column_profile_definitions = {}
+
+                count = 1
+                
                 table_profile = TableProfileDefinition(
-                    count=1,
+                    count=count ,
                     min_count=None,
                     max_count=None,
                     columns=None,
@@ -237,11 +226,7 @@ class Profiler:
                                 prompt, system_prompt, temperature=0, max_tokens=3000
                             ).strip()
                             try:
-                                column_configuration_json = json.loads(
-                                    column_configuration_output.split("```json")[
-                                        1
-                                    ].split("```")[0]
-                                )
+                                column_configuration_json = extract_nested_json(column_configuration_output, True)
 
                                 column_profile_definition = ColumnProfileDefinition(
                                     producer="numeric",
@@ -254,6 +239,8 @@ class Profiler:
                                 logger.error(
                                     f"Unable to generate the configuration for {table_name}.{column.name}"
                                 )
+                                logger.error(column_configuration_json)
+                                raise e
 
                         elif column.type == "string":
                             column_profile_definition = ColumnProfileDefinition(
@@ -279,5 +266,10 @@ class Profiler:
                 table_profile.columns = column_profile_definitions
 
                 profile_tables.tables[table_name] = table_profile
+
+
+                ## dump profile json to a local file `temp-profile.json`
+        with open("temp-profile.json", "w") as f:
+            json.dump(profile_tables.model_dump(), f, indent=2)
 
         return profile_tables

@@ -75,9 +75,9 @@ class Generator:
                     context,
                 )
             except Exception as e:
-                logger.debug(json.dumps(context, indent=2))
-                logger.debug(column)
-                logger.debug(column_profile_configuration.model_dump_json())
+                # logger.debug(json.dumps(context, indent=2))
+                logger.error(f"Error generating data for column: {column.name}")
+                # logger.debug(column_profile_configuration.model_dump_json())
                 raise e
             row[column.name] = value
             context[table_definition.name] = row
@@ -173,3 +173,5 @@ class Generator:
         self.generate_entity(hierarchy, "medical_facilities", context, [])
 
         print(json.dumps(context["__tables__"], indent=2))
+
+        return context["__tables__"]

@@ -45,7 +45,7 @@ class SMOLLMProducer(BaseProducer):
             if "__options__" not in context:
                 context["__options__"] = {}
 
-            if options_key not in context["__options__"]:
+            if options_key not in context["__options__"] or len(context["__options__"][options_key]) == 0:
                 context["__options__"][options_key] = []
 
                 SYSTEM_PROMPT = """You are a mock data generator that generates mock data for testing purposes. Your sole task is to generate multiple options for a specific entity based on a user prompt.
@@ -73,6 +73,7 @@ Output:
                 output = self.llm.call(
                     PROMPT, SYSTEM_PROMPT, temperature=0, max_tokens=3000
                 ).strip()
+
 
                 list_of_options = output.split("\n")[1:]
 

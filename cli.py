@@ -12,6 +12,7 @@ from src.hierarchy import Hierarchy
 from src.models import Configuration
 from src.logging_config import init_default_logger, get_logger, log_performance
 from src.profiler import Profiler
+from src.utils import table_logger
 
 
 @log_performance
@@ -144,20 +145,23 @@ Examples:
         profile = profiler.build_profile()
 
         generator = Generator()
-        generator.generate(config, profile)
+        results =generator.generate(config, profile)
 
-        results = {}
+        for key, value in results.items():
+            if "values" in value[0]:
+                value = [item["values"] for item in value]
+            table_logger(value, key)
+
 
         # TODO: Add actual data generation logic here
         logger.warning("Data generation not yet implemented")
 
         # Save results if output path specified
-        if args.output:
-            output_path = Path(args.output)
-            logger.info(f"Saving results to: {output_path}")
-            with open(output_path, "w") as f:
-                json.dump(results, f, indent=2, default=str)
-            logger.info(f"Results saved successfully")
+        output_path = args.output if args.output else "results.json"
+        logger.info(f"Saving results to: {output_path}")
+        with open(output_path, "w") as f:
+            json.dump(results, f, indent=2, default=str)
+        logger.info(f"Results saved successfully")
 
         logger.info("✓ Processing completed successfully")
         return 0

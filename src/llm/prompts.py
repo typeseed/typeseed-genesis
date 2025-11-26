@@ -122,7 +122,8 @@ If the column is not a foreign key, look at the `name` and `type` to generate a 
     * `price` / `amount` -> "Generate a positive decimal with 2 precision with values between 1.00 and 100.00".
 * **Generic Fallbacks:**
     * `string_type` -> "Generate a random string max length X".
-    * `integer_type` -> "Generate a random integer between 0 an 10".
+    * `integer_type` -> "Generate a random integer between 0 an 10 with precision 0".
+    * `numeric_type` -> "Generate a random numeric with precision X between Y and Z".
     * `boolean_type` -> "Randomly select true or false".
 * **Local Dependencies:**
     * `email` -> "Generate a realistic email address for the user {{first_name}} {{last_name}}".
@@ -286,11 +287,18 @@ Return **ONLY** a valid JSON Array containing items for the """+table_name+""" t
     * If it is `users`, generate diverse names and emails.
 2.  **Data Types:**
     * `id_type`: Generate sequential integers (1, 2, 3...) unless it is a Foreign Key.
-    * `decimal_type`: Generate numbers with correct precision (e.g., currency).
+    * `decimal_type`: Generate numbers with correct precision (e.g., currency). Respect `precision`, `min_value`, `max_value`.
     * `string_type`: Respect `max_length`.
+    * `numeric_type`: Respect `precision`, `min_value`, `max_value`.
 3.  **Quantity:**
     * For **Reference/Static** tables (e.g., tiers, statuses, categories), generate a **comprehensive** list of logical options (usually 3-10).
     * For **Transactional/Entity** tables (e.g., users, products), generate exactly **15 diverse rows**.
+4.  **Output Format:**
+    * Output **ONLY** a valid JSON Array containing items for the """+table_name+""" table values.
+    * Each object represents a row.
+    * Keys must match the schema column names exactly.
+    * Values must be realistic, high-quality business data appropriate for the table name.
+    * **Do not** wrap the output in markdown code blocks (like ```json). Just return the raw JSON array.
 
 ### EXAMPLE
 **Input:**

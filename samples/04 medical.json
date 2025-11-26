@@ -118,33 +118,7 @@
             ]
         },
         {
-            "name": "document_categories",
-            "columns": [
-                {
-                    "name": "id",
-                    "type": "identifier",
-                    "is_nullable": false
-                },
-                {
-                    "name": "category_name",
-                    "type": "string",
-                    "config": {
-                        "max_length": 50
-                    },
-                    "is_nullable": false
-                },
-                {
-                    "name": "retention_period_years",
-                    "type": "numeric",
-                    "config": {
-                        "precision": 2
-                    },
-                    "is_nullable": false
-                }
-            ]
-        },
-        {
-            "name": "clinical_encounters",
+            "name": "medical_encounters",
             "columns": [
                 {
                     "name": "id",
@@ -167,152 +141,19 @@
                     "name": "encounter_date",
                     "type": "string",
                     "config": {
-                        "max_length": 25
+                        "max_length": 10
                     },
                     "is_nullable": false
                 },
                 {
-                    "name": "is_inpatient",
-                    "type": "boolean",
-                    "is_nullable": false
-                }
-            ]
-        },
-        {
-            "name": "document_status_types",
-            "columns": [
-                {
-                    "name": "id",
-                    "type": "identifier",
-                    "is_nullable": false
-                },
-                {
-                    "name": "status_label",
-                    "type": "string",
-                    "config": {
-                        "max_length": 50
-                    },
-                    "is_nullable": false
-                }
-            ]
-        },
-        {
-            "name": "medical_documents",
-            "columns": [
-                {
-                    "name": "id",
-                    "type": "identifier",
-                    "is_nullable": false
-                },
-                {
-                    "name": "encounter_id",
-                    "type": "identifier",
-                    "is_nullable": false,
-                    "foreign_key": "clinical_encounters.id"
-                },
-                {
-                    "name": "category_id",
-                    "type": "identifier",
-                    "is_nullable": false,
-                    "foreign_key": "document_categories.id"
-                },
-                {
-                    "name": "current_status_id",
-                    "type": "identifier",
-                    "is_nullable": false,
-                    "foreign_key": "document_status_types.id"
-                },
-                {
-                    "name": "title",
+                    "name": "notes",
                     "type": "string",
                     "config": {
                         "max_length": 255
                     },
-                    "is_nullable": false
-                },
-                {
-                    "name": "is_confidential",
-                    "type": "boolean",
-                    "is_nullable": false
+                    "is_nullable": true
                 }
-            ]
-        },
-        {
-            "name": "document_files",
-            "columns": [
-                {
-                    "name": "id",
-                    "type": "identifier",
-                    "is_nullable": false
-                },
-                {
-                    "name": "document_id",
-                    "type": "identifier",
-                    "is_nullable": false,
-                    "foreign_key": "medical_documents.id"
-                },
-                {
-                    "name": "storage_path",
-                    "type": "string",
-                    "config": {
-                        "max_length": 512
-                    },
-                    "is_nullable": false
-                },
-                {
-                    "name": "file_size_kb",
-                    "type": "numeric",
-                    "config": {
-                        "precision": 10
-                    },
-                    "is_nullable": false
-                },
-                {
-                    "name": "version_number",
-                    "type": "numeric",
-                    "config": {
-                        "precision": 3
-                    },
-                    "is_nullable": false
-                }
-            ]
-        },
-        {
-            "name": "access_audit_logs",
-            "columns": [
-                {
-                    "name": "id",
-                    "type": "identifier",
-                    "is_nullable": false
-                },
-                {
-                    "name": "document_id",
-                    "type": "identifier",
-                    "is_nullable": false,
-                    "foreign_key": "medical_documents.id"
-                },
-                {
-                    "name": "accessed_by_provider_id",
-                    "type": "identifier",
-                    "is_nullable": true,
-                    "foreign_key": "providers.id"
-                },
-                {
-                    "name": "action_type",
-                    "type": "string",
-                    "config": {
-                        "max_length": 50
-                    },
-                    "is_nullable": false
-                },
-                {
-                    "name": "timestamp_utc",
-                    "type": "string",
-                    "config": {
-                        "max_length": 30
-                    },
-                    "is_nullable": false
-                }
+                
             ]
         }
     ],

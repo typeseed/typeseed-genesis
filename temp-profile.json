@@ -1,0 +1,283 @@
+{
+  "name": "default",
+  "root": null,
+  "tables": {
+    "medical_facilities": {
+      "count": 1,
+      "min_count": null,
+      "max_count": null,
+      "columns": {
+        "facility_name": {
+          "producer": "smollm",
+          "root_prompt": "Generate a name for a medical facility",
+          "config": {
+            "list": true,
+            "prompt": "Generate a name for a medical facility"
+          }
+        },
+        "license_number": {
+          "producer": "smollm",
+          "root_prompt": "Generate a unique medical facility license number",
+          "config": {
+            "list": true,
+            "prompt": "Generate a unique medical facility license number"
+          }
+        }
+      },
+      "options": null
+    },
+    "departments": {
+      "count": null,
+      "min_count": null,
+      "max_count": null,
+      "columns": null,
+      "options": [
+        {
+          "count": null,
+          "probability": 1.0,
+          "values": {
+            "values": {
+              "id": 1,
+              "facility_id": 1,
+              "name": "Cardiology"
+            }
+          }
+        },
+        {
+          "count": null,
+          "probability": 1.0,
+          "values": {
+            "values": {
+              "id": 2,
+              "facility_id": 1,
+              "name": "Neurology"
+            }
+          }
+        },
+        {
+          "count": null,
+          "probability": 1.0,
+          "values": {
+            "values": {
+              "id": 3,
+              "facility_id": 1,
+              "name": "Oncology"
+            }
+          }
+        },
+        {
+          "count": null,
+          "probability": 1.0,
+          "values": {
+            "values": {
+              "id": 4,
+              "facility_id": 1,
+              "name": "Pediatrics"
+            }
+          }
+        },
+        {
+          "count": null,
+          "probability": 1.0,
+          "values": {
+            "values": {
+              "id": 5,
+              "facility_id": 1,
+              "name": "Orthopedics"
+            }
+          }
+        },
+        {
+          "count": null,
+          "probability": 1.0,
+          "values": {
+            "values": {
+              "id": 6,
+              "facility_id": 2,
+              "name": "Emergency Medicine"
+            }
+          }
+        },
+        {
+          "count": null,
+          "probability": 1.0,
+          "values": {
+            "values": {
+              "id": 7,
+              "facility_id": 2,
+              "name": "Radiology"
+            }
+          }
+        },
+        {
+          "count": null,
+          "probability": 1.0,
+          "values": {
+            "values": {
+              "id": 8,
+              "facility_id": 2,
+              "name": "Dermatology"
+            }
+          }
+        },
+        {
+          "count": null,
+          "probability": 1.0,
+          "values": {
+            "values": {
+              "id": 9,
+              "facility_id": 2,
+              "name": "Gastroenterology"
+            }
+          }
+        },
+        {
+          "count": null,
+          "probability": 1.0,
+          "values": {
+            "values": {
+              "id": 10,
+              "facility_id": 2,
+              "name": "Pulmonology"
+            }
+          }
+        },
+        {
+          "count": null,
+          "probability": 1.0,
+          "values": {
+            "values": {
+              "id": 11,
+              "facility_id": 3,
+              "name": "Anesthesiology"
+            }
+          }
+        },
+        {
+          "count": null,
+          "probability": 1.0,
+          "values": {
+            "values": {
+              "id": 12,
+              "facility_id": 3,
+              "name": "Ophthalmology"
+            }
+          }
+        },
+        {
+          "count": null,
+          "probability": 1.0,
+          "values": {
+            "values": {
+              "id": 13,
+              "facility_id": 3,
+              "name": "Urology"
+            }
+          }
+        },
+        {
+          "count": null,
+          "probability": 1.0,
+          "values": {
+            "values": {
+              "id": 14,
+              "facility_id": 3,
+              "name": "Endocrinology"
+            }
+          }
+        },
+        {
+          "count": null,
+          "probability": 1.0,
+          "values": {
+            "values": {
+              "id": 15,
+              "facility_id": 3,
+              "name": "Nephrology"
+            }
+          }
+        }
+      ]
+    },
+    "patients": {
+      "count": 1,
+      "min_count": null,
+      "max_count": null,
+      "columns": {
+        "mrn_number": {
+          "producer": "smollm",
+          "root_prompt": "Generate a unique medical record number string with a maximum length of 50 characters",
+          "config": {
+            "list": true,
+            "prompt": "Generate a unique medical record number string with a maximum length of 50 characters"
+          }
+        },
+        "full_name": {
+          "producer": "smollm",
+          "root_prompt": "Generate a full name for a patient",
+          "config": {
+            "list": true,
+            "prompt": "Generate a full name for a patient"
+          }
+        },
+        "date_of_birth": {
+          "producer": "smollm",
+          "root_prompt": "Generate a realistic date of birth for a patient, formatted as YYYY-MM-DD",
+          "config": {
+            "list": true,
+            "prompt": "Generate a realistic date of birth for a patient, formatted as YYYY-MM-DD"
+          }
+        }
+      },
+      "options": null
+    },
+    "providers": {
+      "count": 1,
+      "min_count": null,
+      "max_count": null,
+      "columns": {
+        "full_name": {
+          "producer": "smollm",
+          "root_prompt": "Generate a full name for a medical provider",
+          "config": {
+            "list": true,
+            "prompt": "Generate a full name for a medical provider"
+          }
+        },
+        "specialty": {
+          "producer": "smollm",
+          "root_prompt": "Generate a medical specialty relevant to the provider's department, or leave blank if not applicable",
+          "config": {
+            "list": true,
+            "prompt": "Generate a medical specialty relevant to the provider's department, or leave blank if not applicable"
+          }
+        }
+      },
+      "options": null
+    },
+    "medical_encounters": {
+      "count": 100,
+      "min_count": null,
+      "max_count": null,
+      "columns": {
+        "encounter_date": {
+          "producer": "smollm",
+          "root_prompt": "Generate a date within the last year in YYYY-MM-DD format",
+          "config": {
+            "list": true,
+            "prompt": "Generate a date within the last year in YYYY-MM-DD format"
+          }
+        },
+        "notes": {
+          "producer": "smollm",
+          "root_prompt": "Generate brief medical notes for a patient encounter with provider {{ providers.full_name }} on {{ encounter_date }}. Include a mention of the patient's condition or reason for visit.",
+          "config": {
+            "list": true,
+            "prompt": "Generate brief medical notes for a patient encounter with provider {{ providers.full_name }} on {{ encounter_date }}. Include a mention of the patient's condition or reason for visit."
+          }
+        }
+      },
+      "options": null
+    }
+  }
+}

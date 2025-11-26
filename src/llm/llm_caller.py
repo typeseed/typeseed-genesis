@@ -368,7 +368,7 @@ class LLMCaller:
         """Call Google Gemini API."""
         genai = self.available_cloud_providers[LLMProvider.GEMINI]
 
-        model_name = kwargs.pop("model", "gemini-1.5-flash")
+        model_name = kwargs.pop("model", "gemini-2.5-flash-lite")
 
         generation_config = {
             "temperature": temperature,

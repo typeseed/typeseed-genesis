@@ -2,8 +2,8 @@
   "medical_facilities": [
     {
       "id": 1,
-      "facility_name": "Maple Ridge Medical Associates",
-      "license_number": "5432109876"
+      "facility_name": "Apex Health Center",
+      "license_number": "MEDFAC-9876543210-AB"
     }
   ],
   "departments": [
@@ -116,611 +116,47 @@
   "providers": [
     {
       "id": 1,
-      "department_id": 1,
-      "full_name": "Dr. Alexander Cole Brooks",
-      "specialty": "Anesthesiology"
+      "department_id": 13,
+      "full_name": "Dr. Anya Sharma",
+      "specialty": "Cardiology"
     }
   ],
   "patients": [
     {
       "id": 1,
-      "mrn_number": "MNOP-QRST-U-V-W-X-Y-Z-MRN",
-      "full_name": "Logan Alexander Patel",
-      "date_of_birth": "1935-04-18"
+      "mrn_number": "MRN7392058164928375019283746501928374650192837465",
+      "full_name": "Anya Sharma",
+      "date_of_birth": "1990-05-15"
     },
     {
       "id": 2,
-      "mrn_number": "GHIJ-KLMNOP-QRST-MRN",
-      "full_name": "Charlotte Abigail Taylor",
-      "date_of_birth": "1948-09-22"
+      "mrn_number": "MRN739201",
+      "full_name": "Eleanor Vance",
+      "date_of_birth": "1985-03-17"
     },
     {
       "id": 3,
-      "mrn_number": "DEF0123456789-MRN",
-      "full_name": "Noah Benjamin White",
-      "date_of_birth": "1952-06-28"
+      "mrn_number": "MRN783456901234567890ABCDEFGHIJK",
+      "full_name": "Jane Doe",
+      "date_of_birth": "1990-05-15"
     },
     {
       "id": 4,
-      "mrn_number": "5432109876-MRN",
-      "full_name": "Mia Rachel Hall",
-      "date_of_birth": "1967-11-15"
+      "mrn_number": "MRN78345901234567890123456789012345678901234567890",
+      "full_name": "Zylpha Q. Xylos",
+      "date_of_birth": "1985-07-12"
     },
     {
       "id": 5,
-      "mrn_number": "MRN-9876543210",
-      "full_name": "Liam Christopher Martin",
-      "date_of_birth": "1979-03-01"
+      "mrn_number": "MRN7834921056ABCDEFGH",
+      "full_name": "Anya Sharma",
+      "date_of_birth": "1990-01-01"
     },
     {
       "id": 6,
-      "mrn_number": "ABCDEFGHIJKL-MRN1234",
-      "full_name": "Ava Elizabeth Brown",
-      "date_of_birth": "1985-08-25"
-    },
-    {
-      "id": 7,
-      "mrn_number": "1234567890-MRN",
-      "full_name": "Ethan James Davis",
-      "date_of_birth": "1935-04-18"
-    },
-    {
-      "id": 8,
-      "mrn_number": "MNOP-QRST-U-V-W-X-Y-Z-MRN",
-      "full_name": "Sophia Isabella Garcia",
-      "date_of_birth": "1948-09-22"
-    },
-    {
-      "id": 9,
-      "mrn_number": "GHIJ-KLMNOP-QRST-MRN",
-      "full_name": "David Michael Lee",
-      "date_of_birth": "1952-06-28"
-    },
-    {
-      "id": 10,
-      "mrn_number": "DEF0123456789-MRN",
-      "full_name": "Logan Alexander Patel",
-      "date_of_birth": "1967-11-15"
-    },
-    {
-      "id": 11,
-      "mrn_number": "5432109876-MRN",
-      "full_name": "Charlotte Abigail Taylor",
-      "date_of_birth": "1979-03-01"
-    },
-    {
-      "id": 12,
-      "mrn_number": "MRN-9876543210",
-      "full_name": "Noah Benjamin White",
-      "date_of_birth": "1985-08-25"
-    },
-    {
-      "id": 13,
-      "mrn_number": "ABCDEFGHIJKL-MRN1234",
-      "full_name": "Mia Rachel Hall",
-      "date_of_birth": "1935-04-18"
-    },
-    {
-      "id": 14,
-      "mrn_number": "1234567890-MRN",
-      "full_name": "Liam Christopher Martin",
-      "date_of_birth": "1948-09-22"
-    },
-    {
-      "id": 15,
-      "mrn_number": "MNOP-QRST-U-V-W-X-Y-Z-MRN",
-      "full_name": "Ava Elizabeth Brown",
-      "date_of_birth": "1952-06-28"
-    },
-    {
-      "id": 16,
-      "mrn_number": "GHIJ-KLMNOP-QRST-MRN",
-      "full_name": "Ethan James Davis",
-      "date_of_birth": "1967-11-15"
-    },
-    {
-      "id": 17,
-      "mrn_number": "DEF0123456789-MRN",
-      "full_name": "Sophia Isabella Garcia",
-      "date_of_birth": "1979-03-01"
-    },
-    {
-      "id": 18,
-      "mrn_number": "5432109876-MRN",
-      "full_name": "David Michael Lee",
-      "date_of_birth": "1985-08-25"
-    },
-    {
-      "id": 19,
-      "mrn_number": "MRN-9876543210",
-      "full_name": "Logan Alexander Patel",
-      "date_of_birth": "1935-04-18"
-    },
-    {
-      "id": 20,
-      "mrn_number": "ABCDEFGHIJKL-MRN1234",
-      "full_name": "Charlotte Abigail Taylor",
-      "date_of_birth": "1948-09-22"
-    },
-    {
-      "id": 21,
-      "mrn_number": "1234567890-MRN",
-      "full_name": "Noah Benjamin White",
-      "date_of_birth": "1952-06-28"
-    },
-    {
-      "id": 22,
-      "mrn_number": "MNOP-QRST-U-V-W-X-Y-Z-MRN",
-      "full_name": "Mia Rachel Hall",
-      "date_of_birth": "1967-11-15"
-    },
-    {
-      "id": 23,
-      "mrn_number": "GHIJ-KLMNOP-QRST-MRN",
-      "full_name": "Liam Christopher Martin",
-      "date_of_birth": "1979-03-01"
-    },
-    {
-      "id": 24,
-      "mrn_number": "DEF0123456789-MRN",
-      "full_name": "Ava Elizabeth Brown",
-      "date_of_birth": "1985-08-25"
-    },
-    {
-      "id": 25,
-      "mrn_number": "5432109876-MRN",
-      "full_name": "Ethan James Davis",
-      "date_of_birth": "1935-04-18"
-    },
-    {
-      "id": 26,
-      "mrn_number": "MRN-9876543210",
-      "full_name": "Sophia Isabella Garcia",
-      "date_of_birth": "1948-09-22"
-    },
-    {
-      "id": 27,
-      "mrn_number": "ABCDEFGHIJKL-MRN1234",
-      "full_name": "David Michael Lee",
-      "date_of_birth": "1952-06-28"
-    },
-    {
-      "id": 28,
-      "mrn_number": "1234567890-MRN",
-      "full_name": "Logan Alexander Patel",
-      "date_of_birth": "1967-11-15"
-    },
-    {
-      "id": 29,
-      "mrn_number": "MNOP-QRST-U-V-W-X-Y-Z-MRN",
-      "full_name": "Charlotte Abigail Taylor",
-      "date_of_birth": "1979-03-01"
-    },
-    {
-      "id": 30,
-      "mrn_number": "GHIJ-KLMNOP-QRST-MRN",
-      "full_name": "Noah Benjamin White",
-      "date_of_birth": "1985-08-25"
-    },
-    {
-      "id": 31,
-      "mrn_number": "DEF0123456789-MRN",
-      "full_name": "Mia Rachel Hall",
-      "date_of_birth": "1935-04-18"
-    },
-    {
-      "id": 32,
-      "mrn_number": "5432109876-MRN",
-      "full_name": "Liam Christopher Martin",
-      "date_of_birth": "1948-09-22"
-    },
-    {
-      "id": 33,
-      "mrn_number": "MRN-9876543210",
-      "full_name": "Ava Elizabeth Brown",
-      "date_of_birth": "1952-06-28"
-    },
-    {
-      "id": 34,
-      "mrn_number": "ABCDEFGHIJKL-MRN1234",
-      "full_name": "Ethan James Davis",
-      "date_of_birth": "1967-11-15"
-    },
-    {
-      "id": 35,
-      "mrn_number": "1234567890-MRN",
-      "full_name": "Sophia Isabella Garcia",
-      "date_of_birth": "1979-03-01"
-    },
-    {
-      "id": 36,
-      "mrn_number": "MNOP-QRST-U-V-W-X-Y-Z-MRN",
-      "full_name": "David Michael Lee",
-      "date_of_birth": "1985-08-25"
-    },
-    {
-      "id": 37,
-      "mrn_number": "GHIJ-KLMNOP-QRST-MRN",
-      "full_name": "Logan Alexander Patel",
-      "date_of_birth": "1935-04-18"
-    },
-    {
-      "id": 38,
-      "mrn_number": "DEF0123456789-MRN",
-      "full_name": "Charlotte Abigail Taylor",
-      "date_of_birth": "1948-09-22"
-    },
-    {
-      "id": 39,
-      "mrn_number": "5432109876-MRN",
-      "full_name": "Noah Benjamin White",
-      "date_of_birth": "1952-06-28"
-    },
-    {
-      "id": 40,
-      "mrn_number": "MRN-9876543210",
-      "full_name": "Mia Rachel Hall",
-      "date_of_birth": "1967-11-15"
-    },
-    {
-      "id": 41,
-      "mrn_number": "ABCDEFGHIJKL-MRN1234",
-      "full_name": "Liam Christopher Martin",
-      "date_of_birth": "1979-03-01"
-    },
-    {
-      "id": 42,
-      "mrn_number": "1234567890-MRN",
-      "full_name": "Ava Elizabeth Brown",
-      "date_of_birth": "1985-08-25"
-    },
-    {
-      "id": 43,
-      "mrn_number": "MNOP-QRST-U-V-W-X-Y-Z-MRN",
-      "full_name": "Ethan James Davis",
-      "date_of_birth": "1935-04-18"
-    },
-    {
-      "id": 44,
-      "mrn_number": "GHIJ-KLMNOP-QRST-MRN",
-      "full_name": "Sophia Isabella Garcia",
-      "date_of_birth": "1948-09-22"
-    },
-    {
-      "id": 45,
-      "mrn_number": "DEF0123456789-MRN",
-      "full_name": "David Michael Lee",
-      "date_of_birth": "1952-06-28"
-    },
-    {
-      "id": 46,
-      "mrn_number": "5432109876-MRN",
-      "full_name": "Logan Alexander Patel",
-      "date_of_birth": "1967-11-15"
-    },
-    {
-      "id": 47,
-      "mrn_number": "MRN-9876543210",
-      "full_name": "Charlotte Abigail Taylor",
-      "date_of_birth": "1979-03-01"
-    },
-    {
-      "id": 48,
-      "mrn_number": "ABCDEFGHIJKL-MRN1234",
-      "full_name": "Noah Benjamin White",
-      "date_of_birth": "1985-08-25"
-    },
-    {
-      "id": 49,
-      "mrn_number": "1234567890-MRN",
-      "full_name": "Mia Rachel Hall",
-      "date_of_birth": "1935-04-18"
-    },
-    {
-      "id": 50,
-      "mrn_number": "MNOP-QRST-U-V-W-X-Y-Z-MRN",
-      "full_name": "Liam Christopher Martin",
-      "date_of_birth": "1948-09-22"
-    },
-    {
-      "id": 51,
-      "mrn_number": "GHIJ-KLMNOP-QRST-MRN",
-      "full_name": "Ava Elizabeth Brown",
-      "date_of_birth": "1952-06-28"
-    },
-    {
-      "id": 52,
-      "mrn_number": "DEF0123456789-MRN",
-      "full_name": "Ethan James Davis",
-      "date_of_birth": "1967-11-15"
-    },
-    {
-      "id": 53,
-      "mrn_number": "5432109876-MRN",
-      "full_name": "Sophia Isabella Garcia",
-      "date_of_birth": "1979-03-01"
-    },
-    {
-      "id": 54,
-      "mrn_number": "MRN-9876543210",
-      "full_name": "David Michael Lee",
-      "date_of_birth": "1985-08-25"
-    },
-    {
-      "id": 55,
-      "mrn_number": "ABCDEFGHIJKL-MRN1234",
-      "full_name": "Logan Alexander Patel",
-      "date_of_birth": "1935-04-18"
-    },
-    {
-      "id": 56,
-      "mrn_number": "1234567890-MRN",
-      "full_name": "Charlotte Abigail Taylor",
-      "date_of_birth": "1948-09-22"
-    },
-    {
-      "id": 57,
-      "mrn_number": "MNOP-QRST-U-V-W-X-Y-Z-MRN",
-      "full_name": "Noah Benjamin White",
-      "date_of_birth": "1952-06-28"
-    },
-    {
-      "id": 58,
-      "mrn_number": "GHIJ-KLMNOP-QRST-MRN",
-      "full_name": "Mia Rachel Hall",
-      "date_of_birth": "1967-11-15"
-    },
-    {
-      "id": 59,
-      "mrn_number": "DEF0123456789-MRN",
-      "full_name": "Liam Christopher Martin",
-      "date_of_birth": "1979-03-01"
-    },
-    {
-      "id": 60,
-      "mrn_number": "5432109876-MRN",
-      "full_name": "Ava Elizabeth Brown",
-      "date_of_birth": "1985-08-25"
-    },
-    {
-      "id": 61,
-      "mrn_number": "MRN-9876543210",
-      "full_name": "Ethan James Davis",
-      "date_of_birth": "1935-04-18"
-    },
-    {
-      "id": 62,
-      "mrn_number": "ABCDEFGHIJKL-MRN1234",
-      "full_name": "Sophia Isabella Garcia",
-      "date_of_birth": "1948-09-22"
-    },
-    {
-      "id": 63,
-      "mrn_number": "1234567890-MRN",
-      "full_name": "David Michael Lee",
-      "date_of_birth": "1952-06-28"
-    },
-    {
-      "id": 64,
-      "mrn_number": "MNOP-QRST-U-V-W-X-Y-Z-MRN",
-      "full_name": "Logan Alexander Patel",
-      "date_of_birth": "1967-11-15"
-    },
-    {
-      "id": 65,
-      "mrn_number": "GHIJ-KLMNOP-QRST-MRN",
-      "full_name": "Charlotte Abigail Taylor",
-      "date_of_birth": "1979-03-01"
-    },
-    {
-      "id": 66,
-      "mrn_number": "DEF0123456789-MRN",
-      "full_name": "Noah Benjamin White",
-      "date_of_birth": "1985-08-25"
-    },
-    {
-      "id": 67,
-      "mrn_number": "5432109876-MRN",
-      "full_name": "Mia Rachel Hall",
-      "date_of_birth": "1935-04-18"
-    },
-    {
-      "id": 68,
-      "mrn_number": "MRN-9876543210",
-      "full_name": "Liam Christopher Martin",
-      "date_of_birth": "1948-09-22"
-    },
-    {
-      "id": 69,
-      "mrn_number": "ABCDEFGHIJKL-MRN1234",
-      "full_name": "Ava Elizabeth Brown",
-      "date_of_birth": "1952-06-28"
-    },
-    {
-      "id": 70,
-      "mrn_number": "1234567890-MRN",
-      "full_name": "Ethan James Davis",
-      "date_of_birth": "1967-11-15"
-    },
-    {
-      "id": 71,
-      "mrn_number": "MNOP-QRST-U-V-W-X-Y-Z-MRN",
-      "full_name": "Sophia Isabella Garcia",
-      "date_of_birth": "1979-03-01"
-    },
-    {
-      "id": 72,
-      "mrn_number": "GHIJ-KLMNOP-QRST-MRN",
-      "full_name": "David Michael Lee",
-      "date_of_birth": "1985-08-25"
-    },
-    {
-      "id": 73,
-      "mrn_number": "DEF0123456789-MRN",
-      "full_name": "Logan Alexander Patel",
-      "date_of_birth": "1935-04-18"
-    },
-    {
-      "id": 74,
-      "mrn_number": "5432109876-MRN",
-      "full_name": "Charlotte Abigail Taylor",
-      "date_of_birth": "1948-09-22"
-    },
-    {
-      "id": 75,
-      "mrn_number": "MRN-9876543210",
-      "full_name": "Noah Benjamin White",
-      "date_of_birth": "1952-06-28"
-    },
-    {
-      "id": 76,
-      "mrn_number": "ABCDEFGHIJKL-MRN1234",
-      "full_name": "Mia Rachel Hall",
-      "date_of_birth": "1967-11-15"
-    },
-    {
-      "id": 77,
-      "mrn_number": "1234567890-MRN",
-      "full_name": "Liam Christopher Martin",
-      "date_of_birth": "1979-03-01"
-    },
-    {
-      "id": 78,
-      "mrn_number": "MNOP-QRST-U-V-W-X-Y-Z-MRN",
-      "full_name": "Ava Elizabeth Brown",
-      "date_of_birth": "1985-08-25"
-    },
-    {
-      "id": 79,
-      "mrn_number": "GHIJ-KLMNOP-QRST-MRN",
-      "full_name": "Ethan James Davis",
-      "date_of_birth": "1935-04-18"
-    },
-    {
-      "id": 80,
-      "mrn_number": "DEF0123456789-MRN",
-      "full_name": "Sophia Isabella Garcia",
-      "date_of_birth": "1948-09-22"
-    },
-    {
-      "id": 81,
-      "mrn_number": "5432109876-MRN",
-      "full_name": "David Michael Lee",
-      "date_of_birth": "1952-06-28"
-    },
-    {
-      "id": 82,
-      "mrn_number": "MRN-9876543210",
-      "full_name": "Logan Alexander Patel",
-      "date_of_birth": "1967-11-15"
-    },
-    {
-      "id": 83,
-      "mrn_number": "ABCDEFGHIJKL-MRN1234",
-      "full_name": "Charlotte Abigail Taylor",
-      "date_of_birth": "1979-03-01"
-    },
-    {
-      "id": 84,
-      "mrn_number": "1234567890-MRN",
-      "full_name": "Noah Benjamin White",
-      "date_of_birth": "1985-08-25"
-    },
-    {
-      "id": 85,
-      "mrn_number": "MNOP-QRST-U-V-W-X-Y-Z-MRN",
-      "full_name": "Mia Rachel Hall",
-      "date_of_birth": "1935-04-18"
-    },
-    {
-      "id": 86,
-      "mrn_number": "GHIJ-KLMNOP-QRST-MRN",
-      "full_name": "Liam Christopher Martin",
-      "date_of_birth": "1948-09-22"
-    },
-    {
-      "id": 87,
-      "mrn_number": "DEF0123456789-MRN",
-      "full_name": "Ava Elizabeth Brown",
-      "date_of_birth": "1952-06-28"
-    },
-    {
-      "id": 88,
-      "mrn_number": "5432109876-MRN",
-      "full_name": "Ethan James Davis",
-      "date_of_birth": "1967-11-15"
-    },
-    {
-      "id": 89,
-      "mrn_number": "MRN-9876543210",
-      "full_name": "Sophia Isabella Garcia",
-      "date_of_birth": "1979-03-01"
-    },
-    {
-      "id": 90,
-      "mrn_number": "ABCDEFGHIJKL-MRN1234",
-      "full_name": "David Michael Lee",
-      "date_of_birth": "1985-08-25"
-    },
-    {
-      "id": 91,
-      "mrn_number": "1234567890-MRN",
-      "full_name": "Logan Alexander Patel",
-      "date_of_birth": "1935-04-18"
-    },
-    {
-      "id": 92,
-      "mrn_number": "MNOP-QRST-U-V-W-X-Y-Z-MRN",
-      "full_name": "Charlotte Abigail Taylor",
-      "date_of_birth": "1948-09-22"
-    },
-    {
-      "id": 93,
-      "mrn_number": "GHIJ-KLMNOP-QRST-MRN",
-      "full_name": "Noah Benjamin White",
-      "date_of_birth": "1952-06-28"
-    },
-    {
-      "id": 94,
-      "mrn_number": "DEF0123456789-MRN",
-      "full_name": "Mia Rachel Hall",
-      "date_of_birth": "1967-11-15"
-    },
-    {
-      "id": 95,
-      "mrn_number": "5432109876-MRN",
-      "full_name": "Liam Christopher Martin",
-      "date_of_birth": "1979-03-01"
-    },
-    {
-      "id": 96,
-      "mrn_number": "MRN-9876543210",
-      "full_name": "Ava Elizabeth Brown",
-      "date_of_birth": "1985-08-25"
-    },
-    {
-      "id": 97,
-      "mrn_number": "ABCDEFGHIJKL-MRN1234",
-      "full_name": "Ethan James Davis",
-      "date_of_birth": "1935-04-18"
-    },
-    {
-      "id": 98,
-      "mrn_number": "1234567890-MRN",
-      "full_name": "Sophia Isabella Garcia",
-      "date_of_birth": "1948-09-22"
-    },
-    {
-      "id": 99,
-      "mrn_number": "MNOP-QRST-U-V-W-X-Y-Z-MRN",
-      "full_name": "David Michael Lee",
-      "date_of_birth": "1952-06-28"
-    },
-    {
-      "id": 100,
-      "mrn_number": "GHIJ-KLMNOP-QRST-MRN",
-      "full_name": "Logan Alexander Patel",
-      "date_of_birth": "1967-11-15"
+      "mrn_number": "MRN78345920146789345789012345678901234567890",
+      "full_name": "Alice Wonderland",
+      "date_of_birth": "1990-01-01"
     }
   ],
   "medical_encounters": [
@@ -728,701 +164,99 @@
       "id": 1,
       "patient_id": 1,
       "provider_id": 1,
-      "encounter_date": "2022-02-14",
-      "notes": "Dr. Brooks prescribed physical therapy and muscle relaxants for symptom management."
+      "encounter_date": "2023-11-15",
+      "notes": "Pt seen 2023-11-15 by Dr. Sharma for cough and fever. Sx improving. Rx renewed."
     },
     {
       "id": 2,
-      "patient_id": 2,
+      "patient_id": 1,
       "provider_id": 1,
-      "encounter_date": "2022-05-10",
-      "notes": "Dr. Brooks recommended physical therapy and follow-up appointment in two weeks."
+      "encounter_date": "2023-10-27",
+      "notes": "**Subjective:** Pt presents for follow-up of chronic hypertension. Reports good adherence to Lisinopril 10mg daily. No new complaints. BP at home stable, avg 125/78.\n**Objective:** Vitals: BP 128/80, HR 72, RR 16, Temp 98.6F. Exam unremarkable.\n**Assessment:** Stable chronic hypertension.\n**Plan:** Continue Lisinopril 10mg daily. RTC 3 months."
     },
     {
       "id": 3,
-      "patient_id": 3,
+      "patient_id": 2,
       "provider_id": 1,
-      "encounter_date": "2022-08-22",
-      "notes": "Plan: Order chest X-ray and pulmonary function tests; prescribe prednisone and albuterol inhaler as needed."
+      "encounter_date": "2023-10-26",
+      "notes": "Patient seen by Dr. Sharma on 2023-10-26 for cough and fever. Prescribed rest and fluids. Follow-up if symptoms worsen."
     },
     {
       "id": 4,
-      "patient_id": 4,
+      "patient_id": 2,
       "provider_id": 1,
-      "encounter_date": "2022-12-25",
-      "notes": "Plan: prescribe azithromycin 500mg daily for 5 days and instruct patient to use albuterol inhaler as needed for bronchospasm."
+      "encounter_date": "2023-10-26",
+      "notes": "Pt presents with cough, mild fever. Dr. Sharma notes possible URI. Rx: rest, fluids, OTC meds. Follow up if symptoms worsen. 2023-10-26."
     },
     {
       "id": 5,
-      "patient_id": 5,
+      "patient_id": 3,
       "provider_id": 1,
-      "encounter_date": "2022-03-20",
-      "notes": "Dr. Brooks recommended physical therapy and follow-up appointment in 2 weeks."
+      "encounter_date": "2023-10-26",
+      "notes": "Dr. Sharma saw patient for cough. Rx: Tessalon Perles. F/u 1 week."
     },
     {
       "id": 6,
-      "patient_id": 6,
+      "patient_id": 3,
       "provider_id": 1,
-      "encounter_date": "2022-06-15",
-      "notes": "Dr. Brooks recommended physical therapy and follow-up appointment in 2 weeks."
+      "encounter_date": "2023-10-27",
+      "notes": "Pt. seen by Dr. Sharma 10/27/23 for cough. Dx: Bronchitis. Rx: Tessalon Perles. Advised rest, fluids. Follow up PRN."
     },
     {
       "id": 7,
-      "patient_id": 7,
+      "patient_id": 4,
       "provider_id": 1,
-      "encounter_date": "2022-02-14",
-      "notes": "Range of motion limited by pain."
+      "encounter_date": "2023-10-27",
+      "notes": "Pt seen 2023-10-27 by Dr. Sharma for cough. Mild congestion noted. Rx: cough syrup. F/u as needed."
     },
     {
       "id": 8,
-      "patient_id": 8,
+      "patient_id": 4,
       "provider_id": 1,
-      "encounter_date": "2022-05-10",
-      "notes": "Range of motion limited by pain."
+      "encounter_date": "2023-10-27",
+      "notes": "Patient presented with cough and fever. Dr. Sharma noted mild pharyngitis. Advised rest and fluids."
     },
     {
       "id": 9,
-      "patient_id": 9,
+      "patient_id": 5,
       "provider_id": 1,
-      "encounter_date": "2022-08-22",
-      "notes": "Assessment: Possible acute bronchitis or exacerbation of underlying asthma."
+      "encounter_date": "2023-07-15",
+      "notes": "Dr. Sharma saw patient J. Doe on 2023-07-15 for cough and fever. Prescribed rest and fluids. Follow-up if symptoms worsen."
     },
     {
       "id": 10,
-      "patient_id": 10,
+      "patient_id": 5,
       "provider_id": 1,
-      "encounter_date": "2022-12-25",
-      "notes": "Laboratory results: WBC count elevated at 12,000 cells/mm^3."
+      "encounter_date": "2023-11-15",
+      "notes": "Patient: John Doe. Visit Date: 2023-11-15 with Dr. Anya Sharma. Reason for visit: Annual physical exam. Vitals stable. No acute complaints. Advised on diet and exercise."
     },
     {
       "id": 11,
-      "patient_id": 11,
+      "patient_id": 6,
       "provider_id": 1,
-      "encounter_date": "2022-03-20",
-      "notes": "Range of motion limited by pain."
+      "encounter_date": "2023-07-15",
+      "notes": "Dr. Sharma encountered patient J. Doe on 2023-07-15 for a persistent cough. Prescribed cough syrup. Follow-up in 1 week if no improvement."
     },
     {
       "id": 12,
-      "patient_id": 12,
+      "patient_id": 6,
       "provider_id": 1,
-      "encounter_date": "2022-06-15",
-      "notes": "Range of motion limited by pain."
+      "encounter_date": "2023-10-26",
+      "notes": "Dr. Anya Sharma, 2023-10-26: Patient presented with a persistent cough and mild fever. Advised rest and fluids. Follow-up in 3 days if symptoms worsen."
     },
     {
       "id": 13,
-      "patient_id": 13,
+      "patient_id": 6,
       "provider_id": 1,
-      "encounter_date": "2022-02-14",
-      "notes": "Physical examination revealed tenderness in lumbar region."
+      "encounter_date": "2023-10-27",
+      "notes": "Dr. Sharma saw patient J. Doe 2023-10-27 for follow-up on mild hypertension. Vitals stable. Prescribed new low-dose diuretic. Advised lifestyle changes. Next appt in 3 months."
     },
     {
       "id": 14,
-      "patient_id": 14,
+      "patient_id": 6,
       "provider_id": 1,
-      "encounter_date": "2022-05-10",
-      "notes": "Physical examination revealed tenderness in lumbar region."
-    },
-    {
-      "id": 15,
-      "patient_id": 15,
-      "provider_id": 1,
-      "encounter_date": "2022-08-22",
-      "notes": "Physical exam findings: Bilateral wheezing heard on auscultation, oxygen saturation 88% on room air."
-    },
-    {
-      "id": 16,
-      "patient_id": 16,
-      "provider_id": 1,
-      "encounter_date": "2022-12-25",
-      "notes": "Physical exam findings: bilateral wheezing, crackles in lower lung fields."
-    },
-    {
-      "id": 17,
-      "patient_id": 17,
-      "provider_id": 1,
-      "encounter_date": "2022-03-20",
-      "notes": "Physical examination revealed tenderness in lumbar region."
-    },
-    {
-      "id": 18,
-      "patient_id": 18,
-      "provider_id": 1,
-      "encounter_date": "2022-06-15",
-      "notes": "Physical examination revealed tenderness in lumbar region."
-    },
-    {
-      "id": 19,
-      "patient_id": 19,
-      "provider_id": 1,
-      "encounter_date": "2022-02-14",
-      "notes": "Current medications: lisinopril, ibuprofen."
-    },
-    {
-      "id": 20,
-      "patient_id": 20,
-      "provider_id": 1,
-      "encounter_date": "2022-05-10",
-      "notes": "Medications: lisinopril 10mg daily, ibuprofen as needed."
-    },
-    {
-      "id": 21,
-      "patient_id": 21,
-      "provider_id": 1,
-      "encounter_date": "2022-08-22",
-      "notes": "Family history: Father passed away from lung cancer at age 55."
-    },
-    {
-      "id": 22,
-      "patient_id": 22,
-      "provider_id": 1,
-      "encounter_date": "2022-12-25",
-      "notes": "Medications: lisinopril 10mg daily, atorvastatin 20mg daily, albuterol inhaler as needed."
-    },
-    {
-      "id": 23,
-      "patient_id": 23,
-      "provider_id": 1,
-      "encounter_date": "2022-03-20",
-      "notes": "Current medications: lisinopril, ibuprofen."
-    },
-    {
-      "id": 24,
-      "patient_id": 24,
-      "provider_id": 1,
-      "encounter_date": "2022-06-15",
-      "notes": "Current medications: lisinopril, ibuprofen."
-    },
-    {
-      "id": 25,
-      "patient_id": 25,
-      "provider_id": 1,
-      "encounter_date": "2022-02-14",
-      "notes": "Medical history: hypertension, osteoarthritis."
-    },
-    {
-      "id": 26,
-      "patient_id": 26,
-      "provider_id": 1,
-      "encounter_date": "2022-05-10",
-      "notes": "Medical history: hypertension, osteoarthritis."
-    },
-    {
-      "id": 27,
-      "patient_id": 27,
-      "provider_id": 1,
-      "encounter_date": "2022-08-22",
-      "notes": "Social history: Non-smoker, occasional drinker."
-    },
-    {
-      "id": 28,
-      "patient_id": 28,
-      "provider_id": 1,
-      "encounter_date": "2022-12-25",
-      "notes": "Medical history: hypertension, hyperlipidemia, and asthma."
-    },
-    {
-      "id": 29,
-      "patient_id": 29,
-      "provider_id": 1,
-      "encounter_date": "2022-03-20",
-      "notes": "Medical history: hypertension, osteoarthritis."
-    },
-    {
-      "id": 30,
-      "patient_id": 30,
-      "provider_id": 1,
-      "encounter_date": "2022-06-15",
-      "notes": "Medical history: hypertension, osteoarthritis."
-    },
-    {
-      "id": 31,
-      "patient_id": 31,
-      "provider_id": 1,
-      "encounter_date": "2022-02-14",
-      "notes": "Chief concern: exacerbation of lower back strain due to heavy lifting at work."
-    },
-    {
-      "id": 32,
-      "patient_id": 32,
-      "provider_id": 1,
-      "encounter_date": "2022-05-10",
-      "notes": "Chief concern: exacerbation of lower back strain due to heavy lifting at work."
-    },
-    {
-      "id": 33,
-      "patient_id": 33,
-      "provider_id": 1,
-      "encounter_date": "2022-08-22",
-      "notes": "Allergies: None reported."
-    },
-    {
-      "id": 34,
-      "patient_id": 34,
-      "provider_id": 1,
-      "encounter_date": "2022-12-25",
-      "notes": "Chief concern: productive cough, fever, and shortness of breath."
-    },
-    {
-      "id": 35,
-      "patient_id": 35,
-      "provider_id": 1,
-      "encounter_date": "2022-03-20",
-      "notes": "Chief concern: exacerbation of lower back strain due to heavy lifting at work."
-    },
-    {
-      "id": 36,
-      "patient_id": 36,
-      "provider_id": 1,
-      "encounter_date": "2022-06-15",
-      "notes": "Chief concern: exacerbation of lower back strain due to heavy lifting at work."
-    },
-    {
-      "id": 37,
-      "patient_id": 37,
-      "provider_id": 1,
-      "encounter_date": "2022-02-14",
-      "notes": "Dr. Brooks prescribed physical therapy and muscle relaxants for symptom management."
-    },
-    {
-      "id": 38,
-      "patient_id": 38,
-      "provider_id": 1,
-      "encounter_date": "2022-05-10",
-      "notes": "Dr. Brooks recommended physical therapy and follow-up appointment in two weeks."
-    },
-    {
-      "id": 39,
-      "patient_id": 39,
-      "provider_id": 1,
-      "encounter_date": "2022-08-22",
-      "notes": "Medications: Currently taking albuterol inhaler as needed and acetaminophen for symptom relief."
-    },
-    {
-      "id": 40,
-      "patient_id": 40,
-      "provider_id": 1,
-      "encounter_date": "2022-12-25",
-      "notes": "Plan: prescribe azithromycin 500mg daily for 5 days and instruct patient to use albuterol inhaler as needed for bronchospasm."
-    },
-    {
-      "id": 41,
-      "patient_id": 41,
-      "provider_id": 1,
-      "encounter_date": "2022-03-20",
-      "notes": "Dr. Brooks recommended physical therapy and follow-up appointment in 2 weeks."
-    },
-    {
-      "id": 42,
-      "patient_id": 42,
-      "provider_id": 1,
-      "encounter_date": "2022-06-15",
-      "notes": "Dr. Brooks recommended physical therapy and follow-up appointment in 2 weeks."
-    },
-    {
-      "id": 43,
-      "patient_id": 43,
-      "provider_id": 1,
-      "encounter_date": "2022-02-14",
-      "notes": "Range of motion limited by pain."
-    },
-    {
-      "id": 44,
-      "patient_id": 44,
-      "provider_id": 1,
-      "encounter_date": "2022-05-10",
-      "notes": "Range of motion limited by pain."
-    },
-    {
-      "id": 45,
-      "patient_id": 45,
-      "provider_id": 1,
-      "encounter_date": "2022-08-22",
-      "notes": "Review of systems: Negative for fever, chills, or chest pain."
-    },
-    {
-      "id": 46,
-      "patient_id": 46,
-      "provider_id": 1,
-      "encounter_date": "2022-12-25",
-      "notes": "Laboratory results: WBC count elevated at 12,000 cells/mm^3."
-    },
-    {
-      "id": 47,
-      "patient_id": 47,
-      "provider_id": 1,
-      "encounter_date": "2022-03-20",
-      "notes": "Range of motion limited by pain."
-    },
-    {
-      "id": 48,
-      "patient_id": 48,
-      "provider_id": 1,
-      "encounter_date": "2022-06-15",
-      "notes": "Range of motion limited by pain."
-    },
-    {
-      "id": 49,
-      "patient_id": 49,
-      "provider_id": 1,
-      "encounter_date": "2022-02-14",
-      "notes": "Physical examination revealed tenderness in lumbar region."
-    },
-    {
-      "id": 50,
-      "patient_id": 50,
-      "provider_id": 1,
-      "encounter_date": "2022-05-10",
-      "notes": "Physical examination revealed tenderness in lumbar region."
-    },
-    {
-      "id": 51,
-      "patient_id": 51,
-      "provider_id": 1,
-      "encounter_date": "2022-08-22",
-      "notes": "History of present illness: The patient reports experiencing these symptoms over the past week, with worsening severity over the past 48 hours."
-    },
-    {
-      "id": 52,
-      "patient_id": 52,
-      "provider_id": 1,
-      "encounter_date": "2022-12-25",
-      "notes": "Physical exam findings: bilateral wheezing, crackles in lower lung fields."
-    },
-    {
-      "id": 53,
-      "patient_id": 53,
-      "provider_id": 1,
-      "encounter_date": "2022-03-20",
-      "notes": "Physical examination revealed tenderness in lumbar region."
-    },
-    {
-      "id": 54,
-      "patient_id": 54,
-      "provider_id": 1,
-      "encounter_date": "2022-06-15",
-      "notes": "Physical examination revealed tenderness in lumbar region."
-    },
-    {
-      "id": 55,
-      "patient_id": 55,
-      "provider_id": 1,
-      "encounter_date": "2022-02-14",
-      "notes": "Current medications: lisinopril, ibuprofen."
-    },
-    {
-      "id": 56,
-      "patient_id": 56,
-      "provider_id": 1,
-      "encounter_date": "2022-05-10",
-      "notes": "Medications: lisinopril 10mg daily, ibuprofen as needed."
-    },
-    {
-      "id": 57,
-      "patient_id": 57,
-      "provider_id": 1,
-      "encounter_date": "2022-08-22",
-      "notes": "Plan: Order chest X-ray and pulmonary function tests; prescribe prednisone and albuterol inhaler as needed."
-    },
-    {
-      "id": 58,
-      "patient_id": 58,
-      "provider_id": 1,
-      "encounter_date": "2022-12-25",
-      "notes": "Medications: lisinopril 10mg daily, atorvastatin 20mg daily, albuterol inhaler as needed."
-    },
-    {
-      "id": 59,
-      "patient_id": 59,
-      "provider_id": 1,
-      "encounter_date": "2022-03-20",
-      "notes": "Current medications: lisinopril, ibuprofen."
-    },
-    {
-      "id": 60,
-      "patient_id": 60,
-      "provider_id": 1,
-      "encounter_date": "2022-06-15",
-      "notes": "Current medications: lisinopril, ibuprofen."
-    },
-    {
-      "id": 61,
-      "patient_id": 61,
-      "provider_id": 1,
-      "encounter_date": "2022-02-14",
-      "notes": "Medical history: hypertension, osteoarthritis."
-    },
-    {
-      "id": 62,
-      "patient_id": 62,
-      "provider_id": 1,
-      "encounter_date": "2022-05-10",
-      "notes": "Medical history: hypertension, osteoarthritis."
-    },
-    {
-      "id": 63,
-      "patient_id": 63,
-      "provider_id": 1,
-      "encounter_date": "2022-08-22",
-      "notes": "Assessment: Possible acute bronchitis or exacerbation of underlying asthma."
-    },
-    {
-      "id": 64,
-      "patient_id": 64,
-      "provider_id": 1,
-      "encounter_date": "2022-12-25",
-      "notes": "Medical history: hypertension, hyperlipidemia, and asthma."
-    },
-    {
-      "id": 65,
-      "patient_id": 65,
-      "provider_id": 1,
-      "encounter_date": "2022-03-20",
-      "notes": "Medical history: hypertension, osteoarthritis."
-    },
-    {
-      "id": 66,
-      "patient_id": 66,
-      "provider_id": 1,
-      "encounter_date": "2022-06-15",
-      "notes": "Medical history: hypertension, osteoarthritis."
-    },
-    {
-      "id": 67,
-      "patient_id": 67,
-      "provider_id": 1,
-      "encounter_date": "2022-02-14",
-      "notes": "Chief concern: exacerbation of lower back strain due to heavy lifting at work."
-    },
-    {
-      "id": 68,
-      "patient_id": 68,
-      "provider_id": 1,
-      "encounter_date": "2022-05-10",
-      "notes": "Chief concern: exacerbation of lower back strain due to heavy lifting at work."
-    },
-    {
-      "id": 69,
-      "patient_id": 69,
-      "provider_id": 1,
-      "encounter_date": "2022-08-22",
-      "notes": "Physical exam findings: Bilateral wheezing heard on auscultation, oxygen saturation 88% on room air."
-    },
-    {
-      "id": 70,
-      "patient_id": 70,
-      "provider_id": 1,
-      "encounter_date": "2022-12-25",
-      "notes": "Chief concern: productive cough, fever, and shortness of breath."
-    },
-    {
-      "id": 71,
-      "patient_id": 71,
-      "provider_id": 1,
-      "encounter_date": "2022-03-20",
-      "notes": "Chief concern: exacerbation of lower back strain due to heavy lifting at work."
-    },
-    {
-      "id": 72,
-      "patient_id": 72,
-      "provider_id": 1,
-      "encounter_date": "2022-06-15",
-      "notes": "Chief concern: exacerbation of lower back strain due to heavy lifting at work."
-    },
-    {
-      "id": 73,
-      "patient_id": 73,
-      "provider_id": 1,
-      "encounter_date": "2022-02-14",
-      "notes": "Dr. Brooks prescribed physical therapy and muscle relaxants for symptom management."
-    },
-    {
-      "id": 74,
-      "patient_id": 74,
-      "provider_id": 1,
-      "encounter_date": "2022-05-10",
-      "notes": "Dr. Brooks recommended physical therapy and follow-up appointment in two weeks."
-    },
-    {
-      "id": 75,
-      "patient_id": 75,
-      "provider_id": 1,
-      "encounter_date": "2022-08-22",
-      "notes": "Family history: Father passed away from lung cancer at age 55."
-    },
-    {
-      "id": 76,
-      "patient_id": 76,
-      "provider_id": 1,
-      "encounter_date": "2022-12-25",
-      "notes": "Plan: prescribe azithromycin 500mg daily for 5 days and instruct patient to use albuterol inhaler as needed for bronchospasm."
-    },
-    {
-      "id": 77,
-      "patient_id": 77,
-      "provider_id": 1,
-      "encounter_date": "2022-03-20",
-      "notes": "Dr. Brooks recommended physical therapy and follow-up appointment in 2 weeks."
-    },
-    {
-      "id": 78,
-      "patient_id": 78,
-      "provider_id": 1,
-      "encounter_date": "2022-06-15",
-      "notes": "Dr. Brooks recommended physical therapy and follow-up appointment in 2 weeks."
-    },
-    {
-      "id": 79,
-      "patient_id": 79,
-      "provider_id": 1,
-      "encounter_date": "2022-02-14",
-      "notes": "Range of motion limited by pain."
-    },
-    {
-      "id": 80,
-      "patient_id": 80,
-      "provider_id": 1,
-      "encounter_date": "2022-05-10",
-      "notes": "Range of motion limited by pain."
-    },
-    {
-      "id": 81,
-      "patient_id": 81,
-      "provider_id": 1,
-      "encounter_date": "2022-08-22",
-      "notes": "Social history: Non-smoker, occasional drinker."
-    },
-    {
-      "id": 82,
-      "patient_id": 82,
-      "provider_id": 1,
-      "encounter_date": "2022-12-25",
-      "notes": "Laboratory results: WBC count elevated at 12,000 cells/mm^3."
-    },
-    {
-      "id": 83,
-      "patient_id": 83,
-      "provider_id": 1,
-      "encounter_date": "2022-03-20",
-      "notes": "Range of motion limited by pain."
-    },
-    {
-      "id": 84,
-      "patient_id": 84,
-      "provider_id": 1,
-      "encounter_date": "2022-06-15",
-      "notes": "Range of motion limited by pain."
-    },
-    {
-      "id": 85,
-      "patient_id": 85,
-      "provider_id": 1,
-      "encounter_date": "2022-02-14",
-      "notes": "Physical examination revealed tenderness in lumbar region."
-    },
-    {
-      "id": 86,
-      "patient_id": 86,
-      "provider_id": 1,
-      "encounter_date": "2022-05-10",
-      "notes": "Physical examination revealed tenderness in lumbar region."
-    },
-    {
-      "id": 87,
-      "patient_id": 87,
-      "provider_id": 1,
-      "encounter_date": "2022-08-22",
-      "notes": "Allergies: None reported."
-    },
-    {
-      "id": 88,
-      "patient_id": 88,
-      "provider_id": 1,
-      "encounter_date": "2022-12-25",
-      "notes": "Physical exam findings: bilateral wheezing, crackles in lower lung fields."
-    },
-    {
-      "id": 89,
-      "patient_id": 89,
-      "provider_id": 1,
-      "encounter_date": "2022-03-20",
-      "notes": "Physical examination revealed tenderness in lumbar region."
-    },
-    {
-      "id": 90,
-      "patient_id": 90,
-      "provider_id": 1,
-      "encounter_date": "2022-06-15",
-      "notes": "Physical examination revealed tenderness in lumbar region."
-    },
-    {
-      "id": 91,
-      "patient_id": 91,
-      "provider_id": 1,
-      "encounter_date": "2022-02-14",
-      "notes": "Current medications: lisinopril, ibuprofen."
-    },
-    {
-      "id": 92,
-      "patient_id": 92,
-      "provider_id": 1,
-      "encounter_date": "2022-05-10",
-      "notes": "Medications: lisinopril 10mg daily, ibuprofen as needed."
-    },
-    {
-      "id": 93,
-      "patient_id": 93,
-      "provider_id": 1,
-      "encounter_date": "2022-08-22",
-      "notes": "Medications: Currently taking albuterol inhaler as needed and acetaminophen for symptom relief."
-    },
-    {
-      "id": 94,
-      "patient_id": 94,
-      "provider_id": 1,
-      "encounter_date": "2022-12-25",
-      "notes": "Medications: lisinopril 10mg daily, atorvastatin 20mg daily, albuterol inhaler as needed."
-    },
-    {
-      "id": 95,
-      "patient_id": 95,
-      "provider_id": 1,
-      "encounter_date": "2022-03-20",
-      "notes": "Current medications: lisinopril, ibuprofen."
-    },
-    {
-      "id": 96,
-      "patient_id": 96,
-      "provider_id": 1,
-      "encounter_date": "2022-06-15",
-      "notes": "Current medications: lisinopril, ibuprofen."
-    },
-    {
-      "id": 97,
-      "patient_id": 97,
-      "provider_id": 1,
-      "encounter_date": "2022-02-14",
-      "notes": "Medical history: hypertension, osteoarthritis."
-    },
-    {
-      "id": 98,
-      "patient_id": 98,
-      "provider_id": 1,
-      "encounter_date": "2022-05-10",
-      "notes": "Medical history: hypertension, osteoarthritis."
-    },
-    {
-      "id": 99,
-      "patient_id": 99,
-      "provider_id": 1,
-      "encounter_date": "2022-08-22",
-      "notes": "Review of systems: Negative for fever, chills, or chest pain."
-    },
-    {
-      "id": 100,
-      "patient_id": 100,
-      "provider_id": 1,
-      "encounter_date": "2022-12-25",
-      "notes": "Medical history: hypertension, hyperlipidemia, and asthma."
+      "encounter_date": "2023-10-26",
+      "notes": "2023-10-26: Dr. Sharma saw patient for persistent cough. Advised rest & fluids. Follow-up if no improvement in 7 days."
     }
   ]
 }

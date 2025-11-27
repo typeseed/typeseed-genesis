@@ -199,6 +199,7 @@ class LLMCaller:
         system_prompt: Optional[str] = None,
         temperature: float = 0.7,
         max_tokens: int = 1000,
+        allow_cache: bool = True,
         **kwargs,
     ) -> str:
         """
@@ -225,9 +226,10 @@ class LLMCaller:
             **kwargs,
         }
 
-        cache = self._get_cache(payload)
-        if cache:
-            return cache
+        if allow_cache:
+            cache = self._get_cache(payload)
+            if cache:
+                return cache
 
         if self.local:
             response = self._call_local(

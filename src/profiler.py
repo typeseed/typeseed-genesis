@@ -9,7 +9,7 @@ from src.llm.prompts import (
     get_configuration_for_column,
     heal_dynamic_response_table,
 )
-from src.logging_config import get_logger
+
 from src.models import (
     ColumnProfileDefinition,
     Configuration,
@@ -24,6 +24,7 @@ from src.models import (
     TableProfileDefinition,
 )
 from src.utils import extract_nested_json, table_logger, bcolors
+from src.logging_config import get_logger
 
 logger = get_logger()
 
@@ -119,9 +120,6 @@ class Profiler:
                 column_description = self.llm.call(
                     prompt, system_prompt, temperature=0, max_tokens=6000
                 ).strip()
-                print("########################################################")
-                print(column_description)
-                print("########################################################")
             else:
                 system_prompt, prompt = get_column_descriptions_prompt(
                     self.configuration.product_description,
@@ -140,12 +138,7 @@ class Profiler:
                 column_description_json = extract_nested_json(column_description, True)
             except Exception as e:
                 print(f"Error parsing column {table_name}: {e}")
-                column_description_json = {
-                    "error": "Error parsing column {table_name}"
-                }
-            print("2#######################################################")
-            print(column_description_json)
-            print("########################################################")
+                column_description_json = {"error": "Error parsing column {table_name}"}
             if isinstance(column_description_json, list):
                 table_logger(column_description_json, table_name)
             else:
@@ -155,7 +148,10 @@ class Profiler:
                 )
                 for key, value in column_description_json.items():
                     replace_regex = r"(\{\{[a-zA-Z0-9_. ]+\}\})"
-                    print_value = str(value).replace(replace_regex, rf"{bcolors.OKGREEN}$1{bcolors.ENDC}{bcolors.WARNING}")
+                    print_value = str(value).replace(
+                        replace_regex,
+                        rf"{bcolors.OKGREEN}$1{bcolors.ENDC}{bcolors.WARNING}",
+                    )
                     logger.info(
                         f"{bcolors.HEADER} | {key[:20].center(20)}{bcolors.ENDC} | {bcolors.WARNING}{print_value}{bcolors.ENDC} "
                     )
@@ -178,10 +174,6 @@ class Profiler:
                 logger.info(f"Static table: {table_name}")
                 options = table_options[table_name]
 
-                print("########################################################")
-                print(options)
-                print("########################################################")
-
                 table_profile = TableProfileDefinition(
                     count=None,
                     min_count=None,
@@ -203,9 +195,20 @@ class Profiler:
                 column_profile_definitions = {}
 
                 count = 1
-                
+
+                # if table.name == "medical_encounters":
+                #     count = 3
+                if table.name == "medical_facilities":
+                    count = 1
+                if table.name == "providers":
+                    count = 1
+                if table.name == "patients":
+                    count = 6
+                if table.name == "medical_encounters":
+                    count = 2
+
                 table_profile = TableProfileDefinition(
-                    count=count ,
+                    count=count,
                     min_count=None,
                     max_count=None,
                     columns=None,
@@ -226,7 +229,9 @@ class Profiler:
                                 prompt, system_prompt, temperature=0, max_tokens=3000
                             ).strip()
                             try:
-                                column_configuration_json = extract_nested_json(column_configuration_output, True)
+                                column_configuration_json = extract_nested_json(
+                                    column_configuration_output, True
+                                )
 
                                 column_profile_definition = ColumnProfileDefinition(
                                     producer="numeric",
@@ -246,7 +251,7 @@ class Profiler:
                             column_profile_definition = ColumnProfileDefinition(
                                 producer="smollm",
                                 config=SMOLLMProducerConfig(
-                                    list=True,
+                                    list=False,
                                     prompt=table_options[table_name][column.name],
                                 ),
                             )
@@ -266,7 +271,6 @@ class Profiler:
                 table_profile.columns = column_profile_definitions
 
                 profile_tables.tables[table_name] = table_profile
-
 
                 ## dump profile json to a local file `temp-profile.json`
         with open("temp-profile.json", "w") as f:

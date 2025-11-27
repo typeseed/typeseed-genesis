@@ -45,7 +45,10 @@ class SMOLLMProducer(BaseProducer):
             if "__options__" not in context:
                 context["__options__"] = {}
 
-            if options_key not in context["__options__"] or len(context["__options__"][options_key]) == 0:
+            if (
+                options_key not in context["__options__"]
+                or len(context["__options__"][options_key]) == 0
+            ):
                 context["__options__"][options_key] = []
 
                 SYSTEM_PROMPT = """You are a mock data generator that generates mock data for testing purposes. Your sole task is to generate multiple options for a specific entity based on a user prompt.
@@ -74,7 +77,6 @@ Output:
                     PROMPT, SYSTEM_PROMPT, temperature=0, max_tokens=3000
                 ).strip()
 
-
                 list_of_options = output.split("\n")[1:]
 
                 digit_regex = r"^\d+\."
@@ -99,24 +101,21 @@ You are a specialized Deterministic, Constrained Value Generator for mock data. 
 
 **CRITICAL RULES & CONSTRAINTS:**
 1.  **Output Format:** Must be a single, unformatted string value.
-2.  **Content:** The generated value must not appear in the 'Already Generated Values' list. If a proposed value is a duplicate, you are strictly forbidden from outputting it and must immediately generate a different, valid value.
-3.  **DO NOT ADD:** Do not output any introductory sentence, concluding remark, explanation, title, header, footer, or any text/characters *other than* the value itself (e.g., "value").
-4.  **Value Integrity:** The generated value must be simple data point. You must NOT add any new properties, attributes, descriptions, explanations, or context to the value itself.
-5.  **Termination:** Stop immediately after the value is generated.
-6.  **Output Type:** Do not generate code, documentation, guides or data formats.
+2.  **DO NOT ADD:** Do not output any introductory sentence, concluding remark, explanation, title, header, footer, or any text/characters *other than* the value itself (e.g., "value").
+3.  **Value Integrity:** The generated value must be simple data point. You must NOT add any new properties, attributes, descriptions, explanations, or context to the value itself.
+4.  **Termination:** Stop immediately after the value is generated.
+5.  **Output Type:** Do not generate code, documentation, guides or data formats.
 
 """
-            PROMPT = (
-                f"""Generate a unique value for the following prompt:
+            PROMPT = f"""Generate a unique value for the following prompt:
 {prompt}
-""",
-            )
-        output = self.llm.call(
-            PROMPT, SYSTEM_PROMPT, temperature=0, max_tokens=3000
-        ).strip()
 
-        print("--------------------------------")
-        print(output)
-        print("--------------------------------")
+Constraints:
+- Maximum length of the value: {column_definition.config.max_length} characters
+- Minimum length of the value: {column_definition.config.min_length} characters
+"""
+        output = self.llm.call(
+            PROMPT, SYSTEM_PROMPT, temperature=0.8, max_tokens=3000, allow_cache=False
+        ).strip()
 
         return output

@@ -142,15 +142,23 @@ Examples:
         hierarchy = Hierarchy(config)
         profiler = Profiler(config, hierarchy)
 
+
         profile = profiler.build_profile()
 
         generator = Generator()
         results =generator.generate(config, profile)
 
+        final = ""
+
         for key, value in results.items():
             if "values" in value[0]:
                 value = [item["values"] for item in value]
-            table_logger(value, key)
+            final += table_logger(value, key)
+            final += "\n\n"
+
+
+        with open("sample_tables.txt", "w") as f:
+            f.write(final)
 
 
         # TODO: Add actual data generation logic here

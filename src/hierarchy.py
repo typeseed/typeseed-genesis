@@ -1,6 +1,8 @@
 from src.models import Configuration, ProfileDefinition
 import re
-
+from src.logging_config import get_logger
+from src.utils import bcolors
+logger = get_logger()
 
 class Hierarchy:
     def __init__(self, configuration: Configuration):
@@ -62,6 +64,21 @@ class Hierarchy:
             if not is_dependent and table.name not in statics:
                 root.append(table.name)
 
+        logger.info(f"{bcolors.HEADER} -- Processed hierarchy --{bcolors.ENDC}")
+        
+        logger.info(f"{bcolors.HEADER} + Roots: {bcolors.ENDC}")
+        
+        for single_root in root:
+            logger.info(f"    - {bcolors.OKBLUE}{single_root}{bcolors.ENDC}")
+
+        logger.info(f"{bcolors.HEADER} + Dependency Tree: {bcolors.ENDC}")
+        for dependency in dependency_tree:
+            from_table, from_column, _, to_table, to_column = dependency
+            logger.info(f"    - {bcolors.OKBLUE}{from_table}.{from_column} -> {to_table}.{to_column}{bcolors.ENDC}")
+
+
+
+
         return tables, root, statics, dependency_tree
 
     """
@@ -85,4 +102,5 @@ class Hierarchy:
             ref_table = refs[table]
 
             ref_table["depends_on"].append(foreign_table)
+
         return hierarchy

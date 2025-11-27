@@ -19,8 +19,10 @@ class bcolors:
 def table_logger(obj: Any, table_header: str = None, extra_space: bool = False) -> None:
     max_widths = {}
 
+    result = ""
+
     if extra_space:
-        logger.info("")
+        result += "\n"
 
     if isinstance(obj, dict):
         obj = [obj]
@@ -41,40 +43,31 @@ def table_logger(obj: Any, table_header: str = None, extra_space: bool = False) 
         total_width = sum(max_widths.values()) + 5 * len(header) -1
 
         if table_header:
-            logger.info("|" + "-" * total_width + "|")
-            logger.info(
-                "|"+str(table_header[:total_width]).center(total_width)+"|"
-            )            
+            result += "|" + "-" * total_width + "|\n"
+            result += "|"+str(table_header[:total_width]).center(total_width)+"|\n"
+                        
 
-        logger.info(
-            "|-" + "-+-".join("-" * (max_widths[key] + 2) for key in header) + "-|"
-        )
+        result += "|-" + "-+-".join("-" * (max_widths[key] + 2) for key in header) + "-|\n"
+        
 
-        logger.info(
-            "| "
-            + " | ".join(
+        result += "| " + " | ".join(
                 str(key[: max_widths[key] + 2]).center(max_widths[key] + 2)
                 for key in header
-            )
-            + " |"
-        )
+            ) + " |\n"
+    
 
-        logger.info(
-            "|-" + "-+-".join("-" * (max_widths[key] + 2) for key in header) + "-|"
-        )
+        result +=  "|-" + "-+-".join("-" * (max_widths[key] + 2) for key in header) + "-|\n"
+    
 
         for row in obj:
-            logger.info(
-                "| "
-                + " | ".join(
+            result += "| "  + " | ".join(
                     str(row[key]).center(max_widths[key] + 2) for key in header
-                )
-                + " |"
-            )
+                ) + " |\n"
 
-        logger.info(
-            "|-" + "-+-".join("-" * (max_widths[key] + 2) for key in header) + "-|"
-        )
+        result +=  "|-" + "-+-".join("-" * (max_widths[key] + 2) for key in header) + "-|\n"
+
+        return result
+        
 
     
 

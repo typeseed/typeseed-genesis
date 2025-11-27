@@ -74,31 +74,25 @@ class ProducerFactory:
         # Check for ID type
 
         if column_definition.foreign_key:
-            logger.debug(f"Creating FKProducer for {key}")
             return self._producer_types["fk"]()
 
         if column_definition.type == "identifier":
-            logger.debug(f"Creating IdentifierProducer for {key}")
             return self._producer_types["identifier"]()
 
         if column_definition.type == "numeric":
-            logger.debug(f"Creating Numeric producer for {key}")
             return self._producer_types["numeric"]()
 
         if column_definition.type == "boolean":
-            logger.debug(f"Creating Bool producer for {key}")
             return self._producer_types["bool"]()
 
         if profile_configuration and isinstance(
             profile_configuration.config, ChoiceProducerConfig
         ):
-            logger.debug(f"Creating ChoiceProducer for {key}")
             return self._producer_types["choice"]()
 
         if profile_configuration and isinstance(
             profile_configuration.config, SMOLLMProducerConfig
         ):
-            logger.debug(f"Creating SMOLLMProducer for {key}")
             return self._producer_types["smollm"]()
 
         logger.debug(f"No suitable producer found for {key}")

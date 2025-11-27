@@ -1,7 +1,3 @@
-import random
-import re
-import json
-import traceback
 from src.hierarchy import Hierarchy
 from src.models import (
     ColumnDefinition,
@@ -14,7 +10,7 @@ from src.models import (
 from src.logging_config import get_logger
 from src.producers.options_producer import OptionsProducer
 from src.producers.producer_factory import ProducerFactory
-from src.utils import extract_nested_json, table_logger, bcolors
+from src.utils import bcolors
 logger = get_logger()
 
 
@@ -116,31 +112,28 @@ class Generator:
         local_traceback = traceback.copy()
         local_traceback.append(table_name)
 
-        print(" [ " + table_name + " ] ")
+       
+        if len(local_traceback) == 1:
+            logger.debug(
+                f" Generating a root entity {table_name}. Resetting state."
+            )
+            context["__state__"] = {}
 
-        for i in range(
-            table_profile_configuration.count
-            if table_profile_configuration.count
-            else 1
-        ):
-            if len(local_traceback) == 1:
-                logger.debug(
-                    f" Generating a root entity {table_name}. Resetting state."
-                )
-                context["__state__"] = {}
+        for dependency in hierarchy[table_name]["depends_on"]:
+            if dependency in local_traceback:
+                logger.debug(f"Dependency {dependency} present in traceback")
+                continue
+            logger.info(
+                f"Generating dependency: {dependency} for table: {table_name}"
+            )
+            self.generate_entity(hierarchy, dependency, context, local_traceback)
 
-            for dependency in hierarchy[table_name]["depends_on"]:
-                if dependency in local_traceback:
-                    continue
-                logger.info(
-                    f"Generating dependency: {dependency} for table: {table_name}"
-                )
-                self.generate_entity(hierarchy, dependency, context, local_traceback)
-
+        count = table_profile_configuration.count if table_profile_configuration.count else 1
+        for i in range(count):            
             context["__table_name__"] = table_name
             if table_name not in tables:
                 tables[table_name] = []
-            logger.info(f"Generating data for table: {table_name}")
+            logger.info(f"Generating data for table: {table_name} [{i}/{count}]")
             row_data, append_to_list = self.generate_data(
                 table_definition, table_profile_configuration, context
             )
@@ -151,9 +144,15 @@ class Generator:
 
             for key, value in hierarchy.items():
                 if table_name in value["depends_on"]:
-                    if key in local_traceback:
-                        continue
-                    self.generate_entity(hierarchy, key, context, local_traceback)
+                    logger.info(f"{table_name} is in depends of {key}")
+                    # if key in local_traceback:
+                        # continue
+                    dependent_traceback = local_traceback.copy()
+                    if key in dependent_traceback:
+                        logger.info(f"Removing {key} from {dependent_traceback}")
+                        dependent_traceback.remove(key)
+                    logger.info(f"Generating dependent: {key} by table: {table_name}")
+                    self.generate_entity(hierarchy, key, context, dependent_traceback)
 
     def generate(
         self, configuration: Configuration, selected_profile: ProfileDefinition
@@ -170,8 +169,7 @@ class Generator:
 
         context = {}
 
+        # print(json.dumps(hierarchy, indent = 2))
+
         self.generate_entity(hierarchy, "medical_facilities", context, [])
-
-        print(json.dumps(context["__tables__"], indent=2))
-
         return context["__tables__"]

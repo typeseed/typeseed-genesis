@@ -11,7 +11,7 @@
           "producer": "smollm",
           "root_prompt": "Generate a name for a medical facility",
           "config": {
-            "list": true,
+            "list": false,
             "prompt": "Generate a name for a medical facility"
           }
         },
@@ -19,7 +19,7 @@
           "producer": "smollm",
           "root_prompt": "Generate a unique medical facility license number",
           "config": {
-            "list": true,
+            "list": false,
             "prompt": "Generate a unique medical facility license number"
           }
         }
@@ -200,7 +200,7 @@
       ]
     },
     "patients": {
-      "count": 1,
+      "count": 6,
       "min_count": null,
       "max_count": null,
       "columns": {
@@ -208,7 +208,7 @@
           "producer": "smollm",
           "root_prompt": "Generate a unique medical record number string with a maximum length of 50 characters",
           "config": {
-            "list": true,
+            "list": false,
             "prompt": "Generate a unique medical record number string with a maximum length of 50 characters"
           }
         },
@@ -216,7 +216,7 @@
           "producer": "smollm",
           "root_prompt": "Generate a full name for a patient",
           "config": {
-            "list": true,
+            "list": false,
             "prompt": "Generate a full name for a patient"
           }
         },
@@ -224,7 +224,7 @@
           "producer": "smollm",
           "root_prompt": "Generate a realistic date of birth for a patient, formatted as YYYY-MM-DD",
           "config": {
-            "list": true,
+            "list": false,
             "prompt": "Generate a realistic date of birth for a patient, formatted as YYYY-MM-DD"
           }
         }
@@ -240,7 +240,7 @@
           "producer": "smollm",
           "root_prompt": "Generate a full name for a medical provider",
           "config": {
-            "list": true,
+            "list": false,
             "prompt": "Generate a full name for a medical provider"
           }
         },
@@ -248,7 +248,7 @@
           "producer": "smollm",
           "root_prompt": "Generate a medical specialty relevant to the provider's department, or leave blank if not applicable",
           "config": {
-            "list": true,
+            "list": false,
             "prompt": "Generate a medical specialty relevant to the provider's department, or leave blank if not applicable"
           }
         }
@@ -256,7 +256,7 @@
       "options": null
     },
     "medical_encounters": {
-      "count": 100,
+      "count": 2,
       "min_count": null,
       "max_count": null,
       "columns": {
@@ -264,7 +264,7 @@
           "producer": "smollm",
           "root_prompt": "Generate a date within the last year in YYYY-MM-DD format",
           "config": {
-            "list": true,
+            "list": false,
             "prompt": "Generate a date within the last year in YYYY-MM-DD format"
           }
         },
@@ -272,7 +272,7 @@
           "producer": "smollm",
           "root_prompt": "Generate brief medical notes for a patient encounter with provider {{ providers.full_name }} on {{ encounter_date }}. Include a mention of the patient's condition or reason for visit.",
           "config": {
-            "list": true,
+            "list": false,
             "prompt": "Generate brief medical notes for a patient encounter with provider {{ providers.full_name }} on {{ encounter_date }}. Include a mention of the patient's condition or reason for visit."
           }
         }

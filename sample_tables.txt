@@ -1,0 +1,80 @@
+|-----------------------------------------------------|
+|                  medical_facilities                 |
+|-----+----------------------+------------------------|
+|  id |    facility_name     |     license_number     |
+|-----+----------------------+------------------------|
+|  1  |  Apex Health Center  |  MEDFAC-9876543210-AB  |
+|-----+----------------------+------------------------|
+
+
+|-----------------------------------|
+|            departments            |
+|------+-----+----------------------|
+|  id  | fac |         name         |
+|------+-----+----------------------|
+|  1   |  1  |      Cardiology      |
+|  2   |  1  |      Neurology       |
+|  3   |  1  |       Oncology       |
+|  4   |  1  |      Pediatrics      |
+|  5   |  1  |     Orthopedics      |
+|  6   |  2  |  Emergency Medicine  |
+|  7   |  2  |      Radiology       |
+|  8   |  2  |     Dermatology      |
+|  9   |  2  |   Gastroenterology   |
+|  10  |  2  |     Pulmonology      |
+|  11  |  3  |    Anesthesiology    |
+|  12  |  3  |    Ophthalmology     |
+|  13  |  3  |       Urology        |
+|  14  |  3  |    Endocrinology     |
+|  15  |  3  |      Nephrology      |
+|------+-----+----------------------|
+
+
+|-----------------------------------------------|
+|                   providers                   |
+|-----+------+-------------------+--------------|
+|  id | depa |     full_name     |  specialty   |
+|-----+------+-------------------+--------------|
+|  1  |  13  |  Dr. Anya Sharma  |  Cardiology  |
+|-----+------+-------------------+--------------|
+
+
+|------------------------------------------------------------------------------------------------|
+|                                            patients                                            |
+|-----+------------------------------------------------------+--------------------+--------------|
+|  id |                      mrn_number                      |     full_name      | date_of_birt |
+|-----+------------------------------------------------------+--------------------+--------------|
+|  1  |  MRN7392058164928375019283746501928374650192837465   |    Anya Sharma     |  1990-05-15  |
+|  2  |                      MRN739201                       |   Eleanor Vance    |  1985-03-17  |
+|  3  |           MRN783456901234567890ABCDEFGHIJK           |      Jane Doe      |  1990-05-15  |
+|  4  |  MRN78345901234567890123456789012345678901234567890  |  Zylpha Q. Xylos   |  1985-07-12  |
+|  5  |                MRN7834921056ABCDEFGH                 |    Anya Sharma     |  1990-01-01  |
+|  6  |     MRN78345920146789345789012345678901234567890     |  Alice Wonderland  |  1990-01-01  |
+|-----+------------------------------------------------------+--------------------+--------------|
+
+
+|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|                                                                                                                                                                                       medical_encounters                                                                                                                                                                                      |
+|------+-----+-----+--------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|  id  | pat | pro | encounter_da |                                                                                                                                                                            notes                                                                                                                                                                            |
+|------+-----+-----+--------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|  1   |  1  |  1  |  2023-11-15  |                                                                                                                                       Pt seen 2023-11-15 by Dr. Sharma for cough and fever. Sx improving. Rx renewed.                                                                                                                                       |
+|  2   |  1  |  1  |  2023-10-27  |  **Subjective:** Pt presents for follow-up of chronic hypertension. Reports good adherence to Lisinopril 10mg daily. No new complaints. BP at home stable, avg 125/78.
+**Objective:** Vitals: BP 128/80, HR 72, RR 16, Temp 98.6F. Exam unremarkable.
+**Assessment:** Stable chronic hypertension.
+**Plan:** Continue Lisinopril 10mg daily. RTC 3 months.  |
+|  3   |  2  |  1  |  2023-10-26  |                                                                                                                   Patient seen by Dr. Sharma on 2023-10-26 for cough and fever. Prescribed rest and fluids. Follow-up if symptoms worsen.                                                                                                                   |
+|  4   |  2  |  1  |  2023-10-26  |                                                                                                           Pt presents with cough, mild fever. Dr. Sharma notes possible URI. Rx: rest, fluids, OTC meds. Follow up if symptoms worsen. 2023-10-26.                                                                                                          |
+|  5   |  3  |  1  |  2023-10-26  |                                                                                                                                              Dr. Sharma saw patient for cough. Rx: Tessalon Perles. F/u 1 week.                                                                                                                                             |
+|  6   |  3  |  1  |  2023-10-27  |                                                                                                                     Pt. seen by Dr. Sharma 10/27/23 for cough. Dx: Bronchitis. Rx: Tessalon Perles. Advised rest, fluids. Follow up PRN.                                                                                                                    |
+|  7   |  4  |  1  |  2023-10-27  |                                                                                                                              Pt seen 2023-10-27 by Dr. Sharma for cough. Mild congestion noted. Rx: cough syrup. F/u as needed.                                                                                                                             |
+|  8   |  4  |  1  |  2023-10-27  |                                                                                                                             Patient presented with cough and fever. Dr. Sharma noted mild pharyngitis. Advised rest and fluids.                                                                                                                             |
+|  9   |  5  |  1  |  2023-07-15  |                                                                                                                  Dr. Sharma saw patient J. Doe on 2023-07-15 for cough and fever. Prescribed rest and fluids. Follow-up if symptoms worsen.                                                                                                                 |
+|  10  |  5  |  1  |  2023-11-15  |                                                                                          Patient: John Doe. Visit Date: 2023-11-15 with Dr. Anya Sharma. Reason for visit: Annual physical exam. Vitals stable. No acute complaints. Advised on diet and exercise.                                                                                          |
+|  11  |  6  |  1  |  2023-07-15  |                                                                                                          Dr. Sharma encountered patient J. Doe on 2023-07-15 for a persistent cough. Prescribed cough syrup. Follow-up in 1 week if no improvement.                                                                                                         |
+|  12  |  6  |  1  |  2023-10-26  |                                                                                                   Dr. Anya Sharma, 2023-10-26: Patient presented with a persistent cough and mild fever. Advised rest and fluids. Follow-up in 3 days if symptoms worsen.                                                                                                   |
+|  13  |  6  |  1  |  2023-10-27  |                                                                                       Dr. Sharma saw patient J. Doe 2023-10-27 for follow-up on mild hypertension. Vitals stable. Prescribed new low-dose diuretic. Advised lifestyle changes. Next appt in 3 months.                                                                                       |
+|  14  |  6  |  1  |  2023-10-26  |                                                                                                                    2023-10-26: Dr. Sharma saw patient for persistent cough. Advised rest & fluids. Follow-up if no improvement in 7 days.                                                                                                                   |
+|------+-----+-----+--------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+

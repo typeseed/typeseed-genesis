@@ -221,7 +221,7 @@ Examples:
             final += "\n\n"
 
 
-        with open("sample_tables.txt", "w") as f:
+        with open(os.path.join(temp_dir, "sample_tables.txt"), "w") as f:
             f.write(final)
 
 

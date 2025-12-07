@@ -229,7 +229,7 @@ Examples:
         logger.warning("Data generation not yet implemented")
 
         # Save results if output path specified
-        output_path = args.output if args.output else "results.json"
+        output_path = args.output if args.output else os.path.join(temp_dir, "results.json")
         logger.info(f"Saving results to: {output_path}")
         with open(output_path, "w") as f:
             json.dump(results, f, indent=2, default=str)

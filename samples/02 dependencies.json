@@ -82,12 +82,14 @@
                 {
                     "name": "user_id",
                     "type": "identifier",
-                    "is_nullable": false
+                    "is_nullable": false,
+                    "foreign_key": "users.id"
                 },
                 {
                     "name": "tennant_id",
                     "type": "identifier",
-                    "is_nullable": false
+                    "is_nullable": false,
+                    "foreign_key": "tennants.id"
                 }
             ]
         }

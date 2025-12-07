@@ -4,6 +4,8 @@ CLI application using transformers, numpy, and pandas.
 """
 
 import argparse
+import os
+import shutil
 import json
 import sys
 from pathlib import Path
@@ -127,6 +129,13 @@ Examples:
     logger.info("=" * 60)
 
     try:
+
+        # make tempo
+        temp_dir = "temp"
+        if os.path.exists(temp_dir):
+            shutil.rmtree(temp_dir)
+        os.makedirs(temp_dir)
+
         # Load configuration
         logger.info(f"Loading configuration from: {args.config}")
         config = load_json_config(args.config)
@@ -138,22 +147,77 @@ Examples:
         # Process data
         logger.info("Starting data generation...")
 
-       
         hierarchy = Hierarchy(config)
-        profiler = Profiler(config, hierarchy)
+        tables, roots, statics, dependency_tree = hierarchy.calculate_roots()
+        processed_hierarchy = hierarchy.process_hierarchy(tables, dependency_tree)
 
+        with open(os.path.join(temp_dir, "dependency_tree.txt"), "w") as f:
+            f.write(" Processed Hierarchy\n\n")
 
-        profile = profiler.build_profile()
+            f.write("|" + "-" * 40 + "|\n")
+            f.write(f"[{"Tables".center(40)}]\n")
+            f.write("|" + "-" * 40 + "|\n")
+            for table in tables:
+                f.write(f"|{table.center(40)}|\n")
+            f.write("|" + "-" * 40 + "|\n\n")
+
+            f.write("|" + "-" * 40 + "|\n")
+            f.write(f"|{"Roots".center(40)}|\n")
+            f.write("|" + "-" * 40 + "|\n")
+            for root in roots:
+                f.write(f"| {root.center(38)} |\n")
+            f.write("|" + "-" * 40 + "|\n\n")
+
+            f.write("|" + "-" * 120 + "|\n")
+            f.write(f"|{"Dependency Tree".center(120)}|\n")
+            f.write("|" + "-" * 120 + "|\n")
+            for dependency in dependency_tree:
+                from_table, from_column, relation, to_table, to_column = dependency
+                f.write(f"|{(from_table+"."+from_column).center(47)} | {relation.center(20)} | {(to_table+"."+to_column).center(47)}|\n")
+            f.write("|" + "-" * 120 + "|\n\n")
+           
+
+        config_profiles = config.profiles
+
+        if len(config_profiles) > 0:
+            profile = config_profiles[0]
+        else:
+            profiler = Profiler(config, hierarchy)
+            profile = profiler.build_profile()
+
+        with open(os.path.join(temp_dir, "profile.json"), "w") as f:
+            json.dump(profile.model_dump(), f, indent=2)
+
+        with open(os.path.join(temp_dir, "profile.txt"), "w") as f:  
+            f.write(" Processed Profile\n\n")  
+            for key,value in profile.tables.items():
+
+                if value.options:
+                    f.write(table_logger([item.values["values"] for item in value.options], f"{key} [Static]"))
+                    f.write("\n\n")
+                else:
+                    table = next((table for table in config.tables if table.name == key), None)
+                    table_data = []
+                    for column in table.columns:
+                        row = {}
+                        row["column"] = column.name
+                        row["type"] = column.type
+                        row["config"] = str(column.config)
+                        if column.name in value.columns:
+                            row["config"] = value.columns[column.name].root_prompt
+                        table_data.append(row)
+                    f.write(table_logger(table_data, f"{key}({value.count}) [Dynamic]"))
+                    f.write("\n\n")
 
         generator = Generator()
-        results =generator.generate(config, profile)
+        results =generator.generate(config, profile, processed_hierarchy)
 
         final = ""
 
         for key, value in results.items():
             if "values" in value[0]:
                 value = [item["values"] for item in value]
-            final += table_logger(value, key)
+            final += table_logger(value, key, ellipsis=True, max_column_width=40)
             final += "\n\n"
 
 

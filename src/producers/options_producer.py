@@ -30,7 +30,6 @@ class OptionsProducer(BaseProducer):
                     for i in range(option.count):
                         state[table_definition.name].append(index)
 
-        
         queue = state[table_definition.name]
 
         if (
@@ -44,10 +43,20 @@ class OptionsProducer(BaseProducer):
         if len(queue) > 0:
             selected_option = table_profile_configuration.options[queue.pop(0)].values
         else:
-            filtered_list = [option for option in table_profile_configuration.options if option.count is None]  
-            selected_option = random.choices(filtered_list, weights=[option.probability if option.probability else 1 for option in filtered_list], k=1)[0].values
+            filtered_list = [
+                option
+                for option in table_profile_configuration.options
+                if option.count is None
+            ]
+            selected_option = random.choices(
+                filtered_list,
+                weights=[
+                    option.probability if option.probability else 1
+                    for option in filtered_list
+                ],
+                k=1,
+            )[0].values
             if "values" in selected_option:
                 selected_option = selected_option["values"]
 
-        print(">>>", selected_option)            
         return selected_option, False

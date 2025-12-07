@@ -66,6 +66,7 @@ Use the following strict json format to output your response (do not include any
 {
     "classification": "STATIC" or "DYNAMIC",
     "confidence": 0.0 to 1.0,
+    "count": "Return 1 if STATIC; if DYNAMIC, return a realistic random count for a test environment for the table in the context of the product(e.g., 5–50 for entities, 50-200 for events).",
     "reasoning": "A concise explanation focusing on growth rate and data ownership."
 }
 ```
@@ -199,7 +200,7 @@ Return ONLY valid JSON. No markdown formatting.
 
 
 def get_configuration_for_column(generating_prompt: str, model_schema_json: str):
-  SYSTEM_PROMPT = """You are an expert data engineer. Your task is to generate a configuration object based on the generating prompt and json schema
+    SYSTEM_PROMPT = """You are an expert data engineer. Your task is to generate a configuration object based on the generating prompt and json schema
 
 ### INPUT
 You will receive the following information as input;
@@ -252,7 +253,7 @@ You will receive the following information as input;
 ```
 """
 
-  PROMPT = f"""
+    PROMPT = f"""
 **Model JSON Schema:**
 {model_schema_json}
 
@@ -260,12 +261,14 @@ You will receive the following information as input;
 {generating_prompt}
 
 """
-  return SYSTEM_PROMPT, PROMPT
+    return SYSTEM_PROMPT, PROMPT
+
 
 def get_static_data_generation_prompt(
     product_description: str, table_name: str, table_schema: str
 ):
-    SYSTEM_PROMPT = """
+    SYSTEM_PROMPT = (
+        """
 You are an expert Synthetic Data Generator. Your task is to generate a rich, realistic dataset based on a provided database table schema and the prodivded product description.
 
 ### INPUT
@@ -274,7 +277,9 @@ You will receive a JSON object representing a table schema, containing:
 2.  `columns`: A list of definitions including name, type (`id_type`, `string_type`, `decimal_type`, etc.), and constraints.
 
 ### OUTPUT
-Return **ONLY** a valid JSON Array containing items for the """+table_name+""" table values.
+Return **ONLY** a valid JSON Array containing items for the """
+        + table_name
+        + """ table values.
 * Each object represents a row.
 * Keys must match the schema column names exactly.
 * Values must be realistic, high-quality business data appropriate for the table name.
@@ -294,7 +299,9 @@ Return **ONLY** a valid JSON Array containing items for the """+table_name+""" t
     * For **Reference/Static** tables (e.g., tiers, statuses, categories), generate a **comprehensive** list of logical options (usually 3-10).
     * For **Transactional/Entity** tables (e.g., users, products), generate exactly **15 diverse rows**.
 4.  **Output Format:**
-    * Output **ONLY** a valid JSON Array containing items for the """+table_name+""" table values.
+    * Output **ONLY** a valid JSON Array containing items for the """
+        + table_name
+        + """ table values.
     * Each object represents a row.
     * Keys must match the schema column names exactly.
     * Values must be realistic, high-quality business data appropriate for the table name.
@@ -322,6 +329,7 @@ Return **ONLY** a valid JSON Array containing items for the """+table_name+""" t
 ]
 ```
 """
+    )
 
     PROMPT = f"""
 **Product Description:**

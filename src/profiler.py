@@ -7,19 +7,15 @@ from src.llm.prompts import (
     get_profiler_prompt,
     get_static_data_generation_prompt,
     get_configuration_for_column,
-    heal_dynamic_response_table,
 )
 
 from src.models import (
     ColumnProfileDefinition,
     Configuration,
-    IDType,
-    IntegerType,
     NumericType,
     ProfileDefinition,
     RandomNumberProducerConfig,
     SMOLLMProducerConfig,
-    StringType,
     TableOptions,
     TableProfileDefinition,
 )
@@ -84,11 +80,12 @@ class Profiler:
             except Exception as e:
                 table_type = {
                     "classification": "DYNAMIC",
+                    "count": 5,
                     "confidence": 0.0,
                     "reasoning": "Error parsing table type",
                 }
             logger.info(
-                f"{bcolors.HEADER} + {table_name.center(30)}[ {table_type['classification'].center(10)} ] {bcolors.ENDC}"
+                f"{bcolors.HEADER} + {((table_name+"("+str(table_type['count'])+")").center(30))}[ {table_type['classification'].center(10)} ] {bcolors.ENDC}"
             )
 
             table_types[table_name] = table_type
@@ -194,18 +191,7 @@ class Profiler:
             else:
                 column_profile_definitions = {}
 
-                count = 1
-
-                # if table.name == "medical_encounters":
-                #     count = 3
-                if table.name == "medical_facilities":
-                    count = 1
-                if table.name == "providers":
-                    count = 1
-                if table.name == "patients":
-                    count = 6
-                if table.name == "medical_encounters":
-                    count = 2
+                count = table_type["count"]
 
                 table_profile = TableProfileDefinition(
                     count=count,
@@ -271,9 +257,5 @@ class Profiler:
                 table_profile.columns = column_profile_definitions
 
                 profile_tables.tables[table_name] = table_profile
-
-                ## dump profile json to a local file `temp-profile.json`
-        with open("temp-profile.json", "w") as f:
-            json.dump(profile_tables.model_dump(), f, indent=2)
 
         return profile_tables

@@ -1,80 +1,149 @@
-|-----------------------------------------------------|
-|                  medical_facilities                 |
-|-----+----------------------+------------------------|
-|  id |    facility_name     |     license_number     |
-|-----+----------------------+------------------------|
-|  1  |  Apex Health Center  |  MEDFAC-9876543210-AB  |
-|-----+----------------------+------------------------|
+|-----------------------------------------------------------------------------------------------------------------|
+|                                                      users                                                      |
+|------+---------------------+--------------------------------------------+------------------------------+--------|
+|  id  |         name        |                   email                    |          created_at          |  age   |
+|------+---------------------+--------------------------------------------+------------------------------+--------|
+|  1   |    Isabella White   |         isabella.white@example.com         |  2025-12-07 08:23:37.876739  |  68.0  |
+|  2   |    Logan Russell    |         logan.russell@example.com          |  2025-12-07 08:23:38.693294  |  54.0  |
+|  3   |      Ava Walker     |           avawalker@example.com            |  2025-12-07 08:23:39.403217  |  81.0  |
+|  4   |     Liam Taylor     |        liam.taylor23@emailcorp.net         |  2025-12-07 08:23:40.270705  |  30.0  |
+|  5   |    Olivia Martin    |         olivia.martin@example.com          |  2025-12-07 08:23:41.052078  |  21.0  |
+|  6   |    William Brown    |  william.brown@email.co.uk  Note that ...  |  2025-12-07 08:23:46.013973  |  25.0  |
+|  7   |     Sophia Patel    |       sophia.patel@infinitysoft.com        |  2025-12-07 08:23:46.953064  |  95.0  |
+|  8   |    Michael Davis    |        michael.davis@northwind.com         |  2025-12-07 08:23:47.814128  |  73.0  |
+|  9   |    Emily Johnson    |          emily.johnson@email.com           |  2025-12-07 08:23:48.620668  |  96.0  |
+|  10  |      John Smith     |           john.smith@example.com           |  2025-12-07 08:23:49.316429  |  56.0  |
+|  11  |      Mia Taylor     |           mia.taylor@example.com           |  2025-12-07 08:23:52.866278  |  69.0  |
+|  12  |     Oliver Brown    |           oliver.brown@gmail.com           |  2025-12-07 08:23:53.617277  |  67.0  |
+|  13  |    Isabella White   |         isabella.white@outlook.com         |  2025-12-07 08:23:54.422731  |  89.0  |
+|  14  |      Liam Hall      |           liam.hall@example.com            |  2025-12-07 08:23:55.179863  |  36.0  |
+|  15  |    Amelia Santos    |  amelia.santos@novus.co  Note: As "has...  |  2025-12-07 08:23:57.466696  |  41.0  |
+|  16  |     Lucas Brooks    |  lucas.brooks@silverlining.io  (I trea...  |  2025-12-07 08:24:00.972747  |  32.0  |
+|  17  |   Charlotte Davis   |      charlotte.davis@newyorkcorp.com       |  2025-12-07 08:24:01.949410  |  77.0  |
+|  18  |      Ethan Kim      |               ekim@domain.io               |  2025-12-07 08:24:02.644353  |  82.0  |
+|  19  |       Ava Lee       |            ava.lee@example.com             |  2025-12-07 08:24:03.340676  |  54.0  |
+|  20  |     Emily Patel     |           emilypatel@example.com           |  2025-12-07 08:24:04.089879  |  50.0  |
+|  21  |     Caleb Joshua    |        calleb.joshua98@fastmail.net        |  2025-12-07 08:24:08.004732  |  72.0  |
+|  22  |     Harper Julia    |       hjuliaq5n@pacificwellness.org        |  2025-12-07 08:24:09.088312  |  85.0  |
+|  23  |    Lucas Anthony    |         lucas.anthony123@gmail.com         |  2025-12-07 08:24:09.948436  |  97.0  |
+|  24  |  Charlotte Abigail  |       charlotte.abigail@example.com        |  2025-12-07 08:24:10.698946  |  24.0  |
+|  25  |     Liam Patrick    |           liampatrick22@email.io           |  2025-12-07 08:24:11.450423  |  19.0  |
+|  26  |    Ava Elizabeth    |  ava.elizabeth@novadate.io or  avaeliz...  |  2025-12-07 08:24:13.599063  |  88.0  |
+|  27  |    Ethan Matthew    |         ethan.matthew@example.com          |  2025-12-07 08:24:14.359251  |  41.0  |
+|  28  |     Olivia Paige    |         olivia.paige99@example.net         |  2025-12-07 08:24:15.166555  |  23.0  |
+|  29  |    Alexander Ryan   |         alexander.ryan@contoso.com         |  2025-12-07 08:24:16.029240  |  96.0  |
+|  30  |     Emily Rachel    |          emily.rachel@example.io           |  2025-12-07 08:24:16.777657  |  54.0  |
+|  31  |    Alexander Kim    |             akim12@outlook.com             |  2025-12-07 08:24:20.435340  |  59.0  |
+|  32  |   Isabella Harris   |           i2b3c7h@karenwright.io           |  2025-12-07 08:24:21.518273  |  27.0  |
+|  33  |      Logan Lee      |  logan.lee@synergydigital.net  or  llo...  |  2025-12-07 08:24:23.039101  |  87.0  |
+|  34  |     Mia Russell     |          mria.russell@example.com          |  2025-12-07 08:24:23.844412  |  73.0  |
+|  35  |     Ethan White     |          ethan.white@novamail.com          |  2025-12-07 08:24:24.705710  |  84.0  |
+|  36  |      Ava Brooks     |           abrooks12@example.com            |  2025-12-07 08:24:25.456361  |  22.0  |
+|  37  |     Liam Taylor     |     liam.taylor92@digitalinnovation.co     |  2025-12-07 08:24:26.431315  |  29.0  |
+|  38  |    Olivia Martin    |      olivia.martin@suburbiaonline.com      |  2025-12-07 08:24:27.424630  |  26.0  |
+|  39  |   Michael Jenkins   |   charles.perry@ecofriendlysolutions.com   |  2025-12-07 08:24:35.022652  |  89.0  |
+|  40  |     Emily Patel     |          emily.patel@example.com           |  2025-12-07 08:24:35.769986  |  28.0  |
+|  41  |    Carlos Ramirez   |         carlos.ramirez@example.com         |  2025-12-07 08:24:39.429156  |  86.0  |
+|  42  |      Wei White      |         wei.white@emailservice.com         |  2025-12-07 08:24:40.124392  |  81.0  |
+|  43  |    Robert Taylor    |            rtaylor@example.com             |  2025-12-07 08:24:40.765216  |  67.0  |
+|  44  |      Aiko Chen      |            aikochen@example.com            |  2025-12-07 08:24:41.465865  |  44.0  |
+|  45  |     James Martin    |            jmartin@example.com             |  2025-12-07 08:24:42.105640  |  18.0  |
+|  46  |     Elena Brown     |        elena.brown@digitalhaven.com        |  2025-12-07 08:24:42.963001  |  63.0  |
+|  47  |    Michael Davis    |            mdavis123@gmail.com             |  2025-12-07 08:24:43.658372  |  85.0  |
+|  48  |      Sarah Lee      |          sarah.lee@examplecorp.io          |  2025-12-07 08:24:44.459982  |  22.0  |
+|  49  |      David Kim      |           david.kim@example.com            |  2025-12-07 08:24:45.210122  |  57.0  |
+|  50  |     Emily Patel     |           emily.patel@gmail.com            |  2025-12-07 08:24:45.960534  |  22.0  |
+|------+---------------------+--------------------------------------------+------------------------------+--------|
 
 
-|-----------------------------------|
-|            departments            |
-|------+-----+----------------------|
-|  id  | fac |         name         |
-|------+-----+----------------------|
-|  1   |  1  |      Cardiology      |
-|  2   |  1  |      Neurology       |
-|  3   |  1  |       Oncology       |
-|  4   |  1  |      Pediatrics      |
-|  5   |  1  |     Orthopedics      |
-|  6   |  2  |  Emergency Medicine  |
-|  7   |  2  |      Radiology       |
-|  8   |  2  |     Dermatology      |
-|  9   |  2  |   Gastroenterology   |
-|  10  |  2  |     Pulmonology      |
-|  11  |  3  |    Anesthesiology    |
-|  12  |  3  |    Ophthalmology     |
-|  13  |  3  |       Urology        |
-|  14  |  3  |    Endocrinology     |
-|  15  |  3  |      Nephrology      |
-|------+-----+----------------------|
+|-------------------------------------------------------------------------------|
+|                                    tennants                                   |
+|------+---------------------------+--------------------------------------------|
+|  id  |            name           |                description                 |
+|------+---------------------------+--------------------------------------------|
+|  1   |     Luminous Data Labs    |  Trailblazer in AI, data, and cybersec...  |
+|  2   |     Zephyr Enterprise     |  International provider of data analyt...  |
+|  3   |     NovaSpire Systems     |  A forward-thinking technology develop...  |
+|  4   |    Apex Consulting Co.    |  Strong reputation in the consulting i...  |
+|  5   |    Green Earth Networks   |  Green architecture and building desig...  |
+|  6   |    Pulse Digital Agency   |  Growth hacking agency leveraging agil...  |
+|  7   |      Fusion Group LLC     |  A renowned medical device manufacture...  |
+|  8   |      Cloud Nine Inc.      |  Leading innovator in wearable technology  |
+|  9   |    North Star Partners    |  Custom software development company h...  |
+|  10  |     BlueTech Solutions    |  A specialist firm offering expert adv...  |
+|  11  |   ZenithNetwork Services  |  Chinese technology firm providing sca...  |
+|  12  |      ApexGateways LLC     |  The premier cloud services provider s...  |
+|  13  |  FusionLink Technologies  |  Industry-leader in developing smart e...  |
+|  14  |    AtlasEdge Solutions    |  A Japanese digital transformation par...  |
+|  15  |    AuroraCloud Systems    |  OmniConnect Inc.'s core company that ...  |
+|  16  |      NovaSphere Corp.     |  The maker of AI-powered intelligent b...  |
+|  17  |     DigitalForge Inc.     |  DigitalForge's expertise transforms i...  |
+|  18  |    SecureData Partners    |  Mid-sized finance firm focusing on se...  |
+|  19  |    GlobalServe Network    |  The premier provider of enterprise-wi...  |
+|  20  |   CloudHub Technologies   |  A large Japanese conglomerate special...  |
+|  21  |   Kyrium Solutions Ltd.   |  Fast-growing Canadian startup buildin...  |
+|  22  |    Lumina Dynamics Inc.   |  Leading developer of AI-powered smart...  |
+|  23  |     Valtor Innovations    |  A Japanese technology conglomerate ne...  |
+|  24  |    Paragonium Partners    |  Private wealth advisory company speci...  |
+|  25  |      Celestia Systems     |  A leading cybersecurity firm based in...  |
+|------+---------------------------+--------------------------------------------|
 
 
-|-----------------------------------------------|
-|                   providers                   |
-|-----+------+-------------------+--------------|
-|  id | depa |     full_name     |  specialty   |
-|-----+------+-------------------+--------------|
-|  1  |  13  |  Dr. Anya Sharma  |  Cardiology  |
-|-----+------+-------------------+--------------|
-
-
-|------------------------------------------------------------------------------------------------|
-|                                            patients                                            |
-|-----+------------------------------------------------------+--------------------+--------------|
-|  id |                      mrn_number                      |     full_name      | date_of_birt |
-|-----+------------------------------------------------------+--------------------+--------------|
-|  1  |  MRN7392058164928375019283746501928374650192837465   |    Anya Sharma     |  1990-05-15  |
-|  2  |                      MRN739201                       |   Eleanor Vance    |  1985-03-17  |
-|  3  |           MRN783456901234567890ABCDEFGHIJK           |      Jane Doe      |  1990-05-15  |
-|  4  |  MRN78345901234567890123456789012345678901234567890  |  Zylpha Q. Xylos   |  1985-07-12  |
-|  5  |                MRN7834921056ABCDEFGH                 |    Anya Sharma     |  1990-01-01  |
-|  6  |     MRN78345920146789345789012345678901234567890     |  Alice Wonderland  |  1990-01-01  |
-|-----+------------------------------------------------------+--------------------+--------------|
-
-
-|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|                                                                                                                                                                                       medical_encounters                                                                                                                                                                                      |
-|------+-----+-----+--------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|  id  | pat | pro | encounter_da |                                                                                                                                                                            notes                                                                                                                                                                            |
-|------+-----+-----+--------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|  1   |  1  |  1  |  2023-11-15  |                                                                                                                                       Pt seen 2023-11-15 by Dr. Sharma for cough and fever. Sx improving. Rx renewed.                                                                                                                                       |
-|  2   |  1  |  1  |  2023-10-27  |  **Subjective:** Pt presents for follow-up of chronic hypertension. Reports good adherence to Lisinopril 10mg daily. No new complaints. BP at home stable, avg 125/78.
-**Objective:** Vitals: BP 128/80, HR 72, RR 16, Temp 98.6F. Exam unremarkable.
-**Assessment:** Stable chronic hypertension.
-**Plan:** Continue Lisinopril 10mg daily. RTC 3 months.  |
-|  3   |  2  |  1  |  2023-10-26  |                                                                                                                   Patient seen by Dr. Sharma on 2023-10-26 for cough and fever. Prescribed rest and fluids. Follow-up if symptoms worsen.                                                                                                                   |
-|  4   |  2  |  1  |  2023-10-26  |                                                                                                           Pt presents with cough, mild fever. Dr. Sharma notes possible URI. Rx: rest, fluids, OTC meds. Follow up if symptoms worsen. 2023-10-26.                                                                                                          |
-|  5   |  3  |  1  |  2023-10-26  |                                                                                                                                              Dr. Sharma saw patient for cough. Rx: Tessalon Perles. F/u 1 week.                                                                                                                                             |
-|  6   |  3  |  1  |  2023-10-27  |                                                                                                                     Pt. seen by Dr. Sharma 10/27/23 for cough. Dx: Bronchitis. Rx: Tessalon Perles. Advised rest, fluids. Follow up PRN.                                                                                                                    |
-|  7   |  4  |  1  |  2023-10-27  |                                                                                                                              Pt seen 2023-10-27 by Dr. Sharma for cough. Mild congestion noted. Rx: cough syrup. F/u as needed.                                                                                                                             |
-|  8   |  4  |  1  |  2023-10-27  |                                                                                                                             Patient presented with cough and fever. Dr. Sharma noted mild pharyngitis. Advised rest and fluids.                                                                                                                             |
-|  9   |  5  |  1  |  2023-07-15  |                                                                                                                  Dr. Sharma saw patient J. Doe on 2023-07-15 for cough and fever. Prescribed rest and fluids. Follow-up if symptoms worsen.                                                                                                                 |
-|  10  |  5  |  1  |  2023-11-15  |                                                                                          Patient: John Doe. Visit Date: 2023-11-15 with Dr. Anya Sharma. Reason for visit: Annual physical exam. Vitals stable. No acute complaints. Advised on diet and exercise.                                                                                          |
-|  11  |  6  |  1  |  2023-07-15  |                                                                                                          Dr. Sharma encountered patient J. Doe on 2023-07-15 for a persistent cough. Prescribed cough syrup. Follow-up in 1 week if no improvement.                                                                                                         |
-|  12  |  6  |  1  |  2023-10-26  |                                                                                                   Dr. Anya Sharma, 2023-10-26: Patient presented with a persistent cough and mild fever. Advised rest and fluids. Follow-up in 3 days if symptoms worsen.                                                                                                   |
-|  13  |  6  |  1  |  2023-10-27  |                                                                                       Dr. Sharma saw patient J. Doe 2023-10-27 for follow-up on mild hypertension. Vitals stable. Prescribed new low-dose diuretic. Advised lifestyle changes. Next appt in 3 months.                                                                                       |
-|  14  |  6  |  1  |  2023-10-26  |                                                                                                                    2023-10-26: Dr. Sharma saw patient for persistent cough. Advised rest & fluids. Follow-up if no improvement in 7 days.                                                                                                                   |
-|------+-----+-----+--------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|---------------------------------|
+|          user_tennants          |
+|------+-----------+--------------|
+|  id  |  user_id  |  tennant_id  |
+|------+-----------+--------------|
+|  1   |     1     |      1       |
+|  2   |     2     |      2       |
+|  3   |     3     |      3       |
+|  4   |     4     |      4       |
+|  5   |     5     |      5       |
+|  6   |     6     |      6       |
+|  7   |     7     |      7       |
+|  8   |     8     |      8       |
+|  9   |     9     |      9       |
+|  10  |     10    |      10      |
+|  11  |     11    |      11      |
+|  12  |     12    |      12      |
+|  13  |     13    |      13      |
+|  14  |     14    |      14      |
+|  15  |     15    |      15      |
+|  16  |     16    |      16      |
+|  17  |     17    |      17      |
+|  18  |     18    |      18      |
+|  19  |     19    |      19      |
+|  20  |     20    |      20      |
+|  21  |     21    |      21      |
+|  22  |     22    |      22      |
+|  23  |     23    |      23      |
+|  24  |     24    |      24      |
+|  25  |     25    |      25      |
+|  26  |     26    |      26      |
+|  27  |     27    |      27      |
+|  28  |     28    |      28      |
+|  29  |     29    |      29      |
+|  30  |     30    |      30      |
+|  31  |     31    |      31      |
+|  32  |     32    |      32      |
+|  33  |     33    |      33      |
+|  34  |     34    |      34      |
+|  35  |     35    |      35      |
+|  36  |     36    |      36      |
+|  37  |     37    |      37      |
+|  38  |     38    |      38      |
+|  39  |     39    |      39      |
+|  40  |     40    |      40      |
+|  41  |     41    |      41      |
+|  42  |     42    |      42      |
+|  43  |     43    |      43      |
+|  44  |     44    |      44      |
+|  45  |     45    |      45      |
+|  46  |     46    |      46      |
+|  47  |     47    |      47      |
+|  48  |     48    |      48      |
+|  49  |     49    |      49      |
+|  50  |     50    |      50      |
+|------+-----------+--------------|
 
 

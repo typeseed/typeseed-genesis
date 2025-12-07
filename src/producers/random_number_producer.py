@@ -21,10 +21,11 @@ class RandomNumberProducer(BaseProducer):
         context: dict,
     ) -> str:
         config: RandomNumberProducerConfig = column_profile_definition.config
-
         min = config.min_value if config.min_value else 0
-        max = config.min_value if config.min_value else 1
-        precision = config.precision if config.precision else 2
+        max = config.max_value if config.max_value else 1
+        precision = config.precision if config.precision is not None else 2
 
+        print(f"Generating random number between {min} and {max} with precision {precision}")
+        value = min + (random.random() * (max-min))
 
-        return min + (random.random() * (max-min))
+        return round(value, precision)

@@ -16,7 +16,18 @@ class bcolors:
     UNDERLINE = "\033[4m"
 
 
-def table_logger(obj: Any, table_header: str = None, extra_space: bool = False) -> None:
+def table_logger(
+    obj: Any,
+    table_header: str = None,
+    extra_space: bool = False,
+    max_column_width: int = 80,
+    ellipsis: bool = False,
+) -> None:
+    """
+    Log/display a table of dictionaries or dict using ASCII box drawing.
+    If max_column_width is set, any cell value longer than this will be 
+    split into multiple lines for that cell.
+    """
     max_widths = {}
 
     result = ""
@@ -27,44 +38,89 @@ def table_logger(obj: Any, table_header: str = None, extra_space: bool = False) 
     if isinstance(obj, dict):
         obj = [obj]
 
-    if isinstance(obj, list):
+    if isinstance(obj, list) and obj:
         get_first_item = obj[0]
-
         header = list(get_first_item.keys())
 
+        # Prepare max widths for each column (before applying max_column_width)
         for key in header:
             max_widths[key] = max(len(str(get_first_item[key])), max_widths.get(key, 0))
 
         for row in obj:
             for key in header:
-                max_widths[key] = max(len(str(row[key])), max_widths.get(key, 0))
+                value_str = str(row[key])
+                # For multiline, consider longest split part
+                if max_column_width is not None:
+                    split_lines = [
+                        value_str[i : i + max_column_width]
+                        for i in range(0, len(value_str), max_column_width)
+                    ]
+                    max_line_len = max((len(line) for line in split_lines), default=0)
+                    cell_width = max_line_len
+                else:
+                    cell_width = len(value_str)
+                max_widths[key] = max(cell_width, max_widths.get(key, 0), len(str(key)))
 
+        # apply max_column_width restriction to width, but never less than header length
+        if max_column_width is not None:
+            for key in header:
+                max_widths[key] = max(min(max_widths[key], max_column_width), len(str(key)))
 
-        total_width = sum(max_widths.values()) + 5 * len(header) -1
+        total_width = sum(max_widths.values()) + 5 * len(header) - 1
 
         if table_header:
             result += "|" + "-" * total_width + "|\n"
-            result += "|"+str(table_header[:total_width]).center(total_width)+"|\n"
-                        
+            result += "|" + str(table_header[:total_width]).center(total_width) + "|\n"
 
         result += "|-" + "-+-".join("-" * (max_widths[key] + 2) for key in header) + "-|\n"
-        
 
-        result += "| " + " | ".join(
-                str(key[: max_widths[key] + 2]).center(max_widths[key] + 2)
+        # Render the header
+        result += (
+            "| "
+            + " | ".join(
+                str(key[: max_widths[key]]).center(max_widths[key] + 2)
                 for key in header
-            ) + " |\n"
-    
+            )
+            + " |\n"
+        )
 
-        result +=  "|-" + "-+-".join("-" * (max_widths[key] + 2) for key in header) + "-|\n"
-    
+        result += "|-" + "-+-".join("-" * (max_widths[key] + 2) for key in header) + "-|\n"
 
+        # Render the table body with multiline cells
         for row in obj:
-            result += "| "  + " | ".join(
-                    str(row[key]).center(max_widths[key] + 2) for key in header
-                ) + " |\n"
-
-        result +=  "|-" + "-+-".join("-" * (max_widths[key] + 2) for key in header) + "-|\n"
+            # For each key, split contents if needed
+            cell_lines = []
+            max_lines = 1
+            for key in header:
+                value = str(row[key])
+                # if ellipsis is true then replace \n with ...
+                if ellipsis and "\n" in value:
+                    value = value.replace("\n", " ")
+                if ellipsis and len(value) > max_column_width:
+                    value = value[:max_column_width-3] + "..."
+                if max_column_width is not None and len(value) > max_column_width:
+                    lines = [
+                        value[i : i + max_column_width]
+                        for i in range(0, len(value), max_column_width)
+                    ]
+                else:
+                    lines = [value]
+                cell_lines.append(lines)
+                if len(lines) > max_lines:
+                    max_lines = len(lines)
+            # For each line in row (for multiline cells)
+            for line_no in range(max_lines):
+                row_str = "| "
+                for col, lines in enumerate(cell_lines):
+                    cell = lines[line_no] if line_no < len(lines) else ""
+                    pad_width = max_widths[header[col]] + 2
+                    row_str += cell.center(pad_width)
+                    if col != len(cell_lines) - 1:
+                        row_str += " | "
+                    else:
+                        row_str += " |\n"
+                result += row_str
+        result += "|-" + "-+-".join("-" * (max_widths[key] + 2) for key in header) + "-|\n"
 
         return result
         

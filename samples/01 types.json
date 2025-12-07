@@ -5,45 +5,40 @@
             "columns": [
                 {
                     "name": "id",
-                    "type": {
-                        "id_type": "id"
-                    },
+                    "type": "identifier",
                     "is_nullable": false
                 },
                 {
                     "name": "name",
-                    "type": {
-                        "string_type": {
-                            "max_length": 255
-                        }
+                    "type": "string",
+                    "config": {
+                        "max_length": 255
                     },
                     "is_nullable": false
                 },
                 {
                     "name": "email",
-                    "type": {
-                        "string_type": {
-                            "max_length": 255
-                        }
+                    "type": "string",
+                    "config": {
+                        "max_length": 255
                     },
                     "is_nullable": false
                 },
                 {
                     "name": "created_at",
-                    "type": {
-                        "date_type": {
-                            "date_format": "YYYY-MM-DD"
-                        }
+                    "type": "datetime",
+                    "config": {
+                        "date_format": "YYYY-MM-DD"
                     },
                     "is_nullable": false
                 },
                 {
                     "name": "age",
-                    "type": {
-                        "numeric_type": {
-                            "precision": 10,
-                            "rounding": 2
-                        }
+                    "type": "numeric",
+                    "config": {
+                        "precision": 0,
+                        "min_value": 18,
+                        "max_value": 100
                     },
                     "is_nullable": false
                 }
@@ -53,39 +48,40 @@
     "profiles": [
         {
             "name": "default",
-            "root": "users",
+            "root": null,
             "tables": {
                 "users": {
-                    "count": 2,
+                    "count": 15,
+                    "min_count": null,
+                    "max_count": null,
                     "columns": {
                         "name": {
                             "producer": "smollm",
+                            "root_prompt": "Generate a full name",
                             "config": {
-                                "prompt": "Generate a random name for a user"
+                                "list": true,
+                                "prompt": "Generate a full name"
                             }
                         },
                         "email": {
                             "producer": "smollm",
+                            "root_prompt": "Generate a realistic email address for the user {{ name }}",
                             "config": {
-                                "prompt": "Generate a random email the user {name}"
-                            }
-                        },
-                        "created_at": {
-                            "producer": "datetime",
-                            "config": {
-                                "date_format": "YYYY-MM-DD",
-                                "start_date": "2020-01-01",
-                                "end_date": "2025-12-31"
+                                "list": false,
+                                "prompt": "Generate a realistic email address for the user {{ name }}"
                             }
                         },
                         "age": {
-                            "producer": "random",
+                            "producer": "numeric",
+                            "root_prompt": "Generate a random integer between 18 and 100",
                             "config": {
-                                "min": 18,
-                                "max": 65
+                                "precision": 0,
+                                "min_value": 18.0,
+                                "max_value": 100.0
                             }
                         }
-                    }
+                    },
+                    "options": null
                 }
             }
         }

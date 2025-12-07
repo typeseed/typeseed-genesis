@@ -16,6 +16,7 @@ from src.producers.random_number_producer import RandomNumberProducer
 from src.producers.smollm_producer import SMOLLMProducer
 from src.producers.fk_producer import FKProducer
 from src.producers.options_producer import OptionsProducer
+from src.producers.date_producer import DateTimeProducer
 from src.logging_config import get_logger
 
 logger = get_logger()
@@ -33,7 +34,8 @@ class ProducerFactory:
             "fk": FKProducer,
             "options": OptionsProducer,
             "bool": BoolProducer,
-            "numeric": RandomNumberProducer
+            "numeric": RandomNumberProducer,
+            "datetime": DateTimeProducer
         }
 
     def register_producer_type(self, name: str, producer_class: Type[BaseProducer]):
@@ -78,6 +80,9 @@ class ProducerFactory:
 
         if column_definition.type == "identifier":
             return self._producer_types["identifier"]()
+
+        if column_definition.type == "datetime":
+            return self._producer_types["datetime"]()
 
         if column_definition.type == "numeric":
             return self._producer_types["numeric"]()

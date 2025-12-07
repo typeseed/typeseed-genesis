@@ -1,347 +1,98 @@
 {
-    "product_descrioption": "This is an application that helps you manage a car dealership documents and feedback.",
+    "product_description": "A platform for managing tenants and their private data",
     "tables": [
-        {
-            "name": "organizations",
-            "columns": [
-                {
-                    "name": "id",
-                    "type": {
-                        "id_type": "id"
-                    },
-                    "is_nullable": false
-                },
-                {
-                    "name": "type",
-                    "type": {
-                        "string_type": {
-                            "max_length": 255
-                        }
-                    },
-                    "is_nullable": false
-                },
-                {
-                    "name": "name",
-                    "type": {
-                        "string_type": {
-                            "max_length": 255
-                        }
-                    },
-                    "is_nullable": false
-                }
-            ]
-        },
-        {
-            "name": "roles",
-            "columns": [
-                {
-                    "name": "id",
-                    "type": {
-                        "id_type": "id"
-                    },
-                    "is_nullable": false
-                },
-                {
-                    "name": "name",
-                    "type": {
-                        "string_type": {
-                            "max_length": 255
-                        }
-                    },
-                    "is_nullable": false
-                }
-            ]
-        },
-        {
-            "name": "document_types",
-            "columns": [
-                {
-                    "name": "id",
-                    "type": {
-                        "id_type": "id"
-                    },
-                    "is_nullable": false
-                },
-                {
-                    "name": "type",
-                    "type": {
-                        "string_type": {
-                            "max_length": 255
-                        }
-                    },
-                    "is_nullable": false
-                }
-            ]
-        },
-        {
-            "name": "document_type_description",
-            "columns": [
-                {
-                    "name": "id",
-                    "type": {
-                        "id_type": "id"
-                    },
-                    "is_nullable": false
-                },
-                {
-                    "name": "document_type_id",
-                    "type": {
-                        "id_type": "id"
-                    },
-                    "is_nullable": false,
-                    "foreign_key": "document_types.id"
-                },
-                {
-                    "name": "description",
-                    "type": {
-                        "string_type": {
-                            "max_length": 255
-                        }
-                    },
-                    "is_nullable": false
-                }
-            ]
-        },
         {
             "name": "users",
             "columns": [
                 {
                     "name": "id",
-                    "type": {
-                        "id_type": "id"
-                    },
+                    "type": "identifier",
                     "is_nullable": false
-                },
-                {
-                    "name": "role_id",
-                    "type": {
-                        "id_type": "id"
-                    },
-                    "is_nullable": false,
-                    "foreign_key": "roles.id"
-                },
-                {
-                    "name": "organization_id",
-                    "type": {
-                        "id_type": "id"
-                    },
-                    "is_nullable": false,
-                    "foreign_key": "organizations.id"
                 },
                 {
                     "name": "name",
-                    "type": {
-                        "string_type": {
-                            "max_length": 255
-                        }
+                    "type": "string",
+                    "config": {
+                        "max_length": 255
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "email",
+                    "type": "string",
+                    "config": {
+                        "max_length": 255
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime",
+                    "config": {
+                        "date_format": "YYYY-MM-DD"
+                    },
+                    "is_nullable": false
+                },
+                {
+                    "name": "age",
+                    "type": "numeric",
+                    "config": {
+                        "precision": 0,
+                        "min_value": 18,
+                        "max_value": 100
                     },
                     "is_nullable": false
                 }
             ]
         },
         {
-            "name": "documents",
+            "name": "tennants",
             "columns": [
                 {
                     "name": "id",
-                    "type": {
-                        "id_type": "id"
+                    "type": "identifier",
+                    "is_nullable": false
+                },
+                {
+                    "name": "name",
+                    "type": "string",
+                    "config": {
+                        "max_length": 255
                     },
                     "is_nullable": false
                 },
                 {
-                    "name": "owner_id",
-                    "type": {
-                        "id_type": "id"
-                    },
-                    "is_nullable": false,
-                    "foreign_key": "users.id"
-                },
-                {
-                    "name": "document_type_id",
-                    "type": {
-                        "id_type": "id"
-                    },
-                    "is_nullable": false,
-                    "foreign_key": "document_types.id"
-                },
-                {
-                    "name": "title",
-                    "type": {
-                        "string_type": {
-                            "max_length": 255
-                        }
+                    "name": "description",
+                    "type": "string",
+                    "config": {
+                        "max_length": 255
                     },
                     "is_nullable": false
                 }
             ]
         },
         {
-            "name": "user_feedback",
+            "name": "user_tennants",
             "columns": [
                 {
                     "name": "id",
-                    "type": {
-                        "id_type": "id"
-                    },
+                    "type": "identifier",
                     "is_nullable": false
                 },
                 {
                     "name": "user_id",
-                    "type": {
-                        "id_type": "id"
-                    },
-                    "is_nullable": false,
-                    "foreign_key": "users.id"
+                    "type": "identifier",
+                    "is_nullable": false
                 },
                 {
-                    "name": "feedback",
-                    "type": {
-                        "string_type": {
-                            "max_length": 255
-                        }
-                    },
+                    "name": "tennant_id",
+                    "type": "identifier",
                     "is_nullable": false
                 }
             ]
         }
     ],
     "profiles": [
-        {
-            "name": "default",
-            "root": "organizations",
-            "tables": {
-                "organizations": {
-                    "columns": {
-                        "type": {
-                            "producer": "choice",
-                            "config": {
-                                "options": [
-                                    {
-                                        "name": "technology",
-                                        "probability": 0.33
-                                    },
-                                    {
-                                        "name": "automotive",
-                                        "probability": 0.33
-                                    },
-                                    {
-                                        "name": "food and beverage",
-                                        "probability": 0.33
-                                    }
-                                ]
-                            }
-                        },
-                        "name": {
-                            "producer": "smollm",
-                            "config": {
-                                "list": true,
-                                "prompt": "Generate a random name for an organization of type {{type}}"
-                            }
-                        }
-                    }
-                },
-                "roles": {
-                    "options": [
-                        {
-                            "count": 1,
-                            "values": {
-                                "id": 1,
-                                "name": "super_admin"
-                            }
-                        },
-                        {
-                            "count": 2,
-                            "values": {
-                                "id": 2,
-                                "name": "admin"
-                            }
-                        },
-                        {
-                            "probability": 0.8,
-                            "values": {
-                                "id": 3,
-                                "name": "user"
-                            }
-                        },
-                        {
-                            "probability": 0.2,
-                            "values": {
-                                "id": 4,
-                                "name": "guest"
-                            }
-                        }
-                    ]
-                },
-                "document_types": {
-                    "options": [
-                        {
-                            "values": {
-                                "id": 1,
-                                "type": "spreadsheet"
-                            }
-                        },
-                        {
-                            "values": {
-                                "id": 2,
-                                "type": "presentation"
-                            }
-                        },
-                        {
-                            "values": {
-                                "id": 3,
-                                "type": "report"
-                            }
-                        }
-                    ]
-                },
-                "users": {
-                    "count": 10,
-                    "columns": {
-                        "name": {
-                            "producer": "smollm",
-                            "config": {
-                                "list": true,
-                                "prompt": "Generate a random surname and name for a user in the format 'Surname Name'"
-                            }
-                        }
-                    }
-                },
-                "document_type_description": {
-                    "columns": {
-                        "description": {
-                            "producer": "smollm",
-                            "config": {
-                                "list": true,
-                                "prompt": "Generate a random description for a document type {{document_types.type}}"
-                            }
-                        }
-                    }
-                },
-                "documents": {
-                    "columns": {
-                        "title": {
-                            "producer": "smollm",
-                            "config": {
-                                "list": true,
-                                "prompt": "Generate a random title for a document of type {{document_types.type}} for the organization {{organizations.name}} of type {{organizations.type}}"
-                            }
-                        }
-                    }
-                },
-                "user_feedback": {
-                    "count": 10,
-                    "columns": {
-                        "feedback": {
-                            "producer": "smollm",
-                            "config": {
-                                "list": false,
-                                "prompt": "Generate a random feedback for a user {{users.name}}"
-                            }
-                        }
-                    }
-                }
-            }
-        }
+      
     ]
 }
